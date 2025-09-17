@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ngaleueut - Es Susu & Makanan Pedas</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="icon" type="image/png" href="img/pattern-white.png" />
+    <style>
+      :root {
+        --primary: #23251a;
+        --secondary: #181a13;
+        --accent: #23251a;
+        --text: #f8f8f8;
+        --card: rgba(60, 66, 40, 0.6);
+        --border: #3c4228;
+        --highlight: #f8f8f8;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Poppins", sans-serif;
+        background: var(--secondary);
+        color: var(--text);
+        line-height: 1.6;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 60px;
+        background: var(--primary);
+        color: var(--text);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      header h1 {
+        font-size: 24px;
+        font-weight: 700;
+      }
+      nav ul {
+        display: flex;
+        gap: 30px;
+        list-style: none;
+      }
+      nav ul li a {
+        color: var(--text);
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.3s;
+      }
+      nav ul li a:hover {
+        color: var(--highlight);
+      }
+      .hero {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 80px 60px;
+        background: var(--accent);
+        flex-wrap: wrap;
+      }
+      .hero-text {
+        max-width: 500px;
+      }
+      .hero-text h2 {
+        font-size: 40px;
+        margin-bottom: 20px;
+        color: var(--highlight);
+      }
+      .hero-text span {
+        color: var(--text);
+        font-weight: bold;
+        background: #3c4228;
+        padding: 2px 8px;
+        border-radius: 5px;
+      }
+      .btn {
+        display: inline-block;
+        background: #3c4228;
+        color: var(--text);
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        margin-top: 15px;
+        transition: transform 0.3s, background 0.3s;
+        border: none;
+        cursor: pointer;
+      }
+      .btn:hover {
+        background: #181a13;
+        color: var(--highlight);
+        transform: scale(1.05);
+      }
+      .hero img {
+        width: 400px;
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.4s;
+        background: var(--card);
+      }
+      .hero img:hover {
+        transform: rotate(-2deg) scale(1.05);
+      }
+      .products {
+        padding: 60px;
+      }
+      .products h2 {
+        text-align: center;
+        margin-bottom: 40px;
+        font-size: 32px;
+        color: var(--highlight);
+      }
+      .products h3 {
+        color: var(--highlight);
+        margin-top: 30px;
+        margin-bottom: 10px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 25px;
+        margin-left: 10px;
+      }
+      .product {
+        background: var(--card);
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        padding: 20px;
+        text-align: center;
+        transition: transform 0.3s, box-shadow 0.3s;
+        border: 1px solid var(--border);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        min-width: 200px;
+        max-width: 250px;
+        margin: 0 auto;
+      }
+      .product img {
+        width: 100%;
+        max-width: 180px;
+        height: auto;
+        border-radius: 12px;
+        margin-bottom: 15px;
+        background: var(--secondary);
+        object-fit: contain;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .product:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+        border-color: var(--highlight);
+      }
+      .product h3 {
+        margin: 10px 0;
+        color: var(--highlight);
+      }
+      .product p {
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: var(--text);
+      }
+      select {
+        padding: 5px;
+        margin: 10px 0;
+        width: 100%;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+        background: #23251a;
+        color: var(--text);
+      }
+      .cart {
+        margin-top: 60px;
+        padding: 30px;
+        border-radius: 15px;
+        background: var(--card);
+        color: var(--text);
+        border: 1px solid var(--border);
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .cart h2 {
+        margin-bottom: 20px;
+        text-align: center;
+        color: var(--highlight);
+      }
+      .cart ul {
+        list-style: none;
+        padding: 0;
+      }
+      .cart ul li {
+        border-bottom: 1px dashed var(--border);
+        padding: 5px 0;
+      }
+      .total {
+        font-weight: bold;
+        margin-top: 15px;
+        text-align: right;
+        color: var(--highlight);
+      }
+      #map {
+        height: 300px;
+        margin-top: 20px;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-left: 5px;
+        margin-right: 5px;
+      }
+      footer {
+        margin-top: 80px;
+        background: var(--primary);
+        color: var(--text);
+        text-align: center;
+        padding: 20px;
+      }
+
+      /* SWIPE GRID MOBILE */
+      @media (max-width: 768px) {
+        header {
+          flex-direction: column;
+          padding: 15px 20px;
+          gap: 10px;
+        }
+        h1 {
+          display: none;
+        }
+        .hero {
+          flex-direction: column;
+          padding: 40px 20px;
+          text-align: center;
+        }
+        .hero img {
+          width: 90vw;
+          max-width: 320px;
+          margin-top: 25px;
+        }
+        .products {
+          padding: 30px 10px;
+        }
+        .cart {
+          padding: 15px 5px;
+          margin-top: 30px;
+        }
+        /* ubah grid jadi horizontal scroll */
+        .grid {
+          display: flex;
+          flex-direction: row;
+          overflow-x: auto;
+          gap: 16px;
+          padding-bottom: 10px;
+          scroll-snap-type: x mandatory;
+        }
+        .product {
+          flex: 0 0 75vw;
+          max-width: 80vw;
+          min-width: 220px;
+          margin: 0;
+          scroll-snap-align: start;
+        }
+        .product img {
+          max-width: 60vw;
+          min-width: 120px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        header {
+          padding: 10px 5vw;
+        }
+        .hero-text h2 {
+          font-size: 26px;
+        }
+        .products h2 {
+          font-size: 22px;
+        }
+        .product {
+          padding: 10px 5px;
+        }
+        .cart {
+          font-size: 15px;
+        }
+        #map {
+          height: 180px;
+        }
+        footer {
+          padding: 12px 5px;
+          font-size: 14px;
+        }
+        .grid {
+          gap: 10px;
+        }
+        .product {
+          min-width: 180px;
+          max-width: 90vw;
+        }
+        .product img {
+          max-width: 80vw;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="img/Pattern-White.png" width="50px" height="auto" alt="" />
+      <h1>Ngaleueut</h1>
+      <nav>
+        <ul>
+          <li><a href="#">Beranda</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#">Kontak</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-text">
+        <h2>Nikmati Nyalsemu dengan <span>Ngaleueut</span></h2>
+        <p>
+          Nikmati sensasi segar dan pedas dalam satu tempat. Pesan sekarang dan
+          rasakan kenikmatannya!
+        </p>
+        <a href="#menu" class="btn">Pesan Sekarang</a>
+      </div>
+      <img src="img/Americano.png" alt="Hero Menu" />
+    </section>
+
+    <section class="products" id="menu">
+      <h2>Menu Kami</h2>
+
+      <h3>Makanan</h3>
+      <div class="grid" id="makanan"></div>
+      <h3>Minuman</h3>
+      <div class="grid" id="minuman"></div>
+      <h3>Topping Makanan</h3>
+      <div class="grid" id="topingMakanan"></div>
+      <h3>Topping Minuman</h3>
+      <div class="grid" id="topingMinuman"></div>
+
+      <!-- Keranjang -->
+      <div class="cart">
+        <h2>Keranjang Pesanan</h2>
+        <ul id="cart-items"></ul>
+        <p class="total">Subtotal: Rp<span id="subtotal">0</span></p>
+        <p class="total">Ongkos Kirim: Rp<span id="ongkir">0</span></p>
+        <p class="total">Total: Rp<span id="total">0</span></p>
+        <div id="map"></div>
+        <div
+          class="info"
+          id="hasil"
+          style="margin-top: 10px; text-align: center"
+        ></div>
+        <button class="btn" style="background:#25D366; color:#fff;" onclick="checkout()">
+          <i class="fab fa-whatsapp" style="margin-right:6px;"></i>Pesan via WhatsApp
+        </button></button>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2025 Ngaleueut - Es Susu & Makanan Pedas</p>
+    </footer>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+      const booth = [-6.879417, 108.289361]; // Lokasi booth
+      let ongkir = 0;
+      let jarakKm = 0;
+
+      const products = {
+        makanan: [
+          {
+            id: 1,
+            name: "Mie Level",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/miejontor-PhotoRoom.png",
+          },
+          {
+            id: 2,
+            name: "Pangsit Ayam",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/pangyam.png",
+          },
+          {
+            id: 3,
+            name: "Bakso Mekar Pedas",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/bakso1.png",
+          },
+          {
+            id: 4,
+            name: "Sosis Mekar Pedas",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/sosis.png",
+          },
+          {
+            id: 5,
+            name: "Basreng Chili Oil",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/basreng.png   ",
+          },
+          {
+            id: 6,
+            name: "Cimol Bojot",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/cimol.png",
+          },
+          {
+            id: 7,
+            name: "Cemilan Mix",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/cemilan.jpg",
+          },
+        ],
+        minuman: [
+          {
+            id: 8,
+            name: "Milky Coffe",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/coffe milk.png",
+          },
+          {
+            id: 9,
+            name: "Black Coffe",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/americano.png",
+          },
+          {
+            id: 10,
+            name: "Matcha Tjih",
+            price: { Small: 7000, Medium: 10000, Large: 13000 },
+            img: "img/matcha.png",
+          },
+          {
+            id: 11,
+            name: "Choco BengBeng",
+            price: { Small: 8000, Medium: 11000, Large: 14000 },
+            img: "img/benbeng.png",
+          },
+          {
+            id: 12,
+            name: "Milo Ice",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/milo.jpg",
+          },
+          {
+            id: 13,
+            name: "Milky Strawberry",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/strawberry.png",
+          },
+          {
+            id: 14,
+            name: "Milky Taro",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/taro.png",
+          },
+          {
+            id: 15,
+            name: "Milky Buble Gum",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/buble-gum.png",
+          },
+          {
+            id: 16,
+            name: "Original Tea",
+            price: { Small: 2000, Large: 5000 },
+            img: "img/tea original.png",
+          },
+        ],
+        topingMakanan: [
+          {
+            id: 17,
+            name: "Bakso",
+            price: { Small: 1000, Large: 5000 },
+            img: "img/bakso.png",
+          },
+          {
+            id: 18,
+            name: "Pangyam",
+            price: { Small: 1000 },
+            img: "img/pangyamt.png",
+          },
+        ],
+        topingMinuman: [
+          {
+            id: 19,
+            name: "Cincau",
+            price: { Small: 1000 },
+            img: "img/jelly.png",
+          },
+          {
+            id: 8,
+            name: "Boba",
+            price: { Small: 1000 },
+            img: "img/boba.png",
+          },
+        ],
+      };
+
+      let cart = [];
+
+      function renderProducts() {
+        for (let category in products) {
+          const container = document.getElementById(category);
+          products[category].forEach((p) => {
+            const div = document.createElement("div");
+            div.className = "product";
+            let options = "";
+            for (let variant in p.price) {
+              options += `<option value="${variant}">${variant} - Rp${p.price[
+                variant
+              ].toLocaleString("id-ID")}</option>`;
+            }
+            // Tambahkan select level jika kategori makanan
+            let levelSelect = "";
+            if (category === "makanan") {
+              levelSelect = `
+                <select id="level-${p.id}">
+                    <option value="1">Level 1</option>
+                    <option value="2">Level 2</option>
+                    <option value="3">Level 3</option>
+                    <option value="4">Level 4 (+Rp1.000)</option>
+                    <option value="5">Level 5 (+Rp1.000)</option>
+                </select>
+              `;
+            }
+            div.innerHTML = `
+              <img src="${p.img}" alt="${p.name}">
+              <h3>${p.name}</h3>
+              <select id="variant-${p.id}">${options}</select>
+              ${levelSelect}
+              <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
+            `;
+            container.appendChild(div);
+          });
+        }
+      }
+
+      function addToCart(id, category) {
+        const product = products[category].find((p) => p.id === id);
+        const variant = document.getElementById(`variant-${id}`).value;
+        let price = product.price[variant];
+        let level = null;
+        // Cek jika kategori makanan, ambil level dan sesuaikan harga
+        if (category === "makanan") {
+          level = document.getElementById(`level-${id}`).value;
+          if (level === "4" || level === "5") {
+            price += 1000;
+          }
+        }
+        // Cari item di cart dengan id, variant, dan level (jika ada)
+        const existing = cart.find(
+          (item) =>
+            item.id === id &&
+            item.variant === variant &&
+            (category !== "makanan" || item.level === level)
+        );
+        if (existing) {
+          existing.qty++;
+        } else {
+          const cartItem = { ...product, variant, price, qty: 1 };
+          if (category === "makanan") cartItem.level = level;
+          cart.push(cartItem);
+        }
+        renderCart();
+      }
+
+      function renderCart() {
+        let cartList = document.getElementById("cart-items");
+        let subtotalEl = document.getElementById("subtotal");
+        let ongkirEl = document.getElementById("ongkir");
+        let totalEl = document.getElementById("total");
+        cartList.innerHTML = "";
+        let subtotal = 0;
+        cart.forEach((item) => {
+          let levelText = "";
+          if (item.level) {
+            levelText = ` [Level ${item.level}]`;
+          }
+          let li = document.createElement("li");
+          li.textContent = `${item.name}${levelText} [${item.variant}] (x${
+            item.qty
+          }) = Rp${(item.price * item.qty).toLocaleString("id-ID")}`;
+          cartList.appendChild(li);
+          subtotal += item.price * item.qty;
+        });
+        subtotalEl.textContent = subtotal.toLocaleString("id-ID");
+        ongkirEl.textContent = ongkir.toLocaleString("id-ID");
+        totalEl.textContent = (subtotal + ongkir).toLocaleString("id-ID");
+      }
+
+      // Variabel untuk menyimpan nama lokasi estimasi
+      let estimatedLocation = "";
+
+      function checkout() {
+        if (cart.length === 0) {
+          alert("Keranjang masih kosong!");
+          return;
+        }
+        let message = "Halo, saya ingin memesan:%0A";
+        let subtotal = 0;
+        cart.forEach((item) => {
+          let levelText = "";
+          if (item.level) {
+            levelText = ` [Level ${item.level}]`;
+          }
+          message += `- ${item.name}${levelText} [${item.variant}] (x${
+            item.qty
+          }) = Rp${(item.price * item.qty).toLocaleString("id-ID")}%0A`;
+          subtotal += item.price * item.qty;
+        });
+        message += `Subtotal: Rp${subtotal.toLocaleString("id-ID")}%0A`;
+        message += `Ongkos Kirim (${jarakKm} km): Rp${ongkir.toLocaleString(
+          "id-ID"
+        )}%0A`;
+        message += `Total: Rp${(subtotal + ongkir).toLocaleString("id-ID")}%0A`;
+        if (estimatedLocation) {
+          message += `Lokasi: ${estimatedLocation}%0A`;
+        }
+        let phone = "6285183317960"; // Ganti dengan nomor WA kamu
+        window.open(`https://wa.me/${phone}?text=${message}`, "_blank");
+      }
+
+      // Cetak Struk/Nota PNG
+    function printNota() {
+      if (cart.length === 0) {
+        alert("Keranjang masih kosong!");
+        return;
+      }
+      // Buat canvas 3:4 (misal 600x800 px)
+      const width = 600,
+        height = 900; // Tambah tinggi agar muat QRIS
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+
+      // Background putih
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, width, height);
+
+      // Fungsi menggambar isi nota setelah logo & QRIS siap
+      function drawNota(qrisImg) {
+        // Judul tengah atas
+        ctx.font = "bold 32px Poppins, Arial";
+        ctx.fillStyle = "#23251a";
+        ctx.textAlign = "center";
+        ctx.fillText("Ngaleueut", width / 2, 60);
+
+        // Alamat booth
+        ctx.font = "16px Poppins, Arial";
+        ctx.fillStyle = "#23251a";
+        ctx.fillText(
+        "Blok Sukamaju, Desa Pasanggrahan, Kec. Maja",
+        width / 2,
+        90
+        );
+
+        // Tanggal & jam
+        const now = new Date();
+        const tanggal = now.toLocaleDateString("id-ID", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        });
+        const jam = now.toLocaleTimeString("id-ID", {
+        hour: "2-digit",
+        minute: "2-digit",
+        });
+        ctx.font = "15px Poppins, Arial";
+        ctx.fillText(`${tanggal} ${jam}`, width / 2, 120);
+
+        // Garis pemisah
+        ctx.strokeStyle = "#23251a";
+        ctx.beginPath();
+        ctx.moveTo(40, 140);
+        ctx.lineTo(width - 40, 140);
+        ctx.stroke();
+
+        // Cart items
+        ctx.font = "16px Poppins, Arial";
+        ctx.fillStyle = "#23251a";
+        ctx.textAlign = "left";
+        let y = 170;
+        let subtotal = 0;
+        cart.forEach((item) => {
+        let levelText = item.level ? ` [Level ${item.level}]` : "";
+        let line = `${item.name}${levelText} [${item.variant}] x${item.qty}`;
+        let price = `Rp${(item.price * item.qty).toLocaleString("id-ID")}`;
+        ctx.fillText(line, 50, y);
+        ctx.textAlign = "right";
+        ctx.fillText(price, width - 50, y);
+        ctx.textAlign = "left";
+        y += 28;
+        subtotal += item.price * item.qty;
+        });
+
+        // Garis subtotal
+        ctx.strokeStyle = "#23251a";
+        ctx.beginPath();
+        ctx.moveTo(40, y + 10);
+        ctx.lineTo(width - 40, y + 10);
+        ctx.stroke();
+
+        // Subtotal, ongkir, total
+        y += 40;
+        ctx.font = "bold 17px Poppins, Arial";
+        ctx.fillText("Subtotal", 50, y);
+        ctx.textAlign = "right";
+        ctx.fillText(`Rp${subtotal.toLocaleString("id-ID")}`, width - 50, y);
+        ctx.textAlign = "left";
+        y += 28;
+        ctx.font = "17px Poppins, Arial";
+        // Tampilkan ongkir beserta jarak
+        ctx.fillText(`Ongkos Kirim (${jarakKm} km)`, 50, y);
+        ctx.textAlign = "right";
+        ctx.fillText(`Rp${ongkir.toLocaleString("id-ID")}`, width - 50, y);
+        ctx.textAlign = "left";
+        y += 28;
+        ctx.font = "bold 19px Poppins, Arial";
+        ctx.fillText("Total", 50, y);
+        ctx.textAlign = "right";
+        ctx.fillText(
+        `Rp${(subtotal + ongkir).toLocaleString("id-ID")}`,
+        width - 50,
+        y
+        );
+        ctx.textAlign = "left";
+
+        // Tampilkan nama lokasi estimasi jika ada
+        if (estimatedLocation) {
+        ctx.font = "16px Poppins, Arial";
+        ctx.textAlign = "center";
+        ctx.fillText(`Lokasi: ${estimatedLocation}`, width / 2, y + 40);
+        }
+
+        // QRIS di tengah
+        if (qrisImg) {
+        // Ukuran QRIS 220x220 px, posisi tengah
+        const qrisSize = 220;
+        const qrisX = (width - qrisSize) / 2;
+        const qrisY = y + 70;
+        ctx.drawImage(qrisImg, qrisX, qrisY, qrisSize, qrisSize);
+
+        // Label QRIS
+        ctx.font = "bold 18px Poppins, Arial";
+        ctx.fillStyle = "#23251a";
+        ctx.textAlign = "center";
+        ctx.fillText("Scan QRIS untuk pembayaran", width / 2, qrisY + qrisSize + 30);
+
+        y = qrisY + qrisSize + 50;
+        } else {
+        y = y + 100;
+        }
+
+        // Ucapan terima kasih
+        ctx.font = "italic 17px Poppins, Arial";
+        ctx.fillStyle = "#23251a";
+        ctx.textAlign = "center";
+        ctx.fillText("Terima kasih atas pesanan Anda!", width / 2, y + 30);
+
+        // Hormat kami pojok kanan bawah
+        ctx.font = "15px Poppins, Arial";
+        ctx.textAlign = "right";
+        ctx.fillText("Hormat kami,", width - 40, height - 60);
+        ctx.font = "bold 17px Poppins, Arial";
+        ctx.fillText("Ngaleueut", width - 40, height - 35);
+
+        // Download PNG
+        const notaImg = canvas.toDataURL("image/png");
+        const link = document.createElement("a");
+        link.href = notaImg;
+        link.download = "nota-ngaleueut.png";
+        link.click();
+      }
+
+      // Logo kiri atas (gunakan crossOrigin agar bisa tampil jika file logo support CORS)
+      const logo = new window.Image();
+      logo.crossOrigin = "anonymous";
+      logo.src = "img/Pattern-black.png";
+      logo.onload = function () {
+        ctx.drawImage(logo, 30, 30, 70, 70);
+        // Setelah logo, load QRIS
+        loadQrisAndDraw();
+      };
+      logo.onerror = function () {
+        // Jika gagal load logo, tetap lanjutkan tanpa logo
+        loadQrisAndDraw();
+      };
+
+      function loadQrisAndDraw() {
+        const qrisImg = new window.Image();
+        qrisImg.crossOrigin = "anonymous";
+        qrisImg.src = "img/qris.jpg";
+        qrisImg.onload = function () {
+        drawNota(qrisImg);
+        };
+        qrisImg.onerror = function () {
+        // Jika gagal load QRIS, tetap lanjutkan tanpa QRIS
+        drawNota(null);
+        };
+      }
+    }
+
+      // Tambahkan tombol cetak nota di bawah tombol WA
+    window.addEventListener("DOMContentLoaded", function () {
+      renderProducts();
+      // Tambah tombol cetak nota
+      const btn = document.createElement("button");
+      btn.className = "btn";
+      btn.innerHTML = '<i class="fa fa-print" style="margin-right:6px;"></i>Cetak Nota';
+      btn.style.marginLeft = "10px";
+      btn.style.background = "#ff9800";
+      btn.style.color = "#fff";
+      btn.style.border = "2px solid #ff9800";
+      btn.onmouseover = function () {
+        btn.style.background = "#e65100";
+        btn.style.borderColor = "#e65100";
+      };
+      btn.onmouseout = function () {
+        btn.style.background = "#ff9800";
+        btn.style.borderColor = "#ff9800";
+      };
+      btn.onclick = printNota;
+      const cartDiv = document.querySelector(".cart");
+      cartDiv.appendChild(btn);
+    });
+
+      // Map
+      const map = L.map("map").setView(booth, 13);
+      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        maxZoom: 19,
+      }).addTo(map);
+      L.marker(booth).addTo(map).bindPopup("Lokasi Booth").openPopup();
+      let markerPembeli = null;
+
+      // Daftar wilayah estimasi (nama, lat, lng, radius meter)
+      const wilayahEstimasi = [
+        { nama: "Blok Sukamaju", lat: -6.879, lng: 108.288, radius: 500 },
+        { nama: "Desa Pasanggrahan", lat: -6.8805, lng: 108.287, radius: 1200 },
+        { nama: "Kec. Maja", lat: -6.883, lng: 108.285, radius: 2500 },
+        { nama: "Kab. Majalengka", lat: -6.836, lng: 108.227, radius: 10000 },
+      ];
+
+      // Fungsi hitung jarak 2 titik latlng (meter)
+      function haversine(lat1, lng1, lat2, lng2) {
+        const R = 6371000;
+        const toRad = (d) => (d * Math.PI) / 180;
+        const dLat = toRad(lat2 - lat1);
+        const dLng = toRad(lng2 - lng1);
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(toRad(lat1)) *
+            Math.cos(toRad(lat2)) *
+            Math.sin(dLng / 2) *
+            Math.sin(dLng / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+      }
+
+      // Estimasi nama wilayah berdasar titik
+      function estimasiWilayah(lat, lng) {
+        for (let i = 0; i < wilayahEstimasi.length; i++) {
+          const w = wilayahEstimasi[i];
+          const dist = haversine(lat, lng, w.lat, w.lng);
+          if (dist <= w.radius) return w.nama;
+        }
+        return "Sekitar Majalengka";
+      }
+
+      map.on("click", function (e) {
+        const pembeli = [e.latlng.lat, e.latlng.lng];
+        if (markerPembeli) map.removeLayer(markerPembeli);
+        markerPembeli = L.marker(pembeli)
+          .addTo(map)
+          .bindPopup("Lokasi Pembeli")
+          .openPopup();
+        const url = `https://router.project-osrm.org/route/v1/driving/${booth[1]},${booth[0]};${pembeli[1]},${pembeli[0]}?overview=false`;
+        fetch(url)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.routes && data.routes.length > 0) {
+              const jarakMeter = data.routes[0].distance;
+              jarakKm = (jarakMeter / 1000).toFixed(2);
+              ongkir = Math.round(jarakKm * 2000);
+
+              // Estimasi nama wilayah
+              estimatedLocation = estimasiWilayah(pembeli[0], pembeli[1]);
+
+              document.getElementById(
+                "hasil"
+              ).innerHTML = `Jarak: <b>${jarakKm} km</b><br>Ongkos Kirim: <b>Rp ${ongkir.toLocaleString()}</b><br>Wilayah: <b>${estimatedLocation}</b>`;
+              renderCart();
+            } else {
+              document.getElementById("hasil").innerText =
+                "Gagal menghitung jarak.";
+              estimatedLocation = "";
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            document.getElementById("hasil").innerText =
+              "Error mengambil data OSRM.";
+            estimatedLocation = "";
+          });
+      });
+    </script>
+  </body>
+</html>
