@@ -877,9 +877,9 @@
         const a =
           Math.sin(dLat / 2) * Math.sin(dLat / 2) +
           Math.cos(toRad(lat1)) *
-            Math.cos(toRad(lat2)) *
-            Math.sin(dLng / 2) *
-            Math.sin(dLng / 2);
+        Math.cos(toRad(lat2)) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
       }
@@ -894,6 +894,19 @@
         return "Sekitar Majalengka";
       }
 
+      // Fungsi hitung ongkir sesuai tarif bertingkat
+      function hitungOngkir(jarakKm) {
+        let ongkir = 0;
+        if (jarakKm <= 15) {
+          ongkir = Math.round(jarakKm * 2000);
+        } else if (jarakKm > 15 && jarakKm <= 20) {
+          ongkir = Math.round(jarakKm * 5000);
+        } else {
+          ongkir = Math.round(jarakKm * 10000);
+        }
+        return ongkir;
+      }
+
       map.on("click", function (e) {
         const pembeli = [e.latlng.lat, e.latlng.lng];
         if (markerPembeli) map.removeLayer(markerPembeli);
@@ -905,29 +918,31 @@
         fetch(url)
           .then((res) => res.json())
           .then((data) => {
-            if (data.routes && data.routes.length > 0) {
-              const jarakMeter = data.routes[0].distance;
-              jarakKm = (jarakMeter / 1000).toFixed(2);
-              ongkir = Math.round(jarakKm * 2000);
+        if (data.routes && data.routes.length > 0) {
+          const jarakMeter = data.routes[0].distance;
+          jarakKm = (jarakMeter / 1000).toFixed(2);
 
-              // Estimasi nama wilayah
-              estimatedLocation = estimasiWilayah(pembeli[0], pembeli[1]);
+          // Hitung ongkir dengan tarif bertingkat
+          ongkir = hitungOngkir(Number(jarakKm));
 
-              document.getElementById(
-                "hasil"
-              ).innerHTML = `Jarak: <b>${jarakKm} km</b><br>Ongkos Kirim: <b>Rp ${ongkir.toLocaleString()}</b><br>Wilayah: <b>${estimatedLocation}</b>`;
-              renderCart();
-            } else {
-              document.getElementById("hasil").innerText =
-                "Gagal menghitung jarak.";
-              estimatedLocation = "";
-            }
+          // Estimasi nama wilayah
+          estimatedLocation = estimasiWilayah(pembeli[0], pembeli[1]);
+
+          document.getElementById(
+            "hasil"
+          ).innerHTML = `Jarak: <b>${jarakKm} km</b><br>Ongkos Kirim: <b>Rp ${ongkir.toLocaleString()}</b><br>Wilayah: <b>${estimatedLocation}</b>`;
+          renderCart();
+        } else {
+          document.getElementById("hasil").innerText =
+            "Gagal menghitung jarak.";
+          estimatedLocation = "";
+        }
           })
           .catch((err) => {
-            console.error(err);
-            document.getElementById("hasil").innerText =
-              "Error mengambil data OSRM.";
-            estimatedLocation = "";
+        console.error(err);
+        document.getElementById("hasil").innerText =
+          "Error mengambil data OSRM.";
+        estimatedLocation = "";
           });
       });
     </script>
