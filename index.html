@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ngaleueut - Es Susu & Makanan Pedas</title>
+    <title>Ngaleueut</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
@@ -103,9 +103,7 @@
       .hero img {
         width: 400px;
         border-radius: 20px;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         transition: transform 0.4s;
-        background: var(--card);
       }
       .hero img:hover {
         transform: rotate(-2deg) scale(1.05);
@@ -315,14 +313,14 @@
       <h1>Ngaleueut</h1>
       <nav>
         <ul>
-          <li><a href="#">Beranda</a></li>
+          <li><a href="#beranda">Beranda</a></li>
           <li><a href="#menu">Menu</a></li>
-          <li><a href="#">Kontak</a></li>
+          <li><a href="#keranjang">Keranjang </a></li>
         </ul>
       </nav>
     </header>
 
-    <section class="hero">
+    <section class="hero" id="beranda">
       <div class="hero-text">
         <h2>Nikmati Nyalsemu dengan <span>Ngaleueut</span></h2>
         <p>
@@ -331,7 +329,7 @@
         </p>
         <a href="#menu" class="btn">Pesan Sekarang</a>
       </div>
-      <img src="img/Americano.png" alt="Hero Menu" />
+      <img src="img/heromenu.png" alt="Hero Menu" />
     </section>
 
     <section class="products" id="menu">
@@ -347,8 +345,8 @@
       <div class="grid" id="topingMinuman"></div>
 
       <!-- Keranjang -->
-      <div class="cart">
-        <h2>Keranjang Pesanan</h2>
+      <div class="cart" id="keranjang">
+        <h2 >Keranjang Pesanan</h2>
         <ul id="cart-items"></ul>
         <p class="total">Subtotal: Rp<span id="subtotal">0</span></p>
         <p class="total">Ongkos Kirim: Rp<span id="ongkir">0</span></p>
@@ -366,7 +364,7 @@
     </section>
 
     <footer>
-      <p>© 2025 Ngaleueut - Es Susu & Makanan Pedas</p>
+      <p>© 2025 Ngaleueut - Ngopi nyalse!</p>
     </footer>
 
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -380,20 +378,20 @@
           {
             id: 1,
             name: "Mie Level",
-            price: { Small: 5000, Large: 10000 },
-            img: "img/miejontor-PhotoRoom.png",
+            price: { Small: 5000, Large: 8000 },
+            img: "img/miejontor.png",
           },
           {
             id: 2,
             name: "Pangsit Ayam",
-            price: { Small: 5000, Large: 10000 },
+            price: { Small: 5000, Large: 8000 },
             img: "img/pangyam.png",
           },
           {
             id: 3,
             name: "Bakso Mekar Pedas",
             price: { Small: 5000, Large: 10000 },
-            img: "img/bakso1.png",
+            img: "img/bakso-mekar.png",
           },
           {
             id: 4,
@@ -417,7 +415,7 @@
             id: 7,
             name: "Cemilan Mix",
             price: { Small: 5000, Large: 10000 },
-            img: "img/cemilan.jpg",
+            img: "img/cemilan.png",
           },
         ],
         minuman: [
@@ -425,52 +423,58 @@
             id: 8,
             name: "Milky Coffe",
             price: { Small: 6000, Medium: 9000, Large: 12000 },
-            img: "img/coffe milk.png",
+            img: "img/milky-coffe.png",
           },
           {
             id: 9,
             name: "Black Coffe",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            price: { Small: 5000, Medium: 7000, Large: 10000 },
             img: "img/americano.png",
           },
           {
             id: 10,
+            name: "Coffe Gula Aren",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/Kopi-suren.png",
+          },
+          {
+            id: 11,
             name: "Matcha Tjih",
             price: { Small: 7000, Medium: 10000, Large: 13000 },
             img: "img/matcha.png",
           },
           {
-            id: 11,
+            id: 12,
             name: "Choco BengBeng",
             price: { Small: 8000, Medium: 11000, Large: 14000 },
             img: "img/benbeng.png",
           },
           {
-            id: 12,
+            id: 13,
             name: "Milo Ice",
             price: { Small: 6000, Medium: 9000, Large: 12000 },
-            img: "img/milo.jpg",
+            img: "img/milo.png",
           },
           {
-            id: 13,
+            id: 14,
             name: "Milky Strawberry",
             price: { Small: 6000, Medium: 9000, Large: 12000 },
             img: "img/strawberry.png",
           },
           {
-            id: 14,
+            id: 15,
             name: "Milky Taro",
             price: { Small: 6000, Medium: 9000, Large: 12000 },
             img: "img/taro.png",
           },
           {
-            id: 15,
+            id: 16,
             name: "Milky Buble Gum",
             price: { Small: 6000, Medium: 9000, Large: 12000 },
             img: "img/buble-gum.png",
           },
           {
-            id: 16,
+            id: 17,
             name: "Original Tea",
             price: { Small: 2000, Large: 5000 },
             img: "img/tea original.png",
@@ -478,27 +482,33 @@
         ],
         topingMakanan: [
           {
-            id: 17,
+            id: 18,
             name: "Bakso",
             price: { Small: 1000, Large: 5000 },
-            img: "img/bakso.png",
+            img: "img/bakso1.png",
           },
           {
-            id: 18,
+            id: 19,
             name: "Pangyam",
             price: { Small: 1000 },
-            img: "img/pangyamt.png",
+            img: "img/pangyam.png",
+          },
+          {
+            id: 20,
+            name: "Telor Ceplok/Dadar",
+            price: { Small: 3000 },
+            img: "img/telor.png",
           },
         ],
         topingMinuman: [
           {
-            id: 19,
+            id: 21,
             name: "Cincau",
             price: { Small: 1000 },
             img: "img/jelly.png",
           },
           {
-            id: 8,
+            id: 22,
             name: "Boba",
             price: { Small: 1000 },
             img: "img/boba.png",
@@ -512,35 +522,35 @@
         for (let category in products) {
           const container = document.getElementById(category);
           products[category].forEach((p) => {
-            const div = document.createElement("div");
-            div.className = "product";
-            let options = "";
-            for (let variant in p.price) {
-              options += `<option value="${variant}">${variant} - Rp${p.price[
-                variant
-              ].toLocaleString("id-ID")}</option>`;
-            }
-            // Tambahkan select level jika kategori makanan
-            let levelSelect = "";
-            if (category === "makanan") {
-              levelSelect = `
-                <select id="level-${p.id}">
-                    <option value="1">Level 1</option>
-                    <option value="2">Level 2</option>
-                    <option value="3">Level 3</option>
-                    <option value="4">Level 4 (+Rp1.000)</option>
-                    <option value="5">Level 5 (+Rp1.000)</option>
-                </select>
-              `;
-            }
-            div.innerHTML = `
-              <img src="${p.img}" alt="${p.name}">
-              <h3>${p.name}</h3>
-              <select id="variant-${p.id}">${options}</select>
-              ${levelSelect}
-              <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
-            `;
-            container.appendChild(div);
+        const div = document.createElement("div");
+        div.className = "product";
+        let options = "";
+        for (let variant in p.price) {
+          options += `<option value="${variant}">${variant} - Rp${p.price[
+            variant
+          ].toLocaleString("id-ID")}</option>`;
+        }
+        // Tambahkan select level jika kategori makanan
+        let levelSelect = "";
+        if (category === "makanan") {
+          levelSelect = `
+            <select id="level-${p.id}">
+            <option value="1">Level 1</option>
+            <option value="2">Level 2</option>
+            <option value="3">Level 3</option>
+            <option value="4">Level 4 (+Rp1.000)</option>
+            <option value="5">Level 5 (+Rp1.000)</option>
+            </select>
+          `;
+        }
+        div.innerHTML = `
+          <img src="${p.img}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <select id="variant-${p.id}">${options}</select>
+          ${levelSelect}
+          <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
+        `;
+        container.appendChild(div);
           });
         }
       }
@@ -554,15 +564,15 @@
         if (category === "makanan") {
           level = document.getElementById(`level-${id}`).value;
           if (level === "4" || level === "5") {
-            price += 1000;
+        price += 1000;
           }
         }
         // Cari item di cart dengan id, variant, dan level (jika ada)
         const existing = cart.find(
           (item) =>
-            item.id === id &&
-            item.variant === variant &&
-            (category !== "makanan" || item.level === level)
+        item.id === id &&
+        item.variant === variant &&
+        (category !== "makanan" || item.level === level)
         );
         if (existing) {
           existing.qty++;
@@ -574,6 +584,11 @@
         renderCart();
       }
 
+      function removeFromCart(index) {
+        cart.splice(index, 1);
+        renderCart();
+      }
+
       function renderCart() {
         let cartList = document.getElementById("cart-items");
         let subtotalEl = document.getElementById("subtotal");
@@ -581,15 +596,16 @@
         let totalEl = document.getElementById("total");
         cartList.innerHTML = "";
         let subtotal = 0;
-        cart.forEach((item) => {
+        cart.forEach((item, idx) => {
           let levelText = "";
           if (item.level) {
-            levelText = ` [Level ${item.level}]`;
+        levelText = ` [Level ${item.level}]`;
           }
           let li = document.createElement("li");
-          li.textContent = `${item.name}${levelText} [${item.variant}] (x${
-            item.qty
-          }) = Rp${(item.price * item.qty).toLocaleString("id-ID")}`;
+          li.innerHTML = `
+        <span>${item.name}${levelText} [${item.variant}] (x${item.qty}) = Rp${(item.price * item.qty).toLocaleString("id-ID")}</span>
+        <button onclick="removeFromCart(${idx})" style="background:none;border:none;color:#e53935;font-size:18px;cursor:pointer;float:right;" title="Hapus item">&times;</button>
+          `;
           cartList.appendChild(li);
           subtotal += item.price * item.qty;
         });
