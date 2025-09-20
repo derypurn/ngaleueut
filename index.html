@@ -9,7 +9,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <link rel="icon" type="image/png" href="img/icon.png" />
+    <link rel="icon" type="image/png" href="img/pattern-white.png" />
     <style>
       :root {
         --primary: #23251a;
@@ -309,7 +309,7 @@
   </head>
   <body>
     <header>
-      <img src="img/Pattern-White.png" width="50px" height="auto" alt="" />
+      <img src="img/icon.png" width="50px" height="auto" alt="" />
       <h1>Ngaleueut</h1>
       <nav>
         <ul>
@@ -375,182 +375,79 @@
 
       const products = {
         makanan: [
-          {
-            id: 1,
-            name: "Mie Level",
-            price: { Small: 5000, Large: 8000 },
-            img: "img/miejontor.png",
-          },
-          {
-            id: 2,
-            name: "Pangsit Ayam",
-            price: { Small: 5000, Large: 8000 },
-            img: "img/pangyam.png",
-          },
-          {
-            id: 3,
-            name: "Bakso Mekar Pedas",
-            price: { Small: 5000, Large: 10000 },
-            img: "img/bakso-mekar.png",
-          },
-          {
-            id: 4,
-            name: "Sosis Mekar Pedas",
-            price: { Small: 5000, Large: 10000 },
-            img: "img/sosis.png",
-          },
-          {
-            id: 5,
-            name: "Basreng Chili Oil",
-            price: { Small: 5000, Large: 10000 },
-            img: "img/basreng.png   ",
-          },
-          {
-            id: 6,
-            name: "Cimol Bojot",
-            price: { Small: 5000, Large: 10000 },
-            img: "img/cimol.png",
-          },
-          {
-            id: 7,
-            name: "Cemilan Mix",
-            price: { Small: 5000, Large: 10000 },
-            img: "img/cemilan.png",
-          },
+          { id: 1, name: "Mie Level", price: { Small: 5000, Large: 8000 }, img: "img/miejontor.png" },
+          { id: 2, name: "Pangsit Ayam", price: { Small: 5000, Large: 8000 }, img: "img/pangyam.png" },
+          { id: 3, name: "Bakso Mekar Pedas", price: { Small: 5000, Large: 10000 }, img: "img/bakso-mekar.png" },
+          { id: 4, name: "Sosis Mekar Pedas", price: { Small: 5000, Large: 10000 }, img: "img/sosis.png" },
+          { id: 5, name: "Basreng Chili Oil", price: { Small: 5000, Large: 10000 }, img: "img/basreng.png   " },
+          { id: 6, name: "Cimol Bojot", price: { Small: 5000, Large: 10000 }, img: "img/cimol.png" },
+          { id: 7, name: "Cemilan Mix", price: { Small: 5000, Large: 10000 }, img: "img/cemilan.png" },
         ],
         minuman: [
-          {
-            id: 8,
-            name: "Milky Coffe",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
-            img: "img/milky-coffe.png",
-          },
-          {
-            id: 9,
-            name: "Black Coffe",
-            price: { Small: 5000, Medium: 7000, Large: 10000 },
-            img: "img/black-coffe.png",
-          },
-          {
-            id: 10,
-            name: "Coffe Gula Aren",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
-            img: "img/coffe-gula-aren.png",
-          },
-          {
-            id: 11,
-            name: "Matcha Tjih",
-            price: { Small: 7000, Medium: 10000, Large: 13000 },
-            img: "img/matcha-tjih.png",
-          },
-          {
-            id: 12,
-            name: "Choco BengBeng",
-            price: { Small: 8000, Medium: 11000, Large: 14000 },
-            img: "img/benbeng.png",
-          },
-          {
-            id: 13,
-            name: "Milo Ice",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
-            img: "img/milo-ice.png",
-          },
-          {
-            id: 14,
-            name: "Milky Strawberry",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
-            img: "img/strawberry.png",
-          },
-          {
-            id: 15,
-            name: "Milky Taro",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
-            img: "img/milky-taro.png",
-          },
-          {
-            id: 16,
-            name: "Milky Buble Gum",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
-            img: "img/milky-buble-gum.png",
-          },
-          {
-            id: 17,
-            name: "Original Tea",
-            price: { Small: 2000, Large: 5000 },
-            img: "img/tea original.png",
-          },
+          { id: 8, name: "Milky Coffe", price: { Small: 6000, Medium: 9000, Large: 12000 }, img: "img/milky-coffe.png" },
+          { id: 9, name: "Black Coffe", price: { Small: 5000, Medium: 7000, Large: 10000 }, img: "img/black-coffe.png" },
+          { id: 10, name: "Coffe Gula Aren", price: { Small: 6000, Medium: 9000, Large: 12000 }, img: "img/coffe-gula-aren.png" },
+          { id: 11, name: "Matcha Tjih", price: { Small: 7000, Medium: 10000, Large: 13000 }, img: "img/matcha-tjih.png" },
+          { id: 12, name: "Choco BengBeng", price: { Small: 8000, Medium: 11000, Large: 14000 }, img: "img/benbeng.png" },
+          { id: 13, name: "Milo Ice", price: { Small: 6000, Medium: 9000, Large: 12000 }, img: "img/milo-ice.png" },
+          { id: 14, name: "Milky Strawberry", price: { Small: 6000, Medium: 9000, Large: 12000 }, img: "img/strawberry.png" },
+          { id: 15, name: "Milky Taro", price: { Small: 6000, Medium: 9000, Large: 12000 }, img: "img/milky-taro.png" },
+          { id: 16, name: "Milky Buble Gum", price: { Small: 6000, Medium: 9000, Large: 12000 }, img: "img/milky-buble-gum.png" },
+          { id: 17, name: "Original Tea", price: { Small: 2000, Large: 5000 }, img: "img/tea original.png" },
         ],
         topingMakanan: [
-          {
-            id: 18,
-            name: "Bakso",
-            price: { Small: 1000, Large: 5000 },
-            img: "img/bakso1.png",
-          },
-          {
-            id: 19,
-            name: "Pangyam",
-            price: { Small: 1000 },
-            img: "img/pangyam.png",
-          },
-          {
-            id: 20,
-            name: "Telor Ceplok/Dadar",
-            price: { Small: 3000 },
-            img: "img/telor.png",
-          },
+          { id: 18, name: "Bakso", price: { Small: 1000, Large: 5000 }, img: "img/bakso1.png" },
+          { id: 19, name: "Pangyam", price: { Small: 1000 }, img: "img/pangyam.png" },
+          { id: 20, name: "Telor Ceplok/Dadar", price: { Small: 3000 }, img: "img/telor.png" },
         ],
         topingMinuman: [
-          {
-            id: 21,
-            name: "Cincau",
-            price: { Small: 1000 },
-            img: "img/jelly.png",
-          },
-          {
-            id: 22,
-            name: "Boba",
-            price: { Small: 1000 },
-            img: "img/boba.png",
-          },
+          { id: 21, name: "Cincau", price: { Small: 1000 }, img: "img/jelly.png" },
+          { id: 22, name: "Boba", price: { Small: 1000 }, img: "img/boba.png" },
         ],
       };
 
       let cart = [];
+      let promoCode = "";
+      let promoDiscount = 0;
+      let promoUsed = false;
 
+      // Cek localStorage untuk promo
+      if (localStorage.getItem("ngaleueut_promo_used") === "1") {
+        promoUsed = true;
+      }
+
+      // Render produk
       function renderProducts() {
         for (let category in products) {
           const container = document.getElementById(category);
           products[category].forEach((p) => {
-        const div = document.createElement("div");
-        div.className = "product";
-        let options = "";
-        for (let variant in p.price) {
-          options += `<option value="${variant}">${variant} - Rp${p.price[
-            variant
-          ].toLocaleString("id-ID")}</option>`;
-        }
-        // Tambahkan select level jika kategori makanan
-        let levelSelect = "";
-        if (category === "makanan") {
-          levelSelect = `
-            <select id="level-${p.id}">
-            <option value="1">Level 1</option>
-            <option value="2">Level 2</option>
-            <option value="3">Level 3</option>
-            <option value="4">Level 4 (+Rp1.000)</option>
-            <option value="5">Level 5 (+Rp1.000)</option>
-            </select>
-          `;
-        }
-        div.innerHTML = `
-          <img src="${p.img}" alt="${p.name}">
-          <h3>${p.name}</h3>
-          <select id="variant-${p.id}">${options}</select>
-          ${levelSelect}
-          <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
-        `;
-        container.appendChild(div);
+            const div = document.createElement("div");
+            div.className = "product";
+            let options = "";
+            for (let variant in p.price) {
+              options += `<option value="${variant}">${variant} - Rp${p.price[variant].toLocaleString("id-ID")}</option>`;
+            }
+            // Tambahkan select level jika kategori makanan
+            let levelSelect = "";
+            if (category === "makanan") {
+              levelSelect = `
+                <select id="level-${p.id}">
+                <option value="1">Level 1</option>
+                <option value="2">Level 2</option>
+                <option value="3">Level 3</option>
+                <option value="4">Level 4 (+Rp1.000)</option>
+                <option value="5">Level 5 (+Rp1.000)</option>
+                </select>
+              `;
+            }
+            div.innerHTML = `
+              <img src="${p.img}" alt="${p.name}">
+              <h3>${p.name}</h3>
+              <select id="variant-${p.id}">${options}</select>
+              ${levelSelect}
+              <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
+            `;
+            container.appendChild(div);
           });
         }
       }
@@ -564,15 +461,15 @@
         if (category === "makanan") {
           level = document.getElementById(`level-${id}`).value;
           if (level === "4" || level === "5") {
-        price += 1000;
+            price += 1000;
           }
         }
         // Cari item di cart dengan id, variant, dan level (jika ada)
         const existing = cart.find(
           (item) =>
-        item.id === id &&
-        item.variant === variant &&
-        (category !== "makanan" || item.level === level)
+            item.id === id &&
+            item.variant === variant &&
+            (category !== "makanan" || item.level === level)
         );
         if (existing) {
           existing.qty++;
@@ -589,29 +486,81 @@
         renderCart();
       }
 
+      // Promo input & info
+      function renderPromoInput() {
+        let cartDiv = document.querySelector(".cart");
+        let promoDiv = document.createElement("div");
+        promoDiv.style.margin = "15px 0";
+        promoDiv.innerHTML = `
+          <input type="text" id="promo-input" placeholder="Kode Promo" style="padding:7px 10px;border-radius:6px;border:1px solid #ccc;width:140px;" ${promoUsed ? "disabled" : ""}>
+          <button class="btn" id="promo-btn" style="margin-left:8px;background:#388e3c;color:#fff;" ${promoUsed ? "disabled" : ""}>Pakai</button>
+          <span id="promo-info" style="margin-left:10px;color:#388e3c;font-weight:bold;"></span>
+          <div id="promo-used-msg" style="color:#e53935;font-size:13px;margin-top:5px;${promoUsed ? "" : "display:none;"}">
+            Kode Promo anda sudah terpakai.
+          </div>
+        `;
+        // Sisipkan sebelum maps
+        let mapDiv = document.getElementById("map");
+        cartDiv.insertBefore(promoDiv, mapDiv);
+
+        if (!promoUsed) {
+          document.getElementById("promo-btn").onclick = function () {
+            const val = document.getElementById("promo-input").value.trim().toUpperCase();
+            if (val === "NGOPINYALSE" || val === "NGOPINYALSE") {
+              promoCode = "NGOPINYALSE";
+              localStorage.setItem("ngaleueut_promo_used", "1");
+              promoUsed = true;
+              document.getElementById("promo-input").disabled = true;
+              document.getElementById("promo-btn").disabled = true;
+              document.getElementById("promo-used-msg").style.display = "";
+              renderCart();
+            } else {
+              promoCode = "";
+              promoDiscount = 0;
+              document.getElementById("promo-info").textContent = "Kode tidak valid";
+              setTimeout(() => {
+                document.getElementById("promo-info").textContent = "";
+              }, 1500);
+              renderCart();
+            }
+          };
+        }
+      }
+
       function renderCart() {
         let cartList = document.getElementById("cart-items");
         let subtotalEl = document.getElementById("subtotal");
         let ongkirEl = document.getElementById("ongkir");
         let totalEl = document.getElementById("total");
+        let promoInfo = document.getElementById("promo-info");
         cartList.innerHTML = "";
         let subtotal = 0;
         cart.forEach((item, idx) => {
           let levelText = "";
           if (item.level) {
-        levelText = ` [Level ${item.level}]`;
+            levelText = ` [Level ${item.level}]`;
           }
           let li = document.createElement("li");
           li.innerHTML = `
-        <span>${item.name}${levelText} [${item.variant}] (x${item.qty}) = Rp${(item.price * item.qty).toLocaleString("id-ID")}</span>
-        <button onclick="removeFromCart(${idx})" style="background:none;border:none;color:#e53935;font-size:18px;cursor:pointer;float:right;" title="Hapus item">&times;</button>
+            <span>${item.name}${levelText} [${item.variant}] (x${item.qty}) = Rp${(item.price * item.qty).toLocaleString("id-ID")}</span>
+            <button onclick="removeFromCart(${idx})" style="background:none;border:none;color:#e53935;font-size:18px;cursor:pointer;float:right;" title="Hapus item">&times;</button>
           `;
           cartList.appendChild(li);
           subtotal += item.price * item.qty;
         });
+
+        // Promo logic
+        promoDiscount = 0;
+        if (promoUsed && subtotal > 20000) {
+          promoDiscount = Math.floor(subtotal * 0.1);
+          if (promoInfo) promoInfo.textContent = `Promo 10% (-Rp${promoDiscount.toLocaleString("id-ID")})`;
+        } else {
+          if (promoInfo) promoInfo.textContent = "";
+        }
+
         subtotalEl.textContent = subtotal.toLocaleString("id-ID");
         ongkirEl.textContent = ongkir.toLocaleString("id-ID");
-        totalEl.textContent = (subtotal + ongkir).toLocaleString("id-ID");
+        totalEl.textContent = (subtotal - promoDiscount + ongkir).toLocaleString("id-ID");
       }
 
       // Variabel untuk menyimpan nama lokasi estimasi
@@ -634,11 +583,21 @@
           }) = Rp${(item.price * item.qty).toLocaleString("id-ID")}%0A`;
           subtotal += item.price * item.qty;
         });
+        // Promo logic
+        let promoMsg = "";
+        let promoDiscountMsg = "";
+        if (promoUsed && subtotal > 20000) {
+          promoDiscount = Math.floor(subtotal * 0.1);
+          promoMsg = `Kode Promo: NYALSE (10%)%0A`;
+          promoDiscountMsg = `Potongan: -Rp${promoDiscount.toLocaleString("id-ID")}%0A`;
+        } else {
+          promoDiscount = 0;
+        }
         message += `Subtotal: Rp${subtotal.toLocaleString("id-ID")}%0A`;
-        message += `Ongkos Kirim (${jarakKm} km): Rp${ongkir.toLocaleString(
-          "id-ID"
-        )}%0A`;
-        message += `Total: Rp${(subtotal + ongkir).toLocaleString("id-ID")}%0A`;
+        if (promoMsg) message += promoMsg;
+        if (promoDiscountMsg) message += promoDiscountMsg;
+        message += `Ongkos Kirim (${jarakKm} km): Rp${ongkir.toLocaleString("id-ID")}%0A`;
+        message += `Total: Rp${(subtotal - promoDiscount + ongkir).toLocaleString("id-ID")}%0A`;
         if (estimatedLocation) {
           message += `Lokasi: ${estimatedLocation}%0A`;
         }
@@ -647,210 +606,227 @@
       }
 
       // Cetak Struk/Nota PNG
-    function printNota() {
-      if (cart.length === 0) {
-        alert("Keranjang masih kosong!");
-        return;
-      }
-      // Buat canvas 3:4 (misal 600x800 px)
-      const width = 600,
-        height = 900; // Tambah tinggi agar muat QRIS
-      const canvas = document.createElement("canvas");
-      canvas.width = width;
-      canvas.height = height;
-      const ctx = canvas.getContext("2d");
+      function printNota() {
+        if (cart.length === 0) {
+          alert("Keranjang masih kosong!");
+          return;
+        }
+        // Buat canvas 3:4 (misal 600x800 px)
+        const width = 600,
+          height = 900; // Tambah tinggi agar muat QRIS
+        const canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
 
-      // Background putih
-      ctx.fillStyle = "#fff";
-      ctx.fillRect(0, 0, width, height);
+        // Background putih
+        ctx.fillStyle = "#fff";
+        ctx.fillRect(0, 0, width, height);
 
-      // Fungsi menggambar isi nota setelah logo & QRIS siap
-      function drawNota(qrisImg) {
-        // Judul tengah atas
-        ctx.font = "bold 32px Poppins, Arial";
-        ctx.fillStyle = "#23251a";
-        ctx.textAlign = "center";
-        ctx.fillText("Ngaleueut", width / 2, 60);
+        // Fungsi menggambar isi nota setelah logo & QRIS siap
+        function drawNota(qrisImg) {
+          // Judul tengah atas
+          ctx.font = "bold 32px Poppins, Arial";
+          ctx.fillStyle = "#23251a";
+          ctx.textAlign = "center";
+          ctx.fillText("Ngaleueut", width / 2, 60);
 
-        // Alamat booth
-        ctx.font = "16px Poppins, Arial";
-        ctx.fillStyle = "#23251a";
-        ctx.fillText(
-        "Blok Sukamaju, Desa Pasanggrahan, Kec. Maja",
-        width / 2,
-        90
-        );
+          // Alamat booth
+          ctx.font = "16px Poppins, Arial";
+          ctx.fillStyle = "#23251a";
+          ctx.fillText(
+            "Blok Sukamaju, Desa Pasanggrahan, Kec. Maja",
+            width / 2,
+            90
+          );
 
-        // Tanggal & jam
-        const now = new Date();
-        const tanggal = now.toLocaleDateString("id-ID", {
-        weekday: "long",
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        });
-        const jam = now.toLocaleTimeString("id-ID", {
-        hour: "2-digit",
-        minute: "2-digit",
-        });
-        ctx.font = "15px Poppins, Arial";
-        ctx.fillText(`${tanggal} ${jam}`, width / 2, 120);
+          // Tanggal & jam
+          const now = new Date();
+          const tanggal = now.toLocaleDateString("id-ID", {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
+          const jam = now.toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          ctx.font = "15px Poppins, Arial";
+          ctx.fillText(`${tanggal} ${jam}`, width / 2, 120);
 
-        // Garis pemisah
-        ctx.strokeStyle = "#23251a";
-        ctx.beginPath();
-        ctx.moveTo(40, 140);
-        ctx.lineTo(width - 40, 140);
-        ctx.stroke();
+          // Garis pemisah
+          ctx.strokeStyle = "#23251a";
+          ctx.beginPath();
+          ctx.moveTo(40, 140);
+          ctx.lineTo(width - 40, 140);
+          ctx.stroke();
 
-        // Cart items
-        ctx.font = "16px Poppins, Arial";
-        ctx.fillStyle = "#23251a";
-        ctx.textAlign = "left";
-        let y = 170;
-        let subtotal = 0;
-        cart.forEach((item) => {
-        let levelText = item.level ? ` [Level ${item.level}]` : "";
-        let line = `${item.name}${levelText} [${item.variant}] x${item.qty}`;
-        let price = `Rp${(item.price * item.qty).toLocaleString("id-ID")}`;
-        ctx.fillText(line, 50, y);
-        ctx.textAlign = "right";
-        ctx.fillText(price, width - 50, y);
-        ctx.textAlign = "left";
-        y += 28;
-        subtotal += item.price * item.qty;
-        });
+          // Cart items
+          ctx.font = "16px Poppins, Arial";
+          ctx.fillStyle = "#23251a";
+          ctx.textAlign = "left";
+          let y = 170;
+          let subtotal = 0;
+          cart.forEach((item) => {
+            let levelText = item.level ? ` [Level ${item.level}]` : "";
+            let line = `${item.name}${levelText} [${item.variant}] x${item.qty}`;
+            let price = `Rp${(item.price * item.qty).toLocaleString("id-ID")}`;
+            ctx.fillText(line, 50, y);
+            ctx.textAlign = "right";
+            ctx.fillText(price, width - 50, y);
+            ctx.textAlign = "left";
+            y += 28;
+            subtotal += item.price * item.qty;
+          });
 
-        // Garis subtotal
-        ctx.strokeStyle = "#23251a";
-        ctx.beginPath();
-        ctx.moveTo(40, y + 10);
-        ctx.lineTo(width - 40, y + 10);
-        ctx.stroke();
+          // Garis subtotal
+          ctx.strokeStyle = "#23251a";
+          ctx.beginPath();
+          ctx.moveTo(40, y + 10);
+          ctx.lineTo(width - 40, y + 10);
+          ctx.stroke();
 
-        // Subtotal, ongkir, total
-        y += 40;
-        ctx.font = "bold 17px Poppins, Arial";
-        ctx.fillText("Subtotal", 50, y);
-        ctx.textAlign = "right";
-        ctx.fillText(`Rp${subtotal.toLocaleString("id-ID")}`, width - 50, y);
-        ctx.textAlign = "left";
-        y += 28;
-        ctx.font = "17px Poppins, Arial";
-        // Tampilkan ongkir beserta jarak
-        ctx.fillText(`Ongkos Kirim (${jarakKm} km)`, 50, y);
-        ctx.textAlign = "right";
-        ctx.fillText(`Rp${ongkir.toLocaleString("id-ID")}`, width - 50, y);
-        ctx.textAlign = "left";
-        y += 28;
-        ctx.font = "bold 19px Poppins, Arial";
-        ctx.fillText("Total", 50, y);
-        ctx.textAlign = "right";
-        ctx.fillText(
-        `Rp${(subtotal + ongkir).toLocaleString("id-ID")}`,
-        width - 50,
-        y
-        );
-        ctx.textAlign = "left";
+          // Subtotal, promo, ongkir, total
+          y += 40;
+          ctx.font = "bold 17px Poppins, Arial";
+          ctx.fillText("Subtotal", 50, y);
+          ctx.textAlign = "right";
+          ctx.fillText(`Rp${subtotal.toLocaleString("id-ID")}`, width - 50, y);
+          ctx.textAlign = "left";
+          y += 28;
 
-        // Tampilkan nama lokasi estimasi jika ada
-        if (estimatedLocation) {
-        ctx.font = "16px Poppins, Arial";
-        ctx.textAlign = "center";
-        ctx.fillText(`Lokasi: ${estimatedLocation}`, width / 2, y + 40);
+          // Promo
+          let promoDisc = 0;
+          if (promoUsed && subtotal > 20000) {
+            promoDisc = Math.floor(subtotal * 0.1);
+            ctx.font = "17px Poppins, Arial";
+            ctx.fillStyle = "#388e3c";
+            ctx.fillText("Promo NYALSE (10%)", 50, y);
+            ctx.textAlign = "right";
+            ctx.fillText(`-Rp${promoDisc.toLocaleString("id-ID")}`, width - 50, y);
+            ctx.textAlign = "left";
+            y += 28;
+            ctx.fillStyle = "#23251a";
+          }
+
+          ctx.font = "17px Poppins, Arial";
+          // Tampilkan ongkir beserta jarak
+          ctx.fillText(`Ongkos Kirim (${jarakKm} km)`, 50, y);
+          ctx.textAlign = "right";
+          ctx.fillText(`Rp${ongkir.toLocaleString("id-ID")}`, width - 50, y);
+          ctx.textAlign = "left";
+          y += 28;
+          ctx.font = "bold 19px Poppins, Arial";
+          ctx.fillText("Total", 50, y);
+          ctx.textAlign = "right";
+          ctx.fillText(
+            `Rp${(subtotal - promoDisc + ongkir).toLocaleString("id-ID")}`,
+            width - 50,
+            y
+          );
+          ctx.textAlign = "left";
+
+          // Tampilkan nama lokasi estimasi jika ada
+          if (estimatedLocation) {
+            ctx.font = "16px Poppins, Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(`Lokasi: ${estimatedLocation}`, width / 2, y + 40);
+          }
+
+          // QRIS di tengah
+          if (qrisImg) {
+            // Ukuran QRIS 220x220 px, posisi tengah
+            const qrisSize = 220;
+            const qrisX = (width - qrisSize) / 2;
+            const qrisY = y + 70;
+            ctx.drawImage(qrisImg, qrisX, qrisY, qrisSize, qrisSize);
+
+            // Label QRIS
+            ctx.font = "bold 18px Poppins, Arial";
+            ctx.fillStyle = "#23251a";
+            ctx.textAlign = "center";
+            ctx.fillText("Scan QRIS untuk pembayaran", width / 2, qrisY + qrisSize + 30);
+
+            y = qrisY + qrisSize + 50;
+          } else {
+            y = y + 100;
+          }
+
+          // Ucapan terima kasih
+          ctx.font = "italic 17px Poppins, Arial";
+          ctx.fillStyle = "#23251a";
+          ctx.textAlign = "center";
+          ctx.fillText("Terima kasih atas pesanan Anda!", width / 2, y + 30);
+
+          // Hormat kami pojok kanan bawah
+          ctx.font = "15px Poppins, Arial";
+          ctx.textAlign = "right";
+          ctx.fillText("Hormat kami,", width - 40, height - 60);
+          ctx.font = "bold 17px Poppins, Arial";
+          ctx.fillText("Ngaleueut", width - 40, height - 35);
+
+          // Download PNG
+          const notaImg = canvas.toDataURL("image/png");
+          const link = document.createElement("a");
+          link.href = notaImg;
+          link.download = "nota-ngaleueut.png";
+          link.click();
         }
 
-        // QRIS di tengah
-        if (qrisImg) {
-        // Ukuran QRIS 220x220 px, posisi tengah
-        const qrisSize = 220;
-        const qrisX = (width - qrisSize) / 2;
-        const qrisY = y + 70;
-        ctx.drawImage(qrisImg, qrisX, qrisY, qrisSize, qrisSize);
+        // Logo kiri atas (gunakan crossOrigin agar bisa tampil jika file logo support CORS)
+        const logo = new window.Image();
+        logo.crossOrigin = "anonymous";
+        logo.src = "img/logo.png";
+        logo.onload = function () {
+          ctx.drawImage(logo, 30, 30, 70, 70);
+          // Setelah logo, load QRIS
+          loadQrisAndDraw();
+        };
+        logo.onerror = function () {
+          // Jika gagal load logo, tetap lanjutkan tanpa logo
+          loadQrisAndDraw();
+        };
 
-        // Label QRIS
-        ctx.font = "bold 18px Poppins, Arial";
-        ctx.fillStyle = "#23251a";
-        ctx.textAlign = "center";
-        ctx.fillText("Scan QRIS untuk pembayaran", width / 2, qrisY + qrisSize + 30);
-
-        y = qrisY + qrisSize + 50;
-        } else {
-        y = y + 100;
+        function loadQrisAndDraw() {
+          const qrisImg = new window.Image();
+          qrisImg.crossOrigin = "anonymous";
+          qrisImg.src = "img/qris.jpg";
+          qrisImg.onload = function () {
+            drawNota(qrisImg);
+          };
+          qrisImg.onerror = function () {
+            // Jika gagal load QRIS, tetap lanjutkan tanpa QRIS
+            drawNota(null);
+          };
         }
-
-        // Ucapan terima kasih
-        ctx.font = "italic 17px Poppins, Arial";
-        ctx.fillStyle = "#23251a";
-        ctx.textAlign = "center";
-        ctx.fillText("Terima kasih atas pesanan Anda!", width / 2, y + 30);
-
-        // Hormat kami pojok kanan bawah
-        ctx.font = "15px Poppins, Arial";
-        ctx.textAlign = "right";
-        ctx.fillText("Hormat kami,", width - 40, height - 60);
-        ctx.font = "bold 17px Poppins, Arial";
-        ctx.fillText("Ngaleueut", width - 40, height - 35);
-
-        // Download PNG
-        const notaImg = canvas.toDataURL("image/png");
-        const link = document.createElement("a");
-        link.href = notaImg;
-        link.download = "nota-ngaleueut.png";
-        link.click();
       }
 
-      // Logo kiri atas (gunakan crossOrigin agar bisa tampil jika file logo support CORS)
-      const logo = new window.Image();
-      logo.crossOrigin = "anonymous";
-      logo.src = "img/logo.png";
-      logo.onload = function () {
-        ctx.drawImage(logo, 30, 30, 70, 70);
-        // Setelah logo, load QRIS
-        loadQrisAndDraw();
-      };
-      logo.onerror = function () {
-        // Jika gagal load logo, tetap lanjutkan tanpa logo
-        loadQrisAndDraw();
-      };
-
-      function loadQrisAndDraw() {
-        const qrisImg = new window.Image();
-        qrisImg.crossOrigin = "anonymous";
-        qrisImg.src = "img/qris.jpg";
-        qrisImg.onload = function () {
-        drawNota(qrisImg);
-        };
-        qrisImg.onerror = function () {
-        // Jika gagal load QRIS, tetap lanjutkan tanpa QRIS
-        drawNota(null);
-        };
-      }
-    }
-
-      // Tambahkan tombol cetak nota di bawah tombol WA
-    window.addEventListener("DOMContentLoaded", function () {
-      renderProducts();
-      // Tambah tombol cetak nota
-      const btn = document.createElement("button");
-      btn.className = "btn";
-      btn.innerHTML = '<i class="fa fa-print" style="margin-right:6px;"></i>Cetak Nota';
-      btn.style.marginLeft = "10px";
-      btn.style.background = "#ff9800";
-      btn.style.color = "#fff";
-      btn.style.border = "2px solid #ff9800";
-      btn.onmouseover = function () {
-        btn.style.background = "#e65100";
-        btn.style.borderColor = "#e65100";
-      };
-      btn.onmouseout = function () {
+      // Tambahkan tombol cetak nota & promo input di bawah tombol WA
+      window.addEventListener("DOMContentLoaded", function () {
+        renderProducts();
+        // Tambah input promo
+        renderPromoInput();
+        // Tambah tombol cetak nota
+        const btn = document.createElement("button");
+        btn.className = "btn";
+        btn.innerHTML = '<i class="fa fa-print" style="margin-right:6px;"></i>Cetak Nota';
+        btn.style.marginLeft = "10px";
         btn.style.background = "#ff9800";
-        btn.style.borderColor = "#ff9800";
-      };
-      btn.onclick = printNota;
-      const cartDiv = document.querySelector(".cart");
-      cartDiv.appendChild(btn);
-    });
+        btn.style.color = "#fff";
+        btn.style.border = "2px solid #ff9800";
+        btn.onmouseover = function () {
+          btn.style.background = "#e65100";
+          btn.style.borderColor = "#e65100";
+        };
+        btn.onmouseout = function () {
+          btn.style.background = "#ff9800";
+          btn.style.borderColor = "#ff9800";
+        };
+        btn.onclick = printNota;
+        const cartDiv = document.querySelector(".cart");
+        cartDiv.appendChild(btn);
+      });
 
       // Map
       const map = L.map("map").setView(booth, 13);
@@ -877,9 +853,9 @@
         const a =
           Math.sin(dLat / 2) * Math.sin(dLat / 2) +
           Math.cos(toRad(lat1)) *
-        Math.cos(toRad(lat2)) *
-        Math.sin(dLng / 2) *
-        Math.sin(dLng / 2);
+            Math.cos(toRad(lat2)) *
+            Math.sin(dLng / 2) *
+            Math.sin(dLng / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
       }
@@ -918,31 +894,31 @@
         fetch(url)
           .then((res) => res.json())
           .then((data) => {
-        if (data.routes && data.routes.length > 0) {
-          const jarakMeter = data.routes[0].distance;
-          jarakKm = (jarakMeter / 1000).toFixed(2);
+            if (data.routes && data.routes.length > 0) {
+              const jarakMeter = data.routes[0].distance;
+              jarakKm = (jarakMeter / 1000).toFixed(2);
 
-          // Hitung ongkir dengan tarif bertingkat
-          ongkir = hitungOngkir(Number(jarakKm));
+              // Hitung ongkir dengan tarif bertingkat
+              ongkir = hitungOngkir(Number(jarakKm));
 
-          // Estimasi nama wilayah
-          estimatedLocation = estimasiWilayah(pembeli[0], pembeli[1]);
+              // Estimasi nama wilayah
+              estimatedLocation = estimasiWilayah(pembeli[0], pembeli[1]);
 
-          document.getElementById(
-            "hasil"
-          ).innerHTML = `Jarak: <b>${jarakKm} km</b><br>Ongkos Kirim: <b>Rp ${ongkir.toLocaleString()}</b><br>Wilayah: <b>${estimatedLocation}</b>`;
-          renderCart();
-        } else {
-          document.getElementById("hasil").innerText =
-            "Gagal menghitung jarak.";
-          estimatedLocation = "";
-        }
+              document.getElementById(
+                "hasil"
+              ).innerHTML = `Jarak: <b>${jarakKm} km</b><br>Ongkos Kirim: <b>Rp ${ongkir.toLocaleString()}</b><br>Wilayah: <b>${estimatedLocation}</b>`;
+              renderCart();
+            } else {
+              document.getElementById("hasil").innerText =
+                "Gagal menghitung jarak.";
+              estimatedLocation = "";
+            }
           })
           .catch((err) => {
-        console.error(err);
-        document.getElementById("hasil").innerText =
-          "Error mengambil data OSRM.";
-        estimatedLocation = "";
+            console.error(err);
+            document.getElementById("hasil").innerText =
+              "Error mengambil data OSRM.";
+            estimatedLocation = "";
           });
       });
     </script>
