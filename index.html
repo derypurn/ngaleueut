@@ -309,7 +309,7 @@
   </head>
   <body>
     <header>
-      <img src="img/icon.png" width="50px" height="auto" alt="" />
+      <img src="img/Pattern-White.png" width="50px" height="auto" alt="" />
       <h1>Ngaleueut</h1>
       <nav>
         <ul>
@@ -375,48 +375,206 @@
 
       const products = {
         makanan: [
-          { id: 1, name: "Mie Level", price: { Small: 5000, Large: 8000 }, img: "img/miejontor.png" },
-          { id: 2, name: "Pangsit Ayam", price: { Small: 5000, Large: 8000 }, img: "img/pangyam.png" },
-          { id: 3, name: "Bakso Mekar Pedas", price: { Small: 5000, Large: 10000 }, img: "img/bakso-mekar.png" },
-          { id: 4, name: "Sosis Mekar Pedas", price: { Small: 5000, Large: 10000 }, img: "img/sosis.png" },
-          { id: 5, name: "Basreng Chili Oil", price: { Small: 5000, Large: 10000 }, img: "img/basreng.png   " },
-          { id: 6, name: "Cimol Bojot", price: { Small: 5000, Large: 10000 }, img: "img/cimol.png" },
-          { id: 7, name: "Cemilan Mix", price: { Small: 5000, Large: 10000 }, img: "img/cemilan.png" },
+          {
+            id: 1,
+            name: "Mie Level",
+            price: { Small: 5000, Large: 8000 },
+            img: "img/miejontor.png",
+          },
+          {
+            id: 2,
+            name: "Pangsit Ayam",
+            price: { Small: 5000, Large: 8000 },
+            img: "img/pangyam.png",
+          },
+          {
+            id: 3,
+            name: "Bakso Mekar Pedas",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/bakso-mekar.png",
+          },
+          {
+            id: 4,
+            name: "Sosis Mekar Pedas",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/sosis.png",
+          },
+          {
+            id: 5,
+            name: "Basreng Chili Oil",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/basreng.png   ",
+          },
+          {
+            id: 6,
+            name: "Cimol Bojot",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/cimol.png",
+          },
+          {
+            id: 7,
+            name: "Cemilan Mix",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/cemilan.png",
+          },
         ],
         minuman: [
-          { id: 8, name: "Milky Coffe", price: { Small: 6000, Medium: 9000, Large: 12000 }, img: "img/milky-coffe.png" },
-          { id: 9, name: "Black Coffe", price: { Small: 5000, Medium: 7000, Large: 10000 }, img: "img/black-coffe.png" },
-          { id: 10, name: "Coffe Gula Aren", price: { Small: 6000, Medium: 9000, Large: 12000 }, img: "img/coffe-gula-aren.png" },
-          { id: 11, name: "Matcha Tjih", price: { Small: 7000, Medium: 10000, Large: 13000 }, img: "img/matcha-tjih.png" },
-          { id: 12, name: "Choco BengBeng", price: { Small: 8000, Medium: 11000, Large: 14000 }, img: "img/benbeng.png" },
-          { id: 13, name: "Milo Ice", price: { Small: 6000, Medium: 9000, Large: 12000 }, img: "img/milo-ice.png" },
-          { id: 14, name: "Milky Strawberry", price: { Small: 6000, Medium: 9000, Large: 12000 }, img: "img/strawberry.png" },
-          { id: 15, name: "Milky Taro", price: { Small: 6000, Medium: 9000, Large: 12000 }, img: "img/milky-taro.png" },
-          { id: 16, name: "Milky Buble Gum", price: { Small: 6000, Medium: 9000, Large: 12000 }, img: "img/milky-buble-gum.png" },
-          { id: 17, name: "Original Tea", price: { Small: 2000, Large: 5000 }, img: "img/tea original.png" },
+          {
+            id: 8,
+            name: "Milky Coffe",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/milky-coffe.png",
+          },
+          {
+            id: 9,
+            name: "Black Coffe",
+            price: { Small: 5000, Medium: 7000, Large: 10000 },
+            img: "img/black-coffe.png",
+          },
+          {
+            id: 10,
+            name: "Coffe Gula Aren",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/coffe-gula-aren.png",
+          },
+          {
+            id: 11,
+            name: "Matcha Tjih",
+            price: { Small: 7000, Medium: 10000, Large: 13000 },
+            img: "img/matcha-tjih.png",
+          },
+          {
+            id: 12,
+            name: "Choco BengBeng",
+            price: { Small: 8000, Medium: 11000, Large: 14000 },
+            img: "img/benbeng.png",
+          },
+          {
+            id: 13,
+            name: "Milo Ice",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/milo-ice.png",
+          },
+          {
+            id: 14,
+            name: "Milky Strawberry",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/strawberry.png",
+          },
+          {
+            id: 15,
+            name: "Milky Taro",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/milky-taro.png",
+          },
+          {
+            id: 16,
+            name: "Milky Buble Gum",
+            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            img: "img/milky-buble-gum.png",
+          },
+          {
+            id: 17,
+            name: "Original Tea",
+            price: { Small: 2000, Large: 5000 },
+            img: "img/tea original.png",
+          },
         ],
         topingMakanan: [
-          { id: 18, name: "Bakso", price: { Small: 1000, Large: 5000 }, img: "img/bakso1.png" },
-          { id: 19, name: "Pangyam", price: { Small: 1000 }, img: "img/pangyam.png" },
-          { id: 20, name: "Telor Ceplok/Dadar", price: { Small: 3000 }, img: "img/telor.png" },
+          {
+            id: 18,
+            name: "Bakso",
+            price: { Small: 1000, Large: 5000 },
+            img: "img/bakso1.png",
+          },
+          {
+            id: 19,
+            name: "Pangyam",
+            price: { Small: 1000 },
+            img: "img/pangyam.png",
+          },
+          {
+            id: 20,
+            name: "Telor Ceplok/Dadar",
+            price: { Small: 3000 },
+            img: "img/telor.png",
+          },
         ],
         topingMinuman: [
-          { id: 21, name: "Cincau", price: { Small: 1000 }, img: "img/jelly.png" },
-          { id: 22, name: "Boba", price: { Small: 1000 }, img: "img/boba.png" },
+          {
+            id: 21,
+            name: "Cincau",
+            price: { Small: 1000 },
+            img: "img/jelly.png",
+          },
+          {
+            id: 22,
+            name: "Boba",
+            price: { Small: 1000 },
+            img: "img/boba.png",
+          },
         ],
       };
 
       let cart = [];
-      let promoCode = "";
+      let promoUsed = localStorage.getItem("ngaleueut_promo_used") === "1";
+      let promoApplied = false;
       let promoDiscount = 0;
-      let promoUsed = false;
 
-      // Cek localStorage untuk promo
-      if (localStorage.getItem("ngaleueut_promo_used") === "1") {
-        promoUsed = true;
+      // Tambahkan elemen promo form setelah DOMContentLoaded
+      function renderPromoForm() {
+        const cartDiv = document.querySelector(".cart");
+        // Cek jika sudah ada, jangan tambah dua kali
+        if (document.getElementById("promo-form")) return;
+        const promoDiv = document.createElement("div");
+        promoDiv.id = "promo-form";
+        promoDiv.style = "margin:18px 0 10px 0;text-align:center;";
+        promoDiv.innerHTML = `
+          <input type="text" id="promo-code" placeholder="Masukkan kode promo" style="padding:7px 10px;border-radius:6px;border:1px solid #ccc;width:60%;max-width:220px;">
+          <button class="btn" id="apply-promo" style="margin-left:8px;background:#ff9800;color:#fff;">Gunakan</button>
+          <div id="promo-info" style="margin-top:7px;font-size:15px;min-height:22px;"></div>
+        `;
+        // Sisipkan sebelum map
+        const mapDiv = document.getElementById("map");
+        cartDiv.insertBefore(promoDiv, mapDiv);
+        document.getElementById("apply-promo").onclick = applyPromo;
       }
 
-      // Render produk
+      function applyPromo() {
+        const code = document.getElementById("promo-code").value.trim().toUpperCase();
+        const info = document.getElementById("promo-info");
+        if (code === "NGOPINYALSE") {
+          if (promoUsed) {
+            info.innerHTML = `<span style="color:#e53935;">Mohon maaf, kode promo tersebut sudah dipakai.</span>`;
+            promoApplied = false;
+            promoDiscount = 0;
+          } else {
+            // Cek subtotal
+            let subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+            if (subtotal > 20000) {
+              promoApplied = true;
+              promoDiscount = Math.round(subtotal * 0.1);
+              info.innerHTML = `<span style="color:#388e3c;">Promo launching website Ngaleueut! Berlaku sampai tanggal 25 September 2025. Potongan 10% sudah diterapkan.</span>`;
+              localStorage.setItem("ngaleueut_promo_used", "1");
+              promoUsed = true;
+            } else {
+              info.innerHTML = `<span style="color:#e53935;">Minimal belanja Rp20.000 untuk menggunakan promo ini.</span>`;
+              promoApplied = false;
+              promoDiscount = 0;
+            }
+          }
+        } else if (code.length > 0) {
+          info.innerHTML = `<span style="color:#e53935;">Kode tersebut tidak dapat digunakan.</span>`;
+          promoApplied = false;
+          promoDiscount = 0;
+        } else {
+          info.innerHTML = "";
+          promoApplied = false;
+          promoDiscount = 0;
+        }
+        renderCart();
+      }
+
       function renderProducts() {
         for (let category in products) {
           const container = document.getElementById(category);
@@ -425,7 +583,9 @@
             div.className = "product";
             let options = "";
             for (let variant in p.price) {
-              options += `<option value="${variant}">${variant} - Rp${p.price[variant].toLocaleString("id-ID")}</option>`;
+              options += `<option value="${variant}">${variant} - Rp${p.price[
+                variant
+              ].toLocaleString("id-ID")}</option>`;
             }
             // Tambahkan select level jika kategori makanan
             let levelSelect = "";
@@ -486,53 +646,11 @@
         renderCart();
       }
 
-      // Promo input & info
-      function renderPromoInput() {
-        let cartDiv = document.querySelector(".cart");
-        let promoDiv = document.createElement("div");
-        promoDiv.style.margin = "15px 0";
-        promoDiv.innerHTML = `
-          <input type="text" id="promo-input" placeholder="Kode Promo" style="padding:7px 10px;border-radius:6px;border:1px solid #ccc;width:140px;" ${promoUsed ? "disabled" : ""}>
-          <button class="btn" id="promo-btn" style="margin-left:8px;background:#388e3c;color:#fff;" ${promoUsed ? "disabled" : ""}>Pakai</button>
-          <span id="promo-info" style="margin-left:10px;color:#388e3c;font-weight:bold;"></span>
-          <div id="promo-used-msg" style="color:#e53935;font-size:13px;margin-top:5px;${promoUsed ? "" : "display:none;"}">
-            Kode Promo anda sudah terpakai.
-          </div>
-        `;
-        // Sisipkan sebelum maps
-        let mapDiv = document.getElementById("map");
-        cartDiv.insertBefore(promoDiv, mapDiv);
-
-        if (!promoUsed) {
-          document.getElementById("promo-btn").onclick = function () {
-            const val = document.getElementById("promo-input").value.trim().toUpperCase();
-            if (val === "NGOPINYALSE" || val === "NGOPINYALSE") {
-              promoCode = "NGOPINYALSE";
-              localStorage.setItem("ngaleueut_promo_used", "1");
-              promoUsed = true;
-              document.getElementById("promo-input").disabled = true;
-              document.getElementById("promo-btn").disabled = true;
-              document.getElementById("promo-used-msg").style.display = "";
-              renderCart();
-            } else {
-              promoCode = "";
-              promoDiscount = 0;
-              document.getElementById("promo-info").textContent = "Kode tidak valid";
-              setTimeout(() => {
-                document.getElementById("promo-info").textContent = "";
-              }, 1500);
-              renderCart();
-            }
-          };
-        }
-      }
-
       function renderCart() {
         let cartList = document.getElementById("cart-items");
         let subtotalEl = document.getElementById("subtotal");
         let ongkirEl = document.getElementById("ongkir");
         let totalEl = document.getElementById("total");
-        let promoInfo = document.getElementById("promo-info");
         cartList.innerHTML = "";
         let subtotal = 0;
         cart.forEach((item, idx) => {
@@ -549,21 +667,34 @@
           subtotal += item.price * item.qty;
         });
 
-        // Promo logic
-        promoDiscount = 0;
-        if (promoUsed && subtotal > 20000) {
-          promoDiscount = Math.floor(subtotal * 0.1);
-          if (promoInfo) promoInfo.textContent = `Promo 10% (-Rp${promoDiscount.toLocaleString("id-ID")})`;
+        // Hitung promo
+        let discount = 0;
+        if (promoApplied && subtotal > 20000) {
+          discount = Math.round(subtotal * 0.1);
+          promoDiscount = discount;
         } else {
-          if (promoInfo) promoInfo.textContent = "";
+          promoDiscount = 0;
         }
 
+        // Tampilkan subtotal, diskon, ongkir, total
         subtotalEl.textContent = subtotal.toLocaleString("id-ID");
         ongkirEl.textContent = ongkir.toLocaleString("id-ID");
-        totalEl.textContent = (subtotal - promoDiscount + ongkir).toLocaleString("id-ID");
+        // Tambahkan baris diskon jika promo aktif
+        let promoRow = document.getElementById("promo-row");
+        if (discount > 0) {
+          if (!promoRow) {
+            promoRow = document.createElement("p");
+            promoRow.className = "total";
+            promoRow.id = "promo-row";
+            totalEl.parentNode.insertBefore(promoRow, totalEl);
+          }
+          promoRow.innerHTML = `Promo: -Rp<span id="promo-discount">${discount.toLocaleString("id-ID")}</span>`;
+        } else if (promoRow) {
+          promoRow.remove();
+        }
+        totalEl.textContent = (subtotal + ongkir - discount).toLocaleString("id-ID");
       }
 
-      // Variabel untuk menyimpan nama lokasi estimasi
       let estimatedLocation = "";
 
       function checkout() {
@@ -583,21 +714,15 @@
           }) = Rp${(item.price * item.qty).toLocaleString("id-ID")}%0A`;
           subtotal += item.price * item.qty;
         });
-        // Promo logic
-        let promoMsg = "";
-        let promoDiscountMsg = "";
-        if (promoUsed && subtotal > 20000) {
-          promoDiscount = Math.floor(subtotal * 0.1);
-          promoMsg = `Kode Promo: NYALSE (10%)%0A`;
-          promoDiscountMsg = `Potongan: -Rp${promoDiscount.toLocaleString("id-ID")}%0A`;
-        } else {
-          promoDiscount = 0;
-        }
+        let discount = promoApplied && subtotal > 20000 ? Math.round(subtotal * 0.1) : 0;
         message += `Subtotal: Rp${subtotal.toLocaleString("id-ID")}%0A`;
-        if (promoMsg) message += promoMsg;
-        if (promoDiscountMsg) message += promoDiscountMsg;
-        message += `Ongkos Kirim (${jarakKm} km): Rp${ongkir.toLocaleString("id-ID")}%0A`;
-        message += `Total: Rp${(subtotal - promoDiscount + ongkir).toLocaleString("id-ID")}%0A`;
+        if (discount > 0) {
+          message += `Promo: -Rp${discount.toLocaleString("id-ID")}%0A`;
+        }
+        message += `Ongkos Kirim (${jarakKm} km): Rp${ongkir.toLocaleString(
+          "id-ID"
+        )}%0A`;
+        message += `Total: Rp${(subtotal + ongkir - discount).toLocaleString("id-ID")}%0A`;
         if (estimatedLocation) {
           message += `Lokasi: ${estimatedLocation}%0A`;
         }
@@ -697,17 +822,16 @@
           y += 28;
 
           // Promo
-          let promoDisc = 0;
-          if (promoUsed && subtotal > 20000) {
-            promoDisc = Math.floor(subtotal * 0.1);
+          let discount = promoApplied && subtotal > 20000 ? Math.round(subtotal * 0.1) : 0;
+          if (discount > 0) {
             ctx.font = "17px Poppins, Arial";
-            ctx.fillStyle = "#388e3c";
-            ctx.fillText("Promo NYALSE (10%)", 50, y);
+            ctx.fillStyle = "#009688";
+            ctx.fillText("Promo", 50, y);
             ctx.textAlign = "right";
-            ctx.fillText(`-Rp${promoDisc.toLocaleString("id-ID")}`, width - 50, y);
+            ctx.fillText(`-Rp${discount.toLocaleString("id-ID")}`, width - 50, y);
             ctx.textAlign = "left";
-            y += 28;
             ctx.fillStyle = "#23251a";
+            y += 28;
           }
 
           ctx.font = "17px Poppins, Arial";
@@ -721,7 +845,7 @@
           ctx.fillText("Total", 50, y);
           ctx.textAlign = "right";
           ctx.fillText(
-            `Rp${(subtotal - promoDisc + ongkir).toLocaleString("id-ID")}`,
+            `Rp${(subtotal + ongkir - discount).toLocaleString("id-ID")}`,
             width - 50,
             y
           );
@@ -802,11 +926,10 @@
         }
       }
 
-      // Tambahkan tombol cetak nota & promo input di bawah tombol WA
+      // Tambahkan tombol cetak nota di bawah tombol WA
       window.addEventListener("DOMContentLoaded", function () {
         renderProducts();
-        // Tambah input promo
-        renderPromoInput();
+        renderPromoForm();
         // Tambah tombol cetak nota
         const btn = document.createElement("button");
         btn.className = "btn";
@@ -853,9 +976,9 @@
         const a =
           Math.sin(dLat / 2) * Math.sin(dLat / 2) +
           Math.cos(toRad(lat1)) *
-            Math.cos(toRad(lat2)) *
-            Math.sin(dLng / 2) *
-            Math.sin(dLng / 2);
+        Math.cos(toRad(lat2)) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return R * c;
       }
@@ -894,31 +1017,31 @@
         fetch(url)
           .then((res) => res.json())
           .then((data) => {
-            if (data.routes && data.routes.length > 0) {
-              const jarakMeter = data.routes[0].distance;
-              jarakKm = (jarakMeter / 1000).toFixed(2);
+        if (data.routes && data.routes.length > 0) {
+          const jarakMeter = data.routes[0].distance;
+          jarakKm = (jarakMeter / 1000).toFixed(2);
 
-              // Hitung ongkir dengan tarif bertingkat
-              ongkir = hitungOngkir(Number(jarakKm));
+          // Hitung ongkir dengan tarif bertingkat
+          ongkir = hitungOngkir(Number(jarakKm));
 
-              // Estimasi nama wilayah
-              estimatedLocation = estimasiWilayah(pembeli[0], pembeli[1]);
+          // Estimasi nama wilayah
+          estimatedLocation = estimasiWilayah(pembeli[0], pembeli[1]);
 
-              document.getElementById(
-                "hasil"
-              ).innerHTML = `Jarak: <b>${jarakKm} km</b><br>Ongkos Kirim: <b>Rp ${ongkir.toLocaleString()}</b><br>Wilayah: <b>${estimatedLocation}</b>`;
-              renderCart();
-            } else {
-              document.getElementById("hasil").innerText =
-                "Gagal menghitung jarak.";
-              estimatedLocation = "";
-            }
+          document.getElementById(
+            "hasil"
+          ).innerHTML = `Jarak: <b>${jarakKm} km</b><br>Ongkos Kirim: <b>Rp ${ongkir.toLocaleString()}</b><br>Wilayah: <b>${estimatedLocation}</b>`;
+          renderCart();
+        } else {
+          document.getElementById("hasil").innerText =
+            "Gagal menghitung jarak.";
+          estimatedLocation = "";
+        }
           })
           .catch((err) => {
-            console.error(err);
-            document.getElementById("hasil").innerText =
-              "Error mengambil data OSRM.";
-            estimatedLocation = "";
+        console.error(err);
+        document.getElementById("hasil").innerText =
+          "Error mengambil data OSRM.";
+        estimatedLocation = "";
           });
       });
     </script>
