@@ -309,7 +309,7 @@
   </head>
   <body>
     <header>
-      <img src="img/icon.png" width="50px" height="auto" alt="" />
+      <img src="img/Pattern-White.png" width="50px" height="auto" alt="" />
       <h1>Ngaleueut</h1>
       <nav>
         <ul>
@@ -956,27 +956,44 @@
           ctx.textAlign = "left";
           let y = 170 + yOffset;
           let subtotal = 0;
+          let maxWidth = width - 100; // Max width for text, leaving space for price
           cart.forEach((item) => {
-            let levelText = item.level ? ` [Level ${item.level}]` : "";
+            let levelText = item.level ? `Level ${item.level}` : "";
             let toppingsText = "";
             if (item.toppings && item.toppings.length > 0) {
               if (item.id === 1) {
-                toppingsText = ` Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
+                toppingsText = `Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
               } else {
-                toppingsText = ` Toppings: ${item.toppings.join(", ")}`;
+                toppingsText = `Toppings: ${item.toppings.join(", ")}`;
               }
             }
-            let sauceText = "";
-            if (item.sauce) {
-              sauceText = ` Sauce: ${item.sauce}`;
-            }
-            let line = `${item.name}${levelText}${toppingsText}${sauceText} [${item.variant}] x${item.qty}`;
+            let sauceText = item.sauce ? ` Sauce: ${item.sauce}` : "";
+            let qtyText = `x${item.qty}`;
+            let sizeText = `[${item.variant}]`;
+            // Build the line: name level size toppings sauce qty
+            let line = `${item.name} ${levelText} ${sizeText} ${toppingsText} ${sauceText} ${qtyText}`.trim();
             let price = `Rp${(item.price * item.qty).toLocaleString("id-ID")}`;
-            ctx.fillText(line, 50, y);
-            ctx.textAlign = "right";
-            ctx.fillText(price, width - 50, y);
-            ctx.textAlign = "left";
-            y += 28;
+            // Measure width
+            let metrics = ctx.measureText(line);
+            let lineWidth = metrics.width;
+            if (lineWidth > maxWidth) {
+              // Split: first line name, second line rest
+              let firstLine = item.name;
+              let rest = `${levelText} ${sizeText} ${toppingsText} ${sauceText} ${qtyText}`.trim();
+              ctx.fillText(firstLine, 50, y);
+              ctx.textAlign = "right";
+              ctx.fillText(price, width - 50, y);
+              ctx.textAlign = "left";
+              y += 28;
+              ctx.fillText(rest, 50, y);
+              y += 28;
+            } else {
+              ctx.fillText(line, 50, y);
+              ctx.textAlign = "right";
+              ctx.fillText(price, width - 50, y);
+              ctx.textAlign = "left";
+              y += 28;
+            }
             subtotal += item.price * item.qty;
           });
 
@@ -1069,7 +1086,7 @@
           const notaImg = canvas.toDataURL("image/png");
           const link = document.createElement("a");
           link.href = notaImg;
-          link.download = "nota-ngaleueut.png";
+          link.download = "Nota-Ngaleueut-" + nama + ". "+ tanggal + ".png";
           link.click();
         }
 
