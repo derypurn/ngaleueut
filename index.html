@@ -125,13 +125,6 @@
           },
           {
             id: 7,
-            name: "Cemilan Mix",
-            price: { Small: 5000, Large: 10000 },
-            img: "img/cemilan.png",
-            isSpicy: true,
-          },
-          {
-            id: 8,
             name: "Churros",
             price: { Small: 5000, Large: 10000 },
             img: "img/churros.png",
@@ -139,7 +132,7 @@
             isSpicy: false,
           },
           {
-            id: 9,
+            id: 8,
             name: "Minipao Goreng",
             price: { Small: 5000, Large: 10000 },
             img: "img/minipao.png",
@@ -148,77 +141,77 @@
         ],
         minuman: [
           {
-            id: 10,
+            id: 9,
             name: "Milky Coffe",
             price: { Small: 6000, Medium: 9000, Large: 12000 },
             img: "img/milky-coffe.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
-            id: 11,
+            id: 10,
             name: "Americano",
             price: { Small: 6000, Medium: 7000, Large: 10000 },
             img: "img/black-coffe.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
-            id: 12,
+            id: 11,
             name: "Coffe Gula Aren",
             price: { Small: 6000, Medium: 9000, Large: 12000 },
             img: "img/coffe-gula-aren.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
-            id: 13,
+            id: 12,
             name: "Matcha Tjih",
             price: { Small: 7000, Medium: 10000, Large: 13000 },
             img: "img/matcha-tjih.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
-            id: 14,
+            id: 13,
             name: "Thai Tea",
             price: { Small: 7000, Medium: 10000, Large: 13000 },
             img: "img/Thai-tea.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
-            id: 15,
+            id: 14,
             name: "Choco BengBeng",
             price: { Small: 8000, Medium: 11000, Large: 14000 },
             img: "img/benbeng.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
-            id: 16,
+            id: 15,
             name: "Milo Ice",
             price: { Small: 6000, Medium: 9000, Large: 12000 },
             img: "img/milo-ice.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
-            id: 17,
+            id: 16,
             name: "Milky Strawberry",
             price: { Small: 6000, Medium: 9000, Large: 12000 },
             img: "img/strawberry.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
-            id: 18,
+            id: 17,
             name: "Milky Taro",
             price: { Small: 6000, Medium: 9000, Large: 12000 },
             img: "img/milky-taro.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
-            id: 19,
+            id: 18,
             name: "Milky Buble Gum",
             price: { Small: 6000, Medium: 9000, Large: 12000 },
             img: "img/milky-buble-gum.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
-            id: 20,
+            id: 19,
             name: "Original Tea",
             price: { Small: 2000, Large: 5000 },
             img: "img/tea original.png",
@@ -330,12 +323,13 @@
               levelSelect = `
               <select id="level-${p.id}">
                 <option value="" disabled selected>Pilih level pedas</option>
-                <option value="0">Level 0</option>
+                <option value="0">Tanpa pedas</option>
                 <option value="1">Level 1</option>
                 <option value="2">Level 2</option>
                 <option value="3">Level 3</option>
                 <option value="4">Level 4 (+Rp1.000)</option>
                 <option value="5">Level 5 (+Rp1.000)</option>
+                <option value="6">Pedas dipisah (+Rp500)</option>
               </select>
               `;
             }
@@ -404,6 +398,9 @@
           }
           if (level === "4" || level === "5") {
             price += 1000;
+          }
+          if (level === "6") {
+            price += 500;
           }
         }
         // Ambil toppings jika ada
