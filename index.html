@@ -143,7 +143,7 @@
           {
             id: 9,
             name: "Milky Coffe",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            price: { Small: 7000, Medium: 9000, Large: 12000 },
             img: "img/milky-coffe.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
@@ -157,14 +157,14 @@
           {
             id: 11,
             name: "Coffe Gula Aren",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            price: { Small: 7500, Medium: 9000, Large: 12000 },
             img: "img/coffe-gula-aren.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
             id: 12,
             name: "Matcha Tjih",
-            price: { Small: 7000, Medium: 10000, Large: 13000 },
+            price: { Small: 8000, Medium: 10000, Large: 13000 },
             img: "img/matcha-tjih.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
@@ -185,7 +185,7 @@
           {
             id: 15,
             name: "Milo Ice",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            price: { Small: 7000, Medium: 9000, Large: 12000 },
             img: "img/milo-ice.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
@@ -224,6 +224,8 @@
       let promoUsed = localStorage.getItem("ngaleueut_promo_used") === "1";
       let promoApplied = false;
       let promoDiscount = 0;
+      let shippingPromoApplied = false;
+      let shippingDiscount = 0;
 
       // Tambahkan elemen promo form setelah DOMContentLoaded
       function renderPromoForm() {
@@ -252,6 +254,8 @@
         info.innerHTML = `<span style="color:#e53935;">Mohon maaf, kode promo tersebut sudah dipakai.</span>`;
         promoApplied = false;
         promoDiscount = 0;
+        shippingPromoApplied = false;
+        shippingDiscount = 0;
           } else {
         // Cek subtotal
         let subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
@@ -261,10 +265,14 @@
           info.innerHTML = `<span style="color:#388e3c;">Promo launching website Ngaleueut! Berlaku sampai tanggal 25 September 2025. Potongan 10% sudah diterapkan.</span>`;
           localStorage.setItem("ngaleueut_promo_used", "1");
           promoUsed = true;
+          shippingPromoApplied = false;
+          shippingDiscount = 0;
         } else {
           info.innerHTML = `<span style="color:#e53935;">Minimal belanja Rp20.000 untuk menggunakan promo ini.</span>`;
           promoApplied = false;
           promoDiscount = 0;
+          shippingPromoApplied = false;
+          shippingDiscount = 0;
         }
           }
         } else if (code === "NGALEUEUT2025") {
@@ -274,19 +282,48 @@
         promoApplied = true;
         promoDiscount = Math.round(subtotal * 0.1);
         info.innerHTML = `<span style="color:#388e3c;">Kode admin: Potongan 10% sudah diterapkan (NGALEUEUT2025).</span>`;
+        shippingPromoApplied = false;
+        shippingDiscount = 0;
           } else {
         info.innerHTML = `<span style="color:#e53935;">Minimal belanja Rp20.000 untuk menggunakan promo ini.</span>`;
         promoApplied = false;
         promoDiscount = 0;
+        shippingPromoApplied = false;
+        shippingDiscount = 0;
+          }
+        } else if (code === "DUABULAN") {
+          // Promo ongkir 50% max 20k
+          let subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+          let ongkirTemp = hitungOngkir(jarakKm, subtotal);
+          let discount = Math.min(Math.round(ongkirTemp * 0.5), 20000);
+          // Konfirmasi dengan pop-up
+          if (confirm(`Apakah Anda ingin menggunakan promo ongkir 50% (max Rp20.000)?\nPotongan: Rp${discount.toLocaleString("id-ID")}`)) {
+            shippingPromoApplied = true;
+            shippingDiscount = discount;
+            info.innerHTML = `<span style="color:#388e3c;">Promo ongkir 50% (max Rp20.000) sudah diterapkan.</span>`;
+            promoApplied = false;
+            promoDiscount = 0;
+            // Pop-up selamat
+            alert(`Selamat! Anda telah mendapatkan potongan harga ongkir sebesar Rp${discount.toLocaleString("id-ID")}`);
+          } else {
+            info.innerHTML = "";
+            promoApplied = false;
+            promoDiscount = 0;
+            shippingPromoApplied = false;
+            shippingDiscount = 0;
           }
         } else if (code.length > 0) {
           info.innerHTML = `<span style="color:#e53935;">Kode tersebut tidak dapat digunakan.</span>`;
           promoApplied = false;
           promoDiscount = 0;
+          shippingPromoApplied = false;
+          shippingDiscount = 0;
         } else {
           info.innerHTML = "";
           promoApplied = false;
           promoDiscount = 0;
+          shippingPromoApplied = false;
+          shippingDiscount = 0;
         }
         renderCart();
       }
@@ -513,6 +550,10 @@
         // Hitung ongkir berdasarkan subtotal
         ongkir = hitungOngkir(jarakKm, subtotal);
 
+        if (shippingPromoApplied) {
+          ongkir -= shippingDiscount;
+        }
+
         // Hitung promo
         let discount = 0;
         if (promoApplied && subtotal > 20000) {
@@ -537,6 +578,19 @@
           promoRow.innerHTML = `Promo: -Rp<span id="promo-discount">${discount.toLocaleString("id-ID")}</span>`;
         } else if (promoRow) {
           promoRow.remove();
+        }
+        // Tambahkan baris shipping promo jika aktif
+        let shippingPromoRow = document.getElementById("shipping-promo-row");
+        if (shippingPromoApplied) {
+          if (!shippingPromoRow) {
+            shippingPromoRow = document.createElement("p");
+            shippingPromoRow.className = "total";
+            shippingPromoRow.id = "shipping-promo-row";
+            totalEl.parentNode.insertBefore(shippingPromoRow, totalEl);
+          }
+          shippingPromoRow.innerHTML = `Shipping Promo: -Rp<span id="shipping-discount">${shippingDiscount.toLocaleString("id-ID")}</span>`;
+        } else if (shippingPromoRow) {
+          shippingPromoRow.remove();
         }
         totalEl.textContent = (subtotal + ongkir - discount).toLocaleString("id-ID");
       }
@@ -577,6 +631,9 @@
         message += `Subtotal: Rp${subtotal.toLocaleString("id-ID")}%0A`;
         if (discount > 0) {
           message += `Promo: -Rp${discount.toLocaleString("id-ID")}%0A`;
+        }
+        if (shippingPromoApplied) {
+          message += `Shipping Promo: -Rp${shippingDiscount.toLocaleString("id-ID")}%0A`;
         }
         message += `Ongkos Kirim (${jarakKm} km): Rp${ongkir.toLocaleString(
           "id-ID"
