@@ -224,6 +224,7 @@
       let promoUsed = localStorage.getItem("ngaleueut_promo_used") === "1";
       let promoApplied = false;
       let promoDiscount = 0;
+      let shippingPromoUsed = localStorage.getItem("ngaleueut_shipping_promo_used") === "1";
       let shippingPromoApplied = false;
       let shippingDiscount = 0;
 
@@ -293,24 +294,32 @@
           }
         } else if (code === "DUABULAN") {
           // Promo ongkir 50% max 20k
-          let subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-          let ongkirTemp = hitungOngkir(jarakKm, subtotal);
-          let discount = Math.min(Math.round(ongkirTemp * 0.5), 20000);
-          // Konfirmasi dengan pop-up
-          if (confirm(`Apakah Anda ingin menggunakan promo ongkir 50% (max Rp20.000)?\nPotongan: Rp${discount.toLocaleString("id-ID")}`)) {
-            shippingPromoApplied = true;
-            shippingDiscount = discount;
-            info.innerHTML = `<span style="color:#388e3c;">Promo ongkir 50% (max Rp20.000) sudah diterapkan.</span>`;
-            promoApplied = false;
-            promoDiscount = 0;
-            // Pop-up selamat
-            alert(`Selamat! Anda telah mendapatkan potongan harga ongkir sebesar Rp${discount.toLocaleString("id-ID")}`);
-          } else {
-            info.innerHTML = "";
-            promoApplied = false;
-            promoDiscount = 0;
+          if (shippingPromoUsed) {
+            info.innerHTML = `<span style="color:#e53935;">Mohon maaf, kode promo tersebut sudah dipakai.</span>`;
             shippingPromoApplied = false;
             shippingDiscount = 0;
+          } else {
+            let subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+            let ongkirTemp = hitungOngkir(jarakKm, subtotal);
+            let discount = Math.min(Math.round(ongkirTemp * 0.5), 20000);
+            // Konfirmasi dengan pop-up
+            if (confirm(`Apakah Anda ingin menggunakan promo ongkir 50% (max Rp20.000)?\nPotongan: Rp${discount.toLocaleString("id-ID")}`)) {
+              shippingPromoApplied = true;
+              shippingDiscount = discount;
+              info.innerHTML = `<span style="color:#388e3c;">Promo ongkir 50% (max Rp20.000) sudah diterapkan.</span>`;
+              promoApplied = false;
+              promoDiscount = 0;
+              localStorage.setItem("ngaleueut_shipping_promo_used", "1");
+              shippingPromoUsed = true;
+              // Pop-up selamat
+              alert(`Selamat! Anda telah mendapatkan potongan harga ongkir sebesar Rp${discount.toLocaleString("id-ID")}`);
+            } else {
+              info.innerHTML = "";
+              promoApplied = false;
+              promoDiscount = 0;
+              shippingPromoApplied = false;
+              shippingDiscount = 0;
+            }
           }
         } else if (code.length > 0) {
           info.innerHTML = `<span style="color:#e53935;">Kode tersebut tidak dapat digunakan.</span>`;
