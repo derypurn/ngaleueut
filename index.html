@@ -301,7 +301,7 @@
           } else {
             let subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
             let ongkirTemp = hitungOngkir(jarakKm, subtotal);
-            let discount = Math.min(Math.round(ongkirTemp * 0.5), 20000);
+            let discount = Math.min(Math.round(ongkirTemp * 1), 20000);
             // Konfirmasi dengan pop-up
             if (confirm(`Apakah Anda ingin menggunakan promo ongkir 50% (max Rp20.000)?\nPotongan: Rp${discount.toLocaleString("id-ID")}`)) {
               shippingPromoApplied = true;
