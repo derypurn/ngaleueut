@@ -44,6 +44,8 @@
       <div class="grid" id="makanan"></div>
       <h3>Minuman</h3>
       <div class="grid" id="minuman"></div>
+      <h3>Paket</h3>
+      <div class="grid" id="paket"></div>
 
       <!-- Keranjang -->
       <div class="cart" id="keranjang">
@@ -55,6 +57,10 @@
         <div style="margin:10px 0; text-align:left; margin-left: 20px;">
           <label for="nama-pembeli" style="font-weight:bold;">Nama Pembeli:</label><br>
           <input type="text" id="nama-pembeli" placeholder="Masukkan nama pembeli" style="padding:5px; border-radius:5px; border:1px solid #ccc; width:200px; margin-top:5px;">
+        </div>
+        <div style="margin:10px 0; text-align:left; margin-left: 20px;">
+          <label for="catatan-pembeli" style="font-weight:bold;">Catatan Pembeli:</label><br>
+          <textarea id="catatan-pembeli" placeholder="Masukkan catatan jika ada" style="padding:5px; border-radius:5px; border:1px solid #ccc; width:200px; height:60px; margin-top:5px;"></textarea>
         </div>
         <div id="map"></div>
         <div
@@ -143,81 +149,155 @@
           {
             id: 9,
             name: "Milky Coffe",
-            price: { Small: 7000, Medium: 9000, Large: 12000 },
+            price: { Small: 7000, Medium: 9000, Large: 11000 },
             img: "img/milky-coffe.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
             id: 10,
             name: "Americano",
-            price: { Small: 6000, Medium: 7000, Large: 10000 },
+            price: { Small: 6000, Medium: 7000, Large: 9000 },
             img: "img/black-coffe.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
             id: 11,
             name: "Coffe Gula Aren",
-            price: { Small: 7500, Medium: 9000, Large: 12000 },
+            price: { Small: 7500, Medium: 9000, Large: 11000 },
             img: "img/coffe-gula-aren.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
             id: 12,
             name: "Matcha Tjih",
-            price: { Small: 8000, Medium: 10000, Large: 13000 },
+            price: { Small: 8000, Medium: 11000, Large: 12000 },
             img: "img/matcha-tjih.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
             id: 13,
             name: "Thai Tea",
-            price: { Small: 7000, Medium: 10000, Large: 13000 },
+            price: { Small: 7000, Medium: 9000, Large: 11000 },
             img: "img/Thai-tea.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
             id: 14,
             name: "Choco BengBeng",
-            price: { Small: 8000, Medium: 11000, Large: 14000 },
+            price: { Small: 8500, Medium: 11000, Large: 13000 },
             img: "img/benbeng.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
             id: 15,
             name: "Milo Ice",
-            price: { Small: 7000, Medium: 9000, Large: 12000 },
+            price: { Small: 7000, Medium: 9000, Large: 11000 },
             img: "img/milo-ice.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
             id: 16,
             name: "Milky Strawberry",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            price: { Small: 6000, Medium: 9000, Large: 11000 },
             img: "img/strawberry.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
             id: 17,
             name: "Milky Taro",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            price: { Small: 6000, Medium: 9000, Large: 11000 },
             img: "img/milky-taro.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
             id: 18,
             name: "Milky Buble Gum",
-            price: { Small: 6000, Medium: 9000, Large: 12000 },
+            price: { Small: 6000, Medium: 9000, Large: 11000 },
             img: "img/milky-buble-gum.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
           {
             id: 19,
             name: "Original Tea",
-            price: { Small: 2000, Large: 5000 },
+            price: { Small: 2000, Large: 3500 },
             img: "img/tea original.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
           },
         ],
+        paket: [
+          {
+            id: 20,
+            name: "Paket Ngaleueut Nyalira",
+            price: 10000,
+            img: "img/ngaleueut-nyalira.png", // Placeholder image
+            choices: {
+              minuman: ["Milky Taro Small", "Milky Bubble Gum Small", "Milky Strawberry Small"],
+              makanan: ["Mie Small", "Pangsit Ayam Small"]
+            },
+            isSpicy: true // For Mie or Pangsit
+          },
+          {
+            id: 21,
+            name: "Paket Setelan Ceban",
+            price: 10000,
+            img: "img/setelan-ceban.png", // Placeholder
+            fixed: {
+              makanan: "Mie Large",
+              topping: "Pangsit Ayam",
+              minuman: "Original Tea Small"
+            },
+            isSpicy: true // For Mie
+          },
+          {
+            id: 22,
+            name: "Paket Nyalse Tipis-Tipis",
+            price: 11000,
+            img: "img/nyalse-tipis-tipis.png", // Placeholder
+            choices: {
+              makanan: ["Churros Small", "Minipao Goreng Small"],
+              minuman: ["Coffe Gula Aren Small"]
+            },
+            sauces: ["Cokelat", "Matcha", "Strawberry"] // Only if Churros
+          },
+          {
+            id: 23,
+            name: "Paket Ngidam Pedes Manis",
+            price: 13000,
+            img: "img/ngidam-pedes-manis.png", // Placeholder
+            choices: {
+              makanan: ["Basreng Chili Oil Small", "Cimol Bojot Small"],
+              minuman: ["Thai Tea Medium"]
+            },
+            isSpicy: true // For Basreng or Cimol
+          },
+          {
+            id: 24,
+            name: "Paket Bestie Pedes Manis",
+            price: 21000,
+            img: "img/bestie-pedes-manis.png", // Placeholder
+            choices: {
+              minuman1: ["Milky Taro Small", "Milky Bubble Gum Small", "Milky Strawberry Small"],
+              minuman2: ["Milky Taro Small", "Milky Bubble Gum Small", "Milky Strawberry Small"],
+              makanan: ["Cimol Bojot Large", "Basreng Chili Oil Large"]
+            },
+            isSpicy: true // For Cimol or Basreng
+          },
+          {
+            id: 25,
+            name: "Paket Ngaleueut Duo",
+            price: 25000,
+            img: "img/ngaleueut-duo.png", // Placeholder
+            choices: {
+              makanan: ["Cimol Bojot Small", "Basreng Chili Oil Small"]
+            },
+            fixed: {
+              minuman1: "Matcha Tjih Small",
+              minuman2: "Choco BengBeng Small",
+              mie: "Mie Small"
+            },
+            isSpicy: true // For Cimol/Basreng/Mie
+          }
+        ]
       };
 
       let cart = [];
@@ -301,7 +381,7 @@
           } else {
             let subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
             let ongkirTemp = hitungOngkir(jarakKm, subtotal);
-            let discount = Math.min(Math.round(ongkirTemp * 1), 20000);
+            let discount = Math.min(Math.round(ongkirTemp * 0.5), 20000);
             // Konfirmasi dengan pop-up
             if (confirm(`Apakah Anda ingin menggunakan promo ongkir 50% (max Rp20.000)?\nPotongan: Rp${discount.toLocaleString("id-ID")}`)) {
               shippingPromoApplied = true;
@@ -416,15 +496,67 @@
               });
               sauceSelect = `<select id="sauce-${p.id}" style="margin:5px 0;">${sauceOptions}</select>`;
             }
-            div.innerHTML = `
-              <img src="${p.img}" alt="${p.name}">
-              <h3>${p.name}</h3>
-              <select id="variant-${p.id}">${options}</select>
-              ${levelSelect}
-              ${toppingsSelect}
-              ${sauceSelect}
-              <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
-            `;
+            if (category === "paket") {
+              // Paket specific
+              let choicesSelect = "";
+              if (p.choices) {
+                for (let key in p.choices) {
+                  let opts = `<option value="">Pilih ${key}</option>`;
+                  p.choices[key].forEach(opt => opts += `<option value="${opt}">${opt}</option>`);
+                  choicesSelect += `<select id="${key}-${p.id}" style="margin:5px 0;">${opts}</select>`;
+                }
+              }
+              let fixedText = "";
+              if (p.fixed) {
+                fixedText = "<p style='font-size:14px; margin-left:10px;'>Isi paket:</p><ul style='text-align:left; font-size:12px; margin-left:20px;'>";
+                for (let key in p.fixed) {
+                  fixedText += `<li>${key}: ${p.fixed[key]}</li>`;
+                }
+                fixedText += "</ul>";
+              }
+              let sauceSelectPaket = "";
+              if (p.sauces) {
+                let opts = `<option value="">Tanpa sauce</option>`;
+                p.sauces.forEach(s => opts += `<option value="${s}">${s}</option>`);
+                sauceSelectPaket = `<select id="sauce-${p.id}" style="margin:5px 0;">${opts}</select>`;
+              }
+              let levelSelectPaket = "";
+              if (p.isSpicy) {
+                levelSelectPaket = `
+                <select id="level-${p.id}">
+                  <option value="" disabled selected>Pilih level pedas</option>
+                  <option value="0">Tanpa pedas</option>
+                  <option value="1">Level 1</option>
+                  <option value="2">Level 2</option>
+                  <option value="3">Level 3</option>
+                  <option value="4">Level 4 (+Rp1.000)</option>
+                  <option value="5">Level 5 (+Rp1.000)</option>
+                  <option value="6">Pedas dipisah (+Rp500)</option>
+                </select>
+                `;
+              }
+              div.innerHTML = `
+                <img src="${p.img}" alt="${p.name}">
+                <h3>${p.name}</h3>
+                <p>Harga: Rp${p.price.toLocaleString("id-ID")}</p>
+                ${fixedText}
+                ${choicesSelect}
+                ${sauceSelectPaket}
+                ${levelSelectPaket}
+                <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
+              `;
+            } else {
+              // Makanan and minuman
+              div.innerHTML = `
+                <img src="${p.img}" alt="${p.name}">
+                <h3>${p.name}</h3>
+                <select id="variant-${p.id}">${options}</select>
+                ${levelSelect}
+                ${toppingsSelect}
+                ${sauceSelect}
+                <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
+              `;
+            }
             container.appendChild(div);
           });
         }
@@ -432,65 +564,105 @@
 
       function addToCart(id, category) {
         const product = products[category].find((p) => p.id === id);
-        const variant = document.getElementById(`variant-${id}`).value;
-        let price = product.price[variant];
+        let price = product.price;
         let level = null;
-        // Cek jika kategori makanan dan isSpicy true, ambil level dan sesuaikan harga
-        if (category === "makanan" && product.isSpicy === true) {
-          level = document.getElementById(`level-${id}`).value;
-          if (level === "") {
-            alert("Pilih level pedas terlebih dahulu!");
-            return;
-          }
-          if (level === "4" || level === "5") {
-            price += 1000;
-          }
-          if (level === "6") {
-            price += 500;
-          }
-        }
-        // Ambil toppings jika ada
+        let choices = {};
+        let fixed = product.fixed || {};
         let toppings = [];
-        if (product.toppings && product.toppings.length > 0) {
-          if (id === 1) {
-            // For Mie Level, get toppings from checkboxes and spans
-            product.toppings.forEach((t, idx) => {
-              const checkEl = document.getElementById(`topping-check-${id}-${idx}`);
-              if (checkEl.checked) {
-                const qtyEl = document.getElementById(`qty-${id}-${idx}`);
-                const qty = parseInt(qtyEl.textContent) || 0;
-                if (qty > 0) {
-                  toppings.push({ name: t.name, qty: qty });
-                  price += t.price * qty;
+        let sauce = "";
+        let variant = "";
+
+        if (category === "paket") {
+          // For paket, price is fixed, get choices, level, sauce
+          if (product.choices) {
+            for (let key in product.choices) {
+              const selectEl = document.getElementById(`${key}-${id}`);
+              if (selectEl) {
+                const val = selectEl.value;
+                if (val === "") {
+                  alert(`Pilih ${key} terlebih dahulu!`);
+                  return;
                 }
+                choices[key] = val;
               }
-            });
-          } else {
-            const toppingsSelect = document.getElementById(`toppings-${id}`);
-            const selectedOptions = Array.from(toppingsSelect.selectedOptions);
-            selectedOptions.forEach(option => {
-              if (option.value) {
-                const topping = product.toppings.find(t => t.name === option.value);
-                if (topping) {
-                  toppings.push(topping.name);
-                  price += topping.price;
+            }
+          }
+          if (product.isSpicy) {
+            level = document.getElementById(`level-${id}`).value;
+            if (level === "") {
+              alert("Pilih level pedas terlebih dahulu!");
+              return;
+            }
+          }
+          if (product.sauces) {
+            sauce = document.getElementById(`sauce-${id}`).value;
+          }
+        } else {
+          // Makanan or minuman
+          variant = document.getElementById(`variant-${id}`).value;
+          price = product.price[variant];
+          if (category === "makanan" && product.isSpicy === true) {
+            level = document.getElementById(`level-${id}`).value;
+            if (level === "") {
+              alert("Pilih level pedas terlebih dahulu!");
+              return;
+            }
+            if (level === "4" || level === "5") {
+              price += 1000;
+            }
+            if (level === "6") {
+              price += 500;
+            }
+          }
+          // Ambil toppings jika ada
+          if (product.toppings && product.toppings.length > 0) {
+            if (id === 1) {
+              // For Mie Level, get toppings from checkboxes and spans
+              product.toppings.forEach((t, idx) => {
+                const checkEl = document.getElementById(`topping-check-${id}-${idx}`);
+                if (checkEl.checked) {
+                  const qtyEl = document.getElementById(`qty-${id}-${idx}`);
+                  const qty = parseInt(qtyEl.textContent) || 0;
+                  if (qty > 0) {
+                    toppings.push({ name: t.name, qty: qty });
+                    price += t.price * qty;
+                  }
                 }
-              }
-            });
+              });
+            } else {
+              const toppingsSelect = document.getElementById(`toppings-${id}`);
+              const selectedOptions = Array.from(toppingsSelect.selectedOptions);
+              selectedOptions.forEach(option => {
+                if (option.value) {
+                  const topping = product.toppings.find(t => t.name === option.value);
+                  if (topping) {
+                    toppings.push(topping.name);
+                    price += topping.price;
+                  }
+                }
+              });
+            }
+          }
+          // Ambil sauce jika ada
+          if (product.sauces && product.sauces.length > 0) {
+            sauce = document.getElementById(`sauce-${id}`).value;
           }
         }
-        // Ambil sauce jika ada
-        let sauce = "";
-        if (product.sauces && product.sauces.length > 0) {
-          sauce = document.getElementById(`sauce-${id}`).value;
-        }
-        // Cari item di cart dengan id, variant, level, toppings, sauce
+
+        // Cari item di cart
         const existing = cart.find(
           (item) => {
             if (item.id !== id) return false;
             if (item.variant !== variant) return false;
             if (item.level != level) return false;
             if (item.sauce !== sauce) return false;
+            // Compare choices
+            if (item.choices) {
+              if (!choices || Object.keys(item.choices).length !== Object.keys(choices).length) return false;
+              for (let k in choices) {
+                if (item.choices[k] !== choices[k]) return false;
+              }
+            } else if (choices && Object.keys(choices).length > 0) return false;
             // Compare toppings
             if (!item.toppings || item.toppings.length !== toppings.length) return false;
             for (let i = 0; i < toppings.length; i++) {
@@ -506,8 +678,8 @@
         if (existing) {
           existing.qty++;
         } else {
-          const cartItem = { ...product, variant, price, qty: 1, sauce };
-          if (category === "makanan") cartItem.level = level;
+          const cartItem = { ...product, variant, price, qty: 1, sauce, choices, fixed };
+          if (category === "makanan" || category === "paket") cartItem.level = level;
           if (id === 1) {
             cartItem.toppings = toppings; // array of {name, qty, price}
           } else {
@@ -533,7 +705,11 @@
         cart.forEach((item, idx) => {
           let levelText = "";
           if (item.level) {
-            levelText = ` [Level ${item.level}]`;
+            if (item.level === "6") {
+              levelText = ` [Pedas pisah]`;
+            } else {
+              levelText = ` [Level ${item.level}]`;
+            }
           }
           let toppingsText = "";
           if (item.toppings && item.toppings.length > 0) {
@@ -547,9 +723,12 @@
           if (item.sauce) {
             sauceText = ` Sauce: ${item.sauce}`;
           }
+          let variantText = item.variant ? ` [${item.variant}]` : "";
+          let choicesText = item.choices ? ` Pilihan: ${Object.entries(item.choices).map(([k,v]) => `${k}: ${v}`).join(", ")}` : "";
+          let fixedText = item.fixed ? ` ${Object.values(item.fixed).join(", ")}` : "";
           let li = document.createElement("li");
           li.innerHTML = `
-            <span>${item.name}${levelText}${toppingsText}${sauceText} [${item.variant}] (x${item.qty}) = Rp${(item.price * item.qty).toLocaleString("id-ID")}</span>
+            <span>${item.name}${levelText}${toppingsText}${sauceText}${variantText}${choicesText}${fixedText} ${item.qty} = Rp${(item.price * item.qty).toLocaleString("id-ID")}</span>
             <button onclick="removeFromCart(${idx})" style="background:none;border:none;color:#e53935;font-size:18px;cursor:pointer;float:right;" title="Hapus item">&times;</button>
           `;
           cartList.appendChild(li);
@@ -612,12 +791,17 @@
           return;
         }
         let nama = document.getElementById("nama-pembeli").value.trim();
+        let catatan = document.getElementById("catatan-pembeli").value.trim();
         let message = "Halo, saya " + nama + " ingin memesan:%0A";
         let subtotal = 0;
         cart.forEach((item) => {
           let levelText = "";
           if (item.level) {
-            levelText = ` [Level ${item.level}]`;
+            if (item.level === "6") {
+              levelText = ` [dipisah]`;
+            } else {
+              levelText = ` [Level ${item.level}]`;
+            }
           }
           let toppingsText = "";
           if (item.toppings && item.toppings.length > 0) {
@@ -631,7 +815,10 @@
           if (item.sauce) {
             sauceText = ` Sauce: ${item.sauce}`;
           }
-          message += `- ${item.name}${levelText}${toppingsText}${sauceText} [${item.variant}] (x${
+          let variantText = item.variant ? ` [${item.variant}]` : "";
+          let choicesText = item.choices ? ` Pilihan: ${Object.values(item.choices).join(", ")}` : "";
+          let fixedText = item.fixed ? ` ${Object.values(item.fixed).join(", ")}` : "";
+          message += `- ${item.name}${levelText}${toppingsText}${sauceText}${variantText}${choicesText}${fixedText} (x${
             item.qty
           }) = Rp${(item.price * item.qty).toLocaleString("id-ID")}%0A`;
           subtotal += item.price * item.qty;
@@ -648,6 +835,9 @@
           "id-ID"
         )}%0A`;
         message += `Total: Rp${(subtotal + ongkir - discount).toLocaleString("id-ID")}%0A`;
+        if (catatan) {
+          message += `Catatan: ${catatan}%0A`;
+        }
         if (estimatedLocation) {
           message += `Lokasi: ${estimatedLocation}%0A`;
         }
@@ -662,6 +852,7 @@
           return;
         }
         let nama = document.getElementById("nama-pembeli").value.trim();
+        let catatan = document.getElementById("catatan-pembeli").value.trim();
         if (!nama) {
           alert("Masukkan nama pembeli terlebih dahulu!");
           return;
@@ -679,7 +870,7 @@
         ctx.fillRect(0, 0, width, height);
 
         // Fungsi menggambar isi nota setelah logo & QRIS siap
-        function drawNota(qrisImg, nama) {
+        function drawNota(qrisImg, nama, catatan) {
           // Judul tengah atas
           ctx.font = "bold 32px Poppins, Arial";
           ctx.fillStyle = "#23251a";
@@ -732,8 +923,32 @@
           let y = 170 + yOffset;
           let subtotal = 0;
           let maxWidth = width - 100; // Max width for text, leaving space for price
+          let itemNumber = 1;
           cart.forEach((item) => {
-            let levelText = item.level ? `Level ${item.level}` : "";
+            let qtyText = `x${item.qty}`;
+            let price = `Rp${(item.price * item.qty).toLocaleString("id-ID")}`;
+
+            // First line: number. name [level] [variant] qty
+            let firstLine = `${itemNumber}. ${item.name}`;
+            if (item.level) {
+              if (item.level === "6") {
+                firstLine += " [dipisah]";
+              } else {
+                firstLine += ` [Level ${item.level}]`;
+              }
+            }
+            if (item.variant) {
+              firstLine += ` [${item.variant}]`;
+            }
+            firstLine += ` ${qtyText}`;
+            ctx.fillText(firstLine, 50, y);
+            ctx.textAlign = "right";
+            ctx.fillText(price, width - 70, y);
+            ctx.textAlign = "left";
+            y += 28;
+
+            // Additional lines: toppings, sauce, then for packages: choices and fixed
+            let additionalLines = [];
             let toppingsText = "";
             if (item.toppings && item.toppings.length > 0) {
               if (item.id === 1) {
@@ -741,34 +956,30 @@
               } else {
                 toppingsText = `Toppings: ${item.toppings.join(", ")}`;
               }
+              additionalLines.push(toppingsText);
             }
-            let sauceText = item.sauce ? ` Sauce: ${item.sauce}` : "";
-            let qtyText = `x${item.qty}`;
-            let sizeText = `[${item.variant}]`;
-            // Build the line: name level size toppings sauce qty
-            let line = `${item.name} ${levelText} ${sizeText} ${toppingsText} ${sauceText} ${qtyText}`.trim();
-            let price = `Rp${(item.price * item.qty).toLocaleString("id-ID")}`;
-            // Measure width
-            let metrics = ctx.measureText(line);
-            let lineWidth = metrics.width;
-            if (lineWidth > maxWidth) {
-              // Split: first line name, second line rest
-              let firstLine = item.name;
-              let rest = `${levelText} ${sizeText} ${toppingsText} ${sauceText} ${qtyText}`.trim();
-              ctx.fillText(firstLine, 50, y);
-              ctx.textAlign = "right";
-              ctx.fillText(price, width - 50, y);
-              ctx.textAlign = "left";
-              y += 28;
-              ctx.fillText(rest, 50, y);
-              y += 28;
-            } else {
+            let sauceText = "";
+            if (item.sauce) {
+              sauceText = `Sauce: ${item.sauce}`;
+              additionalLines.push(sauceText);
+            }
+            // For packages, add choices and fixed below
+            if (item.choices) {
+              for (let [k, v] of Object.entries(item.choices)) {
+                additionalLines.push(`${k}: ${v}`);
+              }
+            }
+            if (item.fixed) {
+              for (let [k, v] of Object.entries(item.fixed)) {
+                additionalLines.push(`${k}: ${v}`);
+              }
+            }
+            additionalLines.forEach(line => {
               ctx.fillText(line, 50, y);
-              ctx.textAlign = "right";
-              ctx.fillText(price, width - 50, y);
-              ctx.textAlign = "left";
               y += 28;
-            }
+            });
+
+            itemNumber++;
             subtotal += item.price * item.qty;
           });
 
@@ -823,6 +1034,14 @@
             ctx.font = "16px Poppins, Arial";
             ctx.textAlign = "center";
             ctx.fillText(`Lokasi: ${estimatedLocation}`, width / 2, y + 40);
+          }
+
+          // Tampilkan catatan jika ada
+          if (catatan) {
+            ctx.font = "16px Poppins, Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(`Catatan: ${catatan}`, width / 2, y + 70);
+            y += 30;
           }
 
           // QRIS di tengah
@@ -884,11 +1103,11 @@
           qrisImg.crossOrigin = "anonymous";
           qrisImg.src = "img/qris.jpg";
           qrisImg.onload = function () {
-            drawNota(qrisImg, nama);
+            drawNota(qrisImg, nama, catatan);
           };
           qrisImg.onerror = function () {
             // Jika gagal load QRIS, tetap lanjutkan tanpa QRIS
-            drawNota(null, nama);
+            drawNota(null, nama, catatan);
           };
         }
       }
