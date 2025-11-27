@@ -20,7 +20,7 @@
         <ul>
           <li><a href="#beranda">Beranda</a></li>
           <li><a href="#menu">Menu</a></li>
-          <li><a href="#keranjang">Keranjang </a></li>
+          <li style="position:relative;"><a href="#keranjang"><i class="fa fa-shopping-cart"></i> <span id="cart-badge" style="display:none; position:absolute; top:-10px; right:-10px; background:red; color:white; border-radius:50%; padding:2px 6px; font-size:12px;"></span></a></li>
         </ul>
       </nav>
     </header>
@@ -62,6 +62,14 @@
           <label for="catatan-pembeli" style="font-weight:bold;">Catatan Pembeli:</label><br>
           <textarea id="catatan-pembeli" placeholder="Masukkan catatan jika ada" style="padding:5px; border-radius:5px; border:1px solid #ccc; width:200px; height:60px; margin-top:5px;"></textarea>
         </div>
+        <div style="margin:10px 0; text-align:left; margin-left: 20px;">
+          <input type="checkbox" id="delivery-checkbox" style="margin-right:5px;">
+          <label for="delivery-checkbox" style="font-weight:bold;">Delivery</label>
+        </div>
+        <div id="address-form" style="margin:10px 0; text-align:left; margin-left: 20px; display:none;">
+          <label for="alamat-pengiriman" style="font-weight:bold;">Alamat Pengiriman:</label><br>
+          <textarea id="alamat-pengiriman" placeholder="Masukkan alamat lengkap pengiriman" style="padding:5px; border-radius:5px; border:1px solid #ccc; width:200px; height:60px; margin-top:5px;"></textarea>
+        </div>
         <div id="map"></div>
         <div
           class="info"
@@ -70,7 +78,7 @@
         ></div>
         <button class="btn" style="background:#25D366; color:#fff;" onclick="checkout()">
           <i class="fab fa-whatsapp" style="margin-right:6px;"></i>Pesan via WhatsApp
-        </button></button>
+        </button>
       </div>
     </section>
 
@@ -92,7 +100,8 @@
             price: { Small: 5000, Large: 8000 },
             img: "img/miejontor.png",
             isSpicy: true,
-            toppings: [ { name: "Bakso Kecil", price: 1000 },{ name: "Pangsit Ayam", price: 1000 }, { name: "Bakso Besar", price: 5000 },{ name: "Sosis Mekar", price: 5000 }, { name: "Telor", price: 3000 } ],
+            rating: 4.5,
+            toppings: [ { name: "Bakso Kecil", price: 1000 },{ name: "Pangsit Ayam", price: 1000 }, { name: "Bakso Besar", price: 5000 },{ name: "Sosis Mekar", price: 5000 }, { name: "Sosis Mekar Pedas", price: 5000 }, { name: "Telor", price: 3000 } ],
           },
           {
             id: 2,
@@ -100,6 +109,7 @@
             price: { Small: 5000, Large: 10000 },
             isSpicy: true,
             img: "img/pangyam.png",
+            rating: 4.5,
           },
           {
             id: 3,
@@ -107,6 +117,7 @@
             price: { Small: 5000, Large: 10000 },
             img: "img/bakso-mekar.png",
             isSpicy: true,
+            rating: 4.2,
           },
           {
             id: 4,
@@ -114,6 +125,7 @@
             price: { Small: 5000, Large: 10000 },
             img: "img/sosis.png",
             isSpicy: true,
+            rating: 4.1,
           },
           {
             id: 5,
@@ -121,6 +133,7 @@
             price: { Small: 5000, Large: 10000 },
             img: "img/basreng.png   ",
             isSpicy: true,
+            rating: 4,
           },
           {
             id: 6,
@@ -128,6 +141,7 @@
             price: { Small: 5000, Large: 10000 },
             img: "img/cimol.png",
             isSpicy: true,
+            rating: 4.5,
           },
           {
             id: 7,
@@ -136,6 +150,7 @@
             img: "img/churros.png",
             sauces: ["Cokelat", "Strawberry", "Matcha"],
             isSpicy: false,
+            rating: 4.3,
           },
           {
             id: 8,
@@ -143,90 +158,119 @@
             price: { Small: 5000, Large: 10000 },
             img: "img/minipao.png",
             isSpicy: false,
+            rating: 4,
+          },
+          {
+            id: 9,
+            name: "Sosis / Bakso Crispy",
+            price: 0,
+            img: "img/sosis-crispy.png",
+            toppings: [ { name: "Sosis Crispy", price: 1000 }, { name: "Bakso Crispy", price: 1000 } ],
+            rating: 3.8,
+          },
+          {
+            id: 10,
+            name: "Indomie Goreng / Rebus",
+            price: { Small: 5000 },
+            img: "img/indomie-rebus.png",
+            isSpicy: true,
+            toppings: [ { name: "Bakso Kecil", price: 1000 },{ name: "Pangsit Ayam", price: 1000 }, { name: "Bakso Besar", price: 5000 },{ name: "Sosis Mekar", price: 5000 }, { name: "Sosis Mekar Pedas", price: 5000 }, { name: "Telor", price: 3000 } ],
+            rating: 3.9,
           },
         ],
         minuman: [
           {
-            id: 9,
+            id: 11,
             name: "Milky Coffe",
             price: { Small: 7000, Medium: 9000, Large: 11000 },
             img: "img/milky-coffe.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
+            rating: 4.2,
           },
           {
-            id: 10,
+            id: 12,
             name: "Americano",
             price: { Small: 6000, Medium: 8000, Large: 10000 },
             img: "img/black-coffe.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
+            rating: 4,
           },
           {
-            id: 11,
+            id: 13,
             name: "Coffe Gula Aren",
             price: { Small: 7500, Medium: 10000, Large: 11000 },
             img: "img/coffe-gula-aren.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
+            rating: 4.1,
           },
           {
-            id: 12,
+            id: 14,
             name: "Matcha Tjih",
             price: { Small: 8000, Medium: 11000, Large: 12000 },
             img: "img/matcha-tjih.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
+            rating: 4.6,
           },
           {
-            id: 13,
+            id: 15,
             name: "Thai Tea",
             price: { Small: 7000, Medium: 9000, Large: 11000 },
             img: "img/Thai-tea.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
+            rating: 4.1,
           },
           {
-            id: 14,
+            id: 16,
             name: "Choco BengBeng",
             price: { Small: 8500, Medium: 11000, Large: 13000 },
             img: "img/benbeng.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
+            rating: 4.6,
           },
           {
-            id: 15,
+            id: 17,
             name: "Milo Ice",
             price: { Small: 7000, Medium: 9000, Large: 11000 },
             img: "img/milo-ice.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
+            rating: 4,
           },
           {
-            id: 16,
-            name: "Milky Strawberry",
+            id: 18,
+            name:   "Milky Strawberry",
             price: { Small: 6000, Medium: 9000, Large: 11000 },
             img: "img/strawberry.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
+            rating: 4.3,
           },
           {
-            id: 17,
+            id: 19,
             name: "Milky Taro",
             price: { Small: 6000, Medium: 9000, Large: 11000 },
             img: "img/milky-taro.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
+            rating: 4.4,
           },
           {
-            id: 18,
+            id: 20,
             name: "Milky Buble Gum",
             price: { Small: 6000, Medium: 9000, Large: 11000 },
             img: "img/milky-buble-gum.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
+            rating: 4,
           },
           {
-            id: 19,
+            id: 21,
             name: "Original Tea",
             price: { Small: 2000, Large: 3500 },
             img: "img/tea original.png",
             toppings: [ { name: "Boba", price: 1000 }, { name: "Jelly", price: 1000 }, ],
+            rating: 4.1,
           },
         ],
         paket: [
           {
-            id: 20,
+            id: 22,
             name: "Paket Ngaleueut Nyalira",
             price: 10000,
             img: "img/ngaleueut-nyalira.png", // Placeholder image
@@ -234,10 +278,11 @@
               minuman: ["Milky Taro Small", "Milky Bubble Gum Small", "Milky Strawberry Small"],
               makanan: ["Mie Small", "Pangsit Ayam Small"]
             },
-            isSpicy: true // For Mie or Pangsit
+            isSpicy: true, // For Mie or Pangsit
+            rating: 4.5
           },
           {
-            id: 21,
+            id: 23,
             name: "Paket Setelan Ceban",
             price: 10000,
             img: "img/setelan-ceban.png", // Placeholder
@@ -246,10 +291,11 @@
               topping: "Pangsit Ayam",
               minuman: "Original Tea Small"
             },
-            isSpicy: true // For Mie
+            isSpicy: true, // For Mie
+            rating: 4.5
           },
           {
-            id: 22,
+            id: 24,
             name: "Paket Nyalse Tipis-Tipis",
             price: 11000,
             img: "img/nyalse-tipis-tipis.png", // Placeholder
@@ -257,10 +303,11 @@
               makanan: ["Churros Small", "Minipao Goreng Small"],
               minuman: ["Coffe Gula Aren Small"]
             },
-            sauces: ["Cokelat", "Matcha", "Strawberry"] // Only if Churros
+            sauces: ["Cokelat", "Matcha", "Strawberry"], // Only if Churros
+            rating: 4
           },
           {
-            id: 23,
+            id: 25,
             name: "Paket Ngidam Pedes Manis",
             price: 13000,
             img: "img/ngidam-pedes-manis.png", // Placeholder
@@ -268,10 +315,11 @@
               makanan: ["Basreng Chili Oil Small", "Cimol Bojot Small"],
               minuman: ["Thai Tea Medium"]
             },
-            isSpicy: true // For Basreng or Cimol
+            isSpicy: true, // For Basreng or Cimol
+            rating: 3.5
           },
           {
-            id: 24,
+            id: 26,
             name: "Paket Bestie Pedes Manis",
             price: 21000,
             img: "img/bestie-pedes-manis.png", // Placeholder
@@ -280,10 +328,11 @@
               minuman2: ["Milky Taro Small", "Milky Bubble Gum Small", "Milky Strawberry Small"],
               makanan: ["Cimol Bojot Large", "Basreng Chili Oil Large"]
             },
-            isSpicy: true // For Cimol or Basreng
+            isSpicy: true, // For Cimol or Basreng
+            rating: 4
           },
           {
-            id: 25,
+            id: 27,
             name: "Paket Ngaleueut Duo",
             price: 25000,
             img: "img/ngaleueut-duo.png", // Placeholder
@@ -295,7 +344,8 @@
               minuman2: "Choco BengBeng Small",
               mie: "Mie Small"
             },
-            isSpicy: true // For Cimol/Basreng/Mie
+            isSpicy: true, // For Cimol/Basreng/Mie
+            rating: 4
           }
         ]
       };
@@ -417,18 +467,38 @@
         renderCart();
       }
 
+
+
+      function generateStars(rating) {
+        let stars = '';
+        for (let i = 1; i <= 5; i++) {
+          if (i <= Math.floor(rating)) {
+            stars += '<i class="fas fa-star"></i>';
+          } else if (i === Math.ceil(rating) && rating % 1 !== 0) {
+            stars += '<i class="fas fa-star-half-alt"></i>';
+          } else {
+            stars += '<i class="far fa-star"></i>';
+          }
+        }
+        return stars;
+      }
+
       function decrease(id, idx) {
         const qtyEl = document.getElementById(`qty-${id}-${idx}`);
-        let qty = parseInt(qtyEl.textContent);
-        if (qty > 0) qty--;
-        qtyEl.textContent = qty;
+        let qty = parseInt(qtyEl.textContent) || 0;
+        if (qty > 0) {
+          qty--;
+          qtyEl.textContent = qty;
+        }
       }
 
       function increase(id, idx) {
         const qtyEl = document.getElementById(`qty-${id}-${idx}`);
-        let qty = parseInt(qtyEl.textContent);
-        if (qty < 5) qty++;
-        qtyEl.textContent = qty;
+        let qty = parseInt(qtyEl.textContent) || 0;
+        if (qty < 10) {
+          qty++;
+          qtyEl.textContent = qty;
+        }
       }
 
       function renderProducts() {
@@ -462,10 +532,10 @@
             // Tambahkan select toppings jika ada
             let toppingsSelect = "";
             if (p.toppings && p.toppings.length > 0) {
-              if (p.id === 1) {
-                // For Mie Level, use checkboxes and +/- buttons for quantity
+            if (p.id === 1 || p.id === 9 || p.id === 10) {
+                // For Mie Level, Sosis/Bakso Crispy, and Indomie, use checkboxes and +/- buttons for quantity
                 let toppingsHtml = '<div id="toppings-' + p.id + '" style="margin:5px 0; text-align:left;">';
-                toppingsHtml += '<p style="margin:0 0 5px 0; font-size:14px;">Pilih Toppings:</p>';
+                toppingsHtml += '<p style="margin:0 0 5px 0; font-size:14px;">' + (p.id === 9 ? 'Pilih Varian:' : 'Pilih Toppings:') + '</p>';
                 p.toppings.forEach((t, idx) => {
                   toppingsHtml += `
                     <div style="display:flex; align-items:center; margin-bottom:2px;">
@@ -487,15 +557,25 @@
                 toppingsSelect = `<select id="toppings-${p.id}" style="margin:5px 0;">${toppingOptions}</select>`;
               }
             }
-            // Tambahkan select sauce jika ada
-            let sauceSelect = "";
-            if (p.sauces && p.sauces.length > 0) {
-              let sauceOptions = `<option value="">Tanpa sauce</option>`;
-              p.sauces.forEach(s => {
-                sauceOptions += `<option value="${s}">${s}</option>`;
-              });
-              sauceSelect = `<select id="sauce-${p.id}" style="margin:5px 0;">${sauceOptions}</select>`;
-            }
+      // Tambahkan select sauce jika ada
+      let sauceSelect = "";
+      if (p.sauces && p.sauces.length > 0) {
+        let sauceOptions = `<option value="">Tanpa sauce</option>`;
+        p.sauces.forEach(s => {
+          sauceOptions += `<option value="${s}">${s}</option>`;
+        });
+        sauceSelect = `<select id="sauce-${p.id}" style="margin:5px 0;">${sauceOptions}</select>`;
+      }
+      // Tambahkan select method untuk Pangsit Ayam
+      let methodSelect = "";
+      if (p.id === 2) {
+        methodSelect = `<select id="method-${p.id}" style="margin:5px 0;"><option value="">Pilih metode</option><option value="Direbus">Direbus</option><option value="Digoreng">Digoreng</option></select>`;
+      }
+      // Tambahkan select kuah untuk Pangsit Ayam, Bakso Mekar, dan Sosis Mekar Pedas
+      let kuahSelect = "";
+      if (p.id === 2 || p.id === 3 ) {
+        kuahSelect = `<select id="kuah-${p.id}" style="margin:5px 0;"><option value="">Pilih kuah</option><option value="ya">Ya (+Rp1.000)</option><option value="tidak">Tidak</option></select>`;
+      }
             if (category === "paket") {
               // Paket specific
               let choicesSelect = "";
@@ -538,6 +618,7 @@
               div.innerHTML = `
                 <img src="${p.img}" alt="${p.name}">
                 <h3>${p.name}</h3>
+                <div class="rating">${generateStars(p.rating)}</div>
                 <p>Harga: Rp${p.price.toLocaleString("id-ID")}</p>
                 ${fixedText}
                 ${choicesSelect}
@@ -550,16 +631,20 @@
               div.innerHTML = `
                 <img src="${p.img}" alt="${p.name}">
                 <h3>${p.name}</h3>
-                <select id="variant-${p.id}">${options}</select>
+                <div class="rating">${generateStars(p.rating)}</div>
+                ${typeof p.price === 'object' ? `<select id="variant-${p.id}">${options}</select>` : ''}
                 ${levelSelect}
                 ${toppingsSelect}
                 ${sauceSelect}
+                ${methodSelect}
+                ${kuahSelect}
                 <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
               `;
             }
             container.appendChild(div);
           });
         }
+        // Kuah for Pangsit Ayam is always shown after method
       }
 
       function addToCart(id, category) {
@@ -599,8 +684,13 @@
           }
         } else {
           // Makanan or minuman
-          variant = document.getElementById(`variant-${id}`).value;
-          price = product.price[variant];
+          const variantEl = document.getElementById(`variant-${id}`);
+          variant = variantEl ? variantEl.value : '';
+          if (typeof product.price === 'object') {
+            price = product.price[variant];
+          } else {
+            price = product.price;
+          }
           if (category === "makanan" && product.isSpicy === true) {
             level = document.getElementById(`level-${id}`).value;
             if (level === "") {
@@ -616,15 +706,15 @@
           }
           // Ambil toppings jika ada
           if (product.toppings && product.toppings.length > 0) {
-            if (id === 1) {
-              // For Mie Level, get toppings from checkboxes and spans
+            if (id === 1 || id === 9 || id === 10) {
+              // For Mie Level, Sosis/Bakso Crispy, and Indomie, get toppings from checkboxes and spans
               product.toppings.forEach((t, idx) => {
                 const checkEl = document.getElementById(`topping-check-${id}-${idx}`);
                 if (checkEl.checked) {
                   const qtyEl = document.getElementById(`qty-${id}-${idx}`);
                   const qty = parseInt(qtyEl.textContent) || 0;
                   if (qty > 0) {
-                    toppings.push({ name: t.name, qty: qty });
+                    toppings.push({ name: t.name, qty: qty, price: t.price });
                     price += t.price * qty;
                   }
                 }
@@ -647,6 +737,27 @@
           if (product.sauces && product.sauces.length > 0) {
             sauce = document.getElementById(`sauce-${id}`).value;
           }
+          // Ambil kuah untuk Pangsit Ayam, Bakso Mekar, dan Sosis Mekar Pedas
+          if (id === 2 || id === 3) {
+            const kuah = document.getElementById(`kuah-${id}`).value;
+            if (kuah === "") {
+              alert("Pilih kuah terlebih dahulu!");
+              return;
+            }
+            choices.kuah = kuah;
+            if (kuah === "ya") {
+              price += 1000;
+            }
+          }
+          // Ambil metode untuk Pangsit Ayam
+          if (id === 2) {
+            const method = document.getElementById(`method-${id}`).value;
+            if (method === "") {
+              alert("Pilih metode masak terlebih dahulu!");
+              return;
+            }
+            choices.method = method;
+          }
         }
 
         // Cari item di cart
@@ -666,7 +777,7 @@
             // Compare toppings
             if (!item.toppings || item.toppings.length !== toppings.length) return false;
             for (let i = 0; i < toppings.length; i++) {
-              if (id === 1) {
+              if (id === 1 || id === 9 || id === 10) {
                 if (item.toppings[i].name !== toppings[i].name || item.toppings[i].qty !== toppings[i].qty) return false;
               } else {
                 if (item.toppings[i] !== toppings[i]) return false;
@@ -680,7 +791,7 @@
         } else {
           const cartItem = { ...product, variant, price, qty: 1, sauce, choices, fixed };
           if (category === "makanan" || category === "paket") cartItem.level = level;
-          if (id === 1) {
+          if (id === 1 || id === 9 || id === 10) {
             cartItem.toppings = toppings; // array of {name, qty, price}
           } else {
             cartItem.toppings = toppings; // array of names
@@ -713,7 +824,7 @@
           }
           let toppingsText = "";
           if (item.toppings && item.toppings.length > 0) {
-            if (item.id === 1) {
+            if (item.id === 1 || item.id === 9 || item.id === 10) {
               toppingsText = ` Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
             } else {
               toppingsText = ` Toppings: ${item.toppings.join(", ")}`;
@@ -724,7 +835,16 @@
             sauceText = ` Sauce: ${item.sauce}`;
           }
           let variantText = item.variant ? ` [${item.variant}]` : "";
-          let choicesText = item.choices ? ` Pilihan: ${Object.entries(item.choices).map(([k,v]) => `${k}: ${v}`).join(", ")}` : "";
+          let choicesText = "";
+          if (item.choices) {
+            if (item.id === 2) {
+              choicesText = ` Kuah: ${item.choices.kuah}, Metode: ${item.choices.method}`;
+            } else if (item.id === 3) {
+              choicesText = ` Kuah: ${item.choices.kuah}`;
+            } else {
+              choicesText = ` Pilihan: ${Object.entries(item.choices).map(([k,v]) => `${k}: ${v}`).join(", ")}`;
+            }
+          }
           let fixedText = item.fixed ? ` ${Object.values(item.fixed).join(", ")}` : "";
           let li = document.createElement("li");
           li.innerHTML = `
@@ -734,6 +854,16 @@
           cartList.appendChild(li);
           subtotal += item.price * item.qty;
         });
+
+        // Update cart badge
+        let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+        const badge = document.getElementById("cart-badge");
+        if (totalQty > 0) {
+          badge.textContent = totalQty;
+          badge.style.display = "inline";
+        } else {
+          badge.style.display = "none";
+        }
 
         // Hitung ongkir berdasarkan subtotal
         ongkir = hitungOngkir(jarakKm, subtotal);
@@ -805,7 +935,7 @@
           }
           let toppingsText = "";
           if (item.toppings && item.toppings.length > 0) {
-            if (item.id === 1) {
+            if (item.id === 1 || item.id === 9 || item.id === 10) {
               toppingsText = ` Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
             } else {
               toppingsText = ` Toppings: ${item.toppings.join(", ")}`;
@@ -816,7 +946,16 @@
             sauceText = ` Sauce: ${item.sauce}`;
           }
           let variantText = item.variant ? ` [${item.variant}]` : "";
-          let choicesText = item.choices ? ` Pilihan: ${Object.values(item.choices).join(", ")}` : "";
+          let choicesText = "";
+          if (item.choices) {
+            if (item.id === 2) {
+              choicesText = ` Kuah: ${item.choices.kuah}, Metode: ${item.choices.method}`;
+            } else if (item.id === 3) {
+              choicesText = ` Kuah: ${item.choices.kuah}`;
+            } else {
+              choicesText = ` Pilihan: ${Object.values(item.choices).join(", ")}`;
+            }
+          }
           let fixedText = item.fixed ? ` ${Object.values(item.fixed).join(", ")}` : "";
           message += `- ${item.name}${levelText}${toppingsText}${sauceText}${variantText}${choicesText}${fixedText} (x${
             item.qty
@@ -837,6 +976,10 @@
         message += `Total: Rp${(subtotal + ongkir - discount).toLocaleString("id-ID")}%0A`;
         if (catatan) {
           message += `Catatan: ${catatan}%0A`;
+        }
+        let alamat = document.getElementById("alamat-pengiriman").value.trim();
+        if (alamat) {
+          message += `Alamat Penerima: ${alamat}%0A`;
         }
         if (estimatedLocation) {
           message += `Lokasi: ${estimatedLocation}%0A`;
@@ -951,7 +1094,7 @@
             let additionalLines = [];
             let toppingsText = "";
             if (item.toppings && item.toppings.length > 0) {
-              if (item.id === 1) {
+              if (item.id === 1 || item.id === 9 || item.id === 10) {
                 toppingsText = `Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
               } else {
                 toppingsText = `Toppings: ${item.toppings.join(", ")}`;
@@ -965,8 +1108,15 @@
             }
             // For packages, add choices and fixed below
             if (item.choices) {
-              for (let [k, v] of Object.entries(item.choices)) {
-                additionalLines.push(`${k}: ${v}`);
+              if (item.id === 2) {
+                additionalLines.push(`Kuah: ${item.choices.kuah}`);
+                additionalLines.push(`Metode: ${item.choices.method}`);
+              } else if (item.id === 3) {
+                additionalLines.push(`Kuah: ${item.choices.kuah}`);
+              } else {
+                for (let [k, v] of Object.entries(item.choices)) {
+                  additionalLines.push(`${k}: ${v}`);
+                }
               }
             }
             if (item.fixed) {
@@ -1029,18 +1179,21 @@
           );
           ctx.textAlign = "left";
 
-          // Tampilkan nama lokasi estimasi jika ada
-          if (estimatedLocation) {
-            ctx.font = "16px Poppins, Arial";
-            ctx.textAlign = "center";
-            ctx.fillText(`Lokasi: ${estimatedLocation}`, width / 2, y + 40);
-          }
 
           // Tampilkan catatan jika ada
           if (catatan) {
             ctx.font = "16px Poppins, Arial";
             ctx.textAlign = "center";
             ctx.fillText(`Catatan: ${catatan}`, width / 2, y + 70);
+            y += 30;
+          }
+
+          // Tampilkan alamat pengiriman jika ada
+          let alamat = document.getElementById("alamat-pengiriman").value.trim();
+          if (alamat) {
+            ctx.font = "16px Poppins, Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(`Alamat Penerima: ${alamat}`, width / 2, y + 70);
             y += 30;
           }
 
@@ -1116,6 +1269,15 @@
       window.addEventListener("DOMContentLoaded", function () {
         renderProducts();
         renderPromoForm();
+        // Tambah event listener untuk checkbox delivery
+        document.getElementById("delivery-checkbox").addEventListener("change", function() {
+          const addressForm = document.getElementById("address-form");
+          if (this.checked) {
+            addressForm.style.display = "block";
+          } else {
+            addressForm.style.display = "none";
+          }
+        });
         // Tambah tombol cetak nota
         const btn = document.createElement("button");
         btn.className = "btn";
