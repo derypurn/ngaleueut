@@ -996,13 +996,36 @@
         }
         let nama = document.getElementById("nama-pembeli").value.trim();
         let catatan = document.getElementById("catatan-pembeli").value.trim();
+        let alamat = document.getElementById("alamat-pengiriman").value.trim();
         if (!nama) {
           alert("Masukkan nama pembeli terlebih dahulu!");
           return;
         }
-        // Buat canvas 3:4 (misal 600x800 px)
-        const width = 600,
-          height = 900; // Tambah tinggi agar muat QRIS
+        // Hitung subtotal untuk promo
+        let subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+        let discount = promoApplied && subtotal > 20000 ? Math.round(subtotal * 0.1) : 0;
+        // Hitung jumlah baris untuk item
+        let itemLines = 0;
+        cart.forEach((item) => {
+          itemLines += 1; // main line
+          // additional lines
+          if (item.toppings && item.toppings.length > 0) itemLines++;
+          if (item.sauce) itemLines++;
+          if (item.choices) {
+            if (item.id === 2) itemLines += 2; // kuah, method
+            else if (item.id === 3) itemLines += 1; // kuah
+            else itemLines += Object.keys(item.choices).length;
+          }
+          if (item.fixed) itemLines += Object.keys(item.fixed).length;
+        });
+        let promoLines = discount > 0 ? 1 : 0;
+        let catatanLines = catatan ? 1 : 0;
+        let alamatLines = alamat ? 1 : 0;
+        let yOffset = nama ? 20 : 0;
+        // Hitung tinggi canvas
+        let height = 140 + yOffset + 30 + (itemLines * 28) + 10 + 40 + ((3 + promoLines) * 28) + (catatanLines * 30) + (alamatLines * 30) + 300 + 90;
+        // Buat canvas dengan tinggi dinamis
+        const width = 600;
         const canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
@@ -1013,7 +1036,7 @@
         ctx.fillRect(0, 0, width, height);
 
         // Fungsi menggambar isi nota setelah logo & QRIS siap
-        function drawNota(qrisImg, nama, catatan) {
+        function drawNota(qrisImg, nama, catatan, alamat) {
           // Judul tengah atas
           ctx.font = "bold 32px Poppins, Arial";
           ctx.fillStyle = "#23251a";
@@ -1189,7 +1212,6 @@
           }
 
           // Tampilkan alamat pengiriman jika ada
-          let alamat = document.getElementById("alamat-pengiriman").value.trim();
           if (alamat) {
             ctx.font = "16px Poppins, Arial";
             ctx.textAlign = "center";
@@ -1256,11 +1278,11 @@
           qrisImg.crossOrigin = "anonymous";
           qrisImg.src = "img/qris.jpg";
           qrisImg.onload = function () {
-            drawNota(qrisImg, nama, catatan);
+            drawNota(qrisImg, nama, catatan, alamat);
           };
           qrisImg.onerror = function () {
             // Jika gagal load QRIS, tetap lanjutkan tanpa QRIS
-            drawNota(null, nama, catatan);
+            drawNota(null, nama, catatan, alamat);
           };
         }
       }
