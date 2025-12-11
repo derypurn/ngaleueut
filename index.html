@@ -46,6 +46,8 @@
       <div class="grid" id="minuman"></div>
       <h3>Paket</h3>
       <div class="grid" id="paket"></div>
+      <h3>Merchandise</h3>
+      <div class="grid" id="merchandise"></div>
 
       <!-- Keranjang -->
       <div class="cart" id="keranjang">
@@ -121,6 +123,14 @@
           },
           {
             id: 4,
+            name: "Bakso Ikan Kuah Chili Oil",
+            price: { Small: 5000, Large: 10000 },
+            img: "img/bakso-ikan-kuah.png",
+            isSpicy: true,
+            rating: 4.2,
+          },
+          {
+            id: 5,
             name: "Sosis Mekar Pedas",
             price: { Small: 5000, Large: 10000 },
             img: "img/sosis.png",
@@ -128,7 +138,7 @@
             rating: 4.1,
           },
           {
-            id: 5,
+            id: 6,
             name: "Basreng Chili Oil",
             price: { Small: 5000, Large: 10000 },
             img: "img/basreng.png   ",
@@ -136,7 +146,7 @@
             rating: 4,
           },
           {
-            id: 6,
+            id: 7,
             name: "Cimol Bojot",
             price: { Small: 5000, Large: 10000 },
             img: "img/cimol.png",
@@ -144,7 +154,7 @@
             rating: 4.5,
           },
           {
-            id: 7,
+            id: 8,
             name: "Churros",
             price: { Small: 5000, Large: 10000 },
             img: "img/churros.png",
@@ -153,7 +163,7 @@
             rating: 4.3,
           },
           {
-            id: 8,
+            id: 9,
             name: "Minipao Goreng",
             price: { Small: 5000, Large: 10000 },
             img: "img/minipao.png",
@@ -161,7 +171,7 @@
             rating: 4,
           },
           {
-            id: 9,
+            id: 10,
             name: "Sosis / Bakso Crispy",
             price: 0,
             img: "img/sosis-crispy.png",
@@ -169,7 +179,7 @@
             rating: 3.8,
           },
           {
-            id: 10,
+            id: 11,
             name: "Indomie Goreng / Rebus",
             price: { Small: 5000 },
             img: "img/indomie-rebus.png",
@@ -347,6 +357,14 @@
             isSpicy: true, // For Cimol/Basreng/Mie
             rating: 4
           }
+        ],
+        merchandise: [
+          {
+            id: 28,
+            name: "Coming Soon",
+            // img: "img/merch-coming-soon.png",
+            comingSoon: true
+          }
         ]
       };
 
@@ -357,6 +375,7 @@
       let shippingPromoUsed = localStorage.getItem("ngaleueut_shipping_promo_used") === "1";
       let shippingPromoApplied = false;
       let shippingDiscount = 0;
+      let duabelasPromoUsed = localStorage.getItem("ngaleueut_duabelas2x_used") === "1";
 
       // Tambahkan elemen promo form setelah DOMContentLoaded
       function renderPromoForm() {
@@ -380,68 +399,25 @@
       function applyPromo() {
         const code = document.getElementById("promo-code").value.trim().toUpperCase();
         const info = document.getElementById("promo-info");
-        if (code === "WKWKWK") {
-          if (promoUsed) {
-        info.innerHTML = `<span style="color:#e53935;">Mohon maaf, kode promo tersebut sudah dipakai.</span>`;
-        promoApplied = false;
-        promoDiscount = 0;
-        shippingPromoApplied = false;
-        shippingDiscount = 0;
-          } else {
-        // Cek subtotal
-        let subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-        if (subtotal > 20000) {
-          promoApplied = true;
-          promoDiscount = Math.round(subtotal * 0.1);
-          info.innerHTML = `<span style="color:#388e3c;">Promo launching website Ngaleueut! Berlaku sampai tanggal 25 September 2025. Potongan 10% sudah diterapkan.</span>`;
-          localStorage.setItem("ngaleueut_promo_used", "1");
-          promoUsed = true;
-          shippingPromoApplied = false;
-          shippingDiscount = 0;
-        } else {
-          info.innerHTML = `<span style="color:#e53935;">Minimal belanja Rp20.000 untuk menggunakan promo ini.</span>`;
-          promoApplied = false;
-          promoDiscount = 0;
-          shippingPromoApplied = false;
-          shippingDiscount = 0;
-        }
-          }
-        } else if (code === "NGALEUEUT2025") {
-          // Admin code, bisa dipakai berkali-kali
+        if (code === "ADMIN1212") {
+          // Admin code, bisa dipakai berkali-kali, 50% off shipping
           let subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
-          if (subtotal > 20000) {
-        promoApplied = true;
-        promoDiscount = Math.round(subtotal * 0.1);
-        info.innerHTML = `<span style="color:#388e3c;">Kode admin: Potongan 10% sudah diterapkan (NGALEUEUT2025).</span>`;
-        shippingPromoApplied = false;
-        shippingDiscount = 0;
-          } else {
-        info.innerHTML = `<span style="color:#e53935;">Minimal belanja Rp20.000 untuk menggunakan promo ini.</span>`;
-        promoApplied = false;
-        promoDiscount = 0;
-        shippingPromoApplied = false;
-        shippingDiscount = 0;
-          }
-        } else if (code === "DUABULAN") {
-          // Promo ongkir 50% max 20k
-          if (shippingPromoUsed) {
-            info.innerHTML = `<span style="color:#e53935;">Mohon maaf, kode promo tersebut sudah dipakai.</span>`;
+          if (subtotal < 20000) {
+            alert("Minimal belanja Rp20.000 untuk menggunakan promo ini.");
+            info.innerHTML = `<span style="color:#e53935;">Minimal belanja Rp20.000 untuk menggunakan promo ini.</span>`;
+            promoApplied = false;
+            promoDiscount = 0;
             shippingPromoApplied = false;
             shippingDiscount = 0;
           } else {
-            let subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
             let ongkirTemp = hitungOngkir(jarakKm, subtotal);
             let discount = Math.min(Math.round(ongkirTemp * 0.5), 20000);
-            // Konfirmasi dengan pop-up
-            if (confirm(`Apakah Anda ingin menggunakan promo ongkir 50% (max Rp20.000)?\nPotongan: Rp${discount.toLocaleString("id-ID")}`)) {
+            if (confirm(`Apakah Anda ingin menggunakan promo admin?\nPotongan: Rp${discount.toLocaleString("id-ID")}`)) {
               shippingPromoApplied = true;
               shippingDiscount = discount;
-              info.innerHTML = `<span style="color:#388e3c;">Promo ongkir 50% (max Rp20.000) sudah diterapkan.</span>`;
+              info.innerHTML = `<span style="color:#388e3c;">Promo admin: Potongan ongkos kirim 50% sudah diterapkan.</span>`;
               promoApplied = false;
               promoDiscount = 0;
-              localStorage.setItem("ngaleueut_shipping_promo_used", "1");
-              shippingPromoUsed = true;
-              // Pop-up selamat
               alert(`Selamat! Anda telah mendapatkan potongan harga ongkir sebesar Rp${discount.toLocaleString("id-ID")}`);
             } else {
               info.innerHTML = "";
@@ -451,7 +427,53 @@
               shippingDiscount = 0;
             }
           }
+        } else if (code === "DUABELAS2X") {
+          // Promo 12.12: 50% off shipping, min 20k, valid only Dec 12, 2025
+          const today = new Date();
+          if (today.getFullYear() !== 2025 || today.getMonth() !== 11 || today.getDate() !== 12) {
+            alert("Promo ini hanya berlaku pada tanggal 12 Desember 2025.");
+            info.innerHTML = `<span style="color:#e53935;">Promo ini hanya berlaku pada tanggal 12 Desember 2025.</span>`;
+            promoApplied = false;
+            promoDiscount = 0;
+            shippingPromoApplied = false;
+            shippingDiscount = 0;
+          } else if (duabelasPromoUsed) {
+            alert("Mohon maaf, kode promo tersebut sudah dipakai.");
+            info.innerHTML = `<span style="color:#e53935;">Mohon maaf, kode promo tersebut sudah dipakai.</span>`;
+            shippingPromoApplied = false;
+            shippingDiscount = 0;
+          } else {
+            let subtotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+            if (subtotal < 20000) {
+              alert("Minimal belanja Rp20.000 untuk menggunakan promo ini.");
+              info.innerHTML = `<span style="color:#e53935;">Minimal belanja Rp20.000 untuk menggunakan promo ini.</span>`;
+              promoApplied = false;
+              promoDiscount = 0;
+              shippingPromoApplied = false;
+              shippingDiscount = 0;
+            } else {
+              let ongkirTemp = hitungOngkir(jarakKm, subtotal);
+              let discount = Math.min(Math.round(ongkirTemp * 0.5), 20000);
+              if (confirm(`Apakah Anda ingin menggunakan promo 12.12?\nPotongan: Rp${discount.toLocaleString("id-ID")}`)) {
+                shippingPromoApplied = true;
+                shippingDiscount = discount;
+                info.innerHTML = `<span style="color:#388e3c;">Promo 12.12: Potongan ongkos kirim 50% sudah diterapkan.</span>`;
+                promoApplied = false;
+                promoDiscount = 0;
+                localStorage.setItem("ngaleueut_duabelas2x_used", "1");
+                duabelasPromoUsed = true;
+                alert(`Selamat! Anda telah mendapatkan potongan harga ongkir sebesar Rp${discount.toLocaleString("id-ID")}`);
+              } else {
+                info.innerHTML = "";
+                promoApplied = false;
+                promoDiscount = 0;
+                shippingPromoApplied = false;
+                shippingDiscount = 0;
+              }
+            }
+          }
         } else if (code.length > 0) {
+          alert("Kode tersebut tidak dapat digunakan.");
           info.innerHTML = `<span style="color:#e53935;">Kode tersebut tidak dapat digunakan.</span>`;
           promoApplied = false;
           promoDiscount = 0;
@@ -532,7 +554,7 @@
             // Tambahkan select toppings jika ada
             let toppingsSelect = "";
             if (p.toppings && p.toppings.length > 0) {
-            if (p.id === 1 || p.id === 9 || p.id === 10) {
+            if (p.id === 1 || p.id === 9 || p.id === 11) {
                 // For Mie Level, Sosis/Bakso Crispy, and Indomie, use checkboxes and +/- buttons for quantity
                 let toppingsHtml = '<div id="toppings-' + p.id + '" style="margin:5px 0; text-align:left;">';
                 toppingsHtml += '<p style="margin:0 0 5px 0; font-size:14px;">' + (p.id === 9 ? 'Pilih Varian:' : 'Pilih Toppings:') + '</p>';
@@ -627,19 +649,27 @@
                 <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
               `;
             } else {
-              // Makanan and minuman
-              div.innerHTML = `
-                <img src="${p.img}" alt="${p.name}">
-                <h3>${p.name}</h3>
-                <div class="rating">${generateStars(p.rating)}</div>
-                ${typeof p.price === 'object' ? `<select id="variant-${p.id}">${options}</select>` : ''}
-                ${levelSelect}
-                ${toppingsSelect}
-                ${sauceSelect}
-                ${methodSelect}
-                ${kuahSelect}
-                <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
-              `;
+              // Makanan, minuman, and merchandise
+              if (category === "merchandise" && p.comingSoon) {
+                div.innerHTML = `
+                  <img src="${p.img}" alt="${p.name}" style="width:100%; max-height:400px; object-fit:cover;">
+                  <h3 style="font-size:2em; color:#ff9800; text-align:center;">${p.name}</h3>
+                  <p style="font-size:1.2em; text-align:center;">Stay tuned for exciting merchandise!</p>
+                `;
+              } else {
+                div.innerHTML = `
+                  <img src="${p.img}" alt="${p.name}">
+                  <h3>${p.name}</h3>
+                  <div class="rating">${generateStars(p.rating)}</div>
+                  ${typeof p.price === 'object' ? `<select id="variant-${p.id}">${options}</select>` : ''}
+                  ${levelSelect}
+                  ${toppingsSelect}
+                  ${sauceSelect}
+                  ${methodSelect}
+                  ${kuahSelect}
+                  <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
+                `;
+              }
             }
             container.appendChild(div);
           });
@@ -706,7 +736,7 @@
           }
           // Ambil toppings jika ada
           if (product.toppings && product.toppings.length > 0) {
-            if (id === 1 || id === 9 || id === 10) {
+            if (id === 1 || id === 9 || id === 11) {
               // For Mie Level, Sosis/Bakso Crispy, and Indomie, get toppings from checkboxes and spans
               product.toppings.forEach((t, idx) => {
                 const checkEl = document.getElementById(`topping-check-${id}-${idx}`);
@@ -777,7 +807,7 @@
             // Compare toppings
             if (!item.toppings || item.toppings.length !== toppings.length) return false;
             for (let i = 0; i < toppings.length; i++) {
-              if (id === 1 || id === 9 || id === 10) {
+              if (id === 1 || id === 9 || id === 11) {
                 if (item.toppings[i].name !== toppings[i].name || item.toppings[i].qty !== toppings[i].qty) return false;
               } else {
                 if (item.toppings[i] !== toppings[i]) return false;
@@ -791,7 +821,7 @@
         } else {
           const cartItem = { ...product, variant, price, qty: 1, sauce, choices, fixed };
           if (category === "makanan" || category === "paket") cartItem.level = level;
-          if (id === 1 || id === 9 || id === 10) {
+          if (id === 1 || id === 9 || id === 11) {
             cartItem.toppings = toppings; // array of {name, qty, price}
           } else {
             cartItem.toppings = toppings; // array of names
@@ -824,7 +854,7 @@
           }
           let toppingsText = "";
           if (item.toppings && item.toppings.length > 0) {
-            if (item.id === 1 || item.id === 9 || item.id === 10) {
+            if (item.id === 1 || item.id === 9 || item.id === 11) {
               toppingsText = ` Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
             } else {
               toppingsText = ` Toppings: ${item.toppings.join(", ")}`;
@@ -935,7 +965,7 @@
           }
           let toppingsText = "";
           if (item.toppings && item.toppings.length > 0) {
-            if (item.id === 1 || item.id === 9 || item.id === 10) {
+            if (item.id === 1 || item.id === 9 || item.id === 11) {
               toppingsText = ` Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
             } else {
               toppingsText = ` Toppings: ${item.toppings.join(", ")}`;
@@ -1018,7 +1048,7 @@
           }
           if (item.fixed) itemLines += Object.keys(item.fixed).length;
         });
-        let promoLines = discount > 0 ? 1 : 0;
+        let promoLines = (discount > 0 ? 1 : 0) + (shippingPromoApplied ? 1 : 0);
         let catatanLines = catatan ? 1 : 0;
         let alamatLines = alamat ? 1 : 0;
         let yOffset = nama ? 20 : 0;
@@ -1117,7 +1147,7 @@
             let additionalLines = [];
             let toppingsText = "";
             if (item.toppings && item.toppings.length > 0) {
-              if (item.id === 1 || item.id === 9 || item.id === 10) {
+              if (item.id === 1 || item.id === 9 || item.id === 11) {
                 toppingsText = `Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
               } else {
                 toppingsText = `Toppings: ${item.toppings.join(", ")}`;
@@ -1180,6 +1210,18 @@
             ctx.fillText("Promo", 50, y);
             ctx.textAlign = "right";
             ctx.fillText(`-Rp${discount.toLocaleString("id-ID")}`, width - 50, y);
+            ctx.textAlign = "left";
+            ctx.fillStyle = "#23251a";
+            y += 28;
+          }
+
+          // Shipping Promo
+          if (shippingPromoApplied) {
+            ctx.font = "17px Poppins, Arial";
+            ctx.fillStyle = "#009688";
+            ctx.fillText("Shipping Promo", 50, y);
+            ctx.textAlign = "right";
+            ctx.fillText(`-Rp${shippingDiscount.toLocaleString("id-ID")}`, width - 50, y);
             ctx.textAlign = "left";
             ctx.fillStyle = "#23251a";
             y += 28;
