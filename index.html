@@ -523,80 +523,130 @@
         }
       }
 
+      function decreaseTopping(id, idx) {
+        const qtyEl = document.getElementById(`qty-${id}-${idx}`);
+        let qty = parseInt(qtyEl.value) || 0;
+        if (qty > 0) {
+          qty--;
+          qtyEl.value = qty;
+        }
+      }
+
+      function increaseTopping(id, idx) {
+        const qtyEl = document.getElementById(`qty-${id}-${idx}`);
+        let qty = parseInt(qtyEl.value) || 0;
+        if (qty < 10) {
+          qty++;
+          qtyEl.value = qty;
+        }
+      }
+
       function renderProducts() {
         for (let category in products) {
           const container = document.getElementById(category);
           products[category].forEach((p) => {
             const div = document.createElement("div");
             div.className = "product";
-            let options = "";
-            for (let variant in p.price) {
-              options += `<option value="${variant}">${variant} - Rp${p.price[
-                variant
-              ].toLocaleString("id-ID")}</option>`;
+            let variantRadios = "";
+            if (typeof p.price === 'object') {
+              variantRadios = '<div id="variant-' + p.id + '" style="margin:5px 0;">';
+              variantRadios += '<p style="margin:0 0 5px 0; font-size:10px; text-align:left;">Pilih ukuran:</p>';
+              variantRadios += '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">';
+              let count = 0;
+              for (let variant in p.price) {
+                variantRadios += `<label style="font-size:10px; text-align:left;"><input type="radio" name="variant-${p.id}" value="${variant}" style="margin-right:5px;">${variant} - Rp${p.price[variant].toLocaleString("id-ID")}</label>`;
+                count++;
+              }
+              variantRadios += '</div></div>';
             }
-            // Tambahkan select level jika kategori makanan dan isSpicy true
+            // Tambahkan radio level jika kategori makanan dan isSpicy true
             let levelSelect = "";
             if (category === "makanan" && p.isSpicy === true) {
               levelSelect = `
-              <select id="level-${p.id}">
-                <option value="" disabled selected>Pilih level pedas</option>
-                <option value="0">Tanpa pedas</option>
-                <option value="1">Level 1</option>
-                <option value="2">Level 2</option>
-                <option value="3">Level 3</option>
-                <option value="4">Level 4 (+Rp1.000)</option>
-                <option value="5">Level 5 (+Rp1.000)</option>
-                <option value="6">Pedas dipisah (+Rp500)</option>
-              </select>
+              <div id="level-${p.id}" style="margin:5px 0;">
+                <p style="margin:0 0 5px 0; font-size:10px; text-align:left;">Pilih level pedas:</p>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
+                  <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="0"> Tanpa pedas</label>
+                  <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="1"> Level 1</label>
+                  <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="2"> Level 2</label>
+                  <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="3"> Level 3</label>
+                  <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="4"> Level 4 (+Rp1.000)</label>
+                  <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="5"> Level 5 (+Rp1.000)</label>
+                  <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="6"> Pedas dipisah (+Rp500)</label>
+                </div>
+              </div>
               `;
             }
             // Tambahkan select toppings jika ada
             let toppingsSelect = "";
             if (p.toppings && p.toppings.length > 0) {
-            if (p.id === 1 || p.id === 9 || p.id === 11) {
-                // For Mie Level, Sosis/Bakso Crispy, and Indomie, use checkboxes and +/- buttons for quantity
-                let toppingsHtml = '<div id="toppings-' + p.id + '" style="margin:5px 0; text-align:left;">';
-                toppingsHtml += '<p style="margin:0 0 5px 0; font-size:14px;">' + (p.id === 9 ? 'Pilih Varian:' : 'Pilih Toppings:') + '</p>';
+              let title = (p.id === 9 ? 'Pilih Varian:' : 'Pilih Toppings:');
+              toppingsSelect = '<div id="toppings-' + p.id + '" style="margin:5px 0;">';
+              toppingsSelect += '<p style="margin:0 0 5px 0; font-size:10px; text-align:left;">' + title + '</p>';
+              if (category === "minuman") {
+                // checkboxes for drinks, no qty, 2 columns
+                toppingsSelect += '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">';
                 p.toppings.forEach((t, idx) => {
-                  toppingsHtml += `
-                    <div style="display:flex; align-items:center; margin-bottom:2px;">
-                      <input type="checkbox" id="topping-check-${p.id}-${idx}" style="margin-right:5px;">
-                      <label for="topping-check-${p.id}-${idx}" style="flex:1; font-size:12px;">${t.name} (+Rp${t.price.toLocaleString("id-ID")})</label>
-                      <button onclick="decrease(${p.id}, ${idx})" style="width:20px; height:20px; padding:0; font-size:12px; margin-left:5px;">-</button>
-                      <span id="qty-${p.id}-${idx}" style="margin:0 5px; font-size:12px;">0</span>
-                      <button onclick="increase(${p.id}, ${idx})" style="width:20px; height:20px; padding:0; font-size:12px;">+</button>
+                toppingsSelect += `<label style="font-size:10px;"><input type="checkbox" name="toppings-${p.id}" value="${t.name}" style="margin-right:5px;">${t.name} (+Rp${t.price.toLocaleString("id-ID")})</label>`;
+                });
+              } else {
+                // checkboxes with qty for makanan, 1 column, range on right
+                toppingsSelect += '<div style="display:grid; grid-template-columns: 1fr; gap:5px;">';
+                p.toppings.forEach((t, idx) => {
+                  toppingsSelect += `
+                    <div style="display:flex; justify-content:space-between; align-items:center; font-size:10px;">
+                      <div>
+                        <input type="checkbox" name="toppings-${p.id}" value="${t.name}" style="margin-right:5px;">
+                        <span>${t.name} (+Rp${t.price.toLocaleString("id-ID")})</span>
+                      </div>
+                      <div>
+                        <button type="button" onclick="decreaseTopping('${p.id}', ${idx})" style="padding:0 3px; font-size:10px;">-</button>
+                        <input type="number" id="qty-${p.id}-${idx}" value="0" min="0" max="10" style="width:30px; margin:0 3px; font-size:10px; text-align:center;">
+                        <button type="button" onclick="increaseTopping('${p.id}', ${idx})" style="padding:0 3px; font-size:10px;">+</button>
+                      </div>
                     </div>
                   `;
                 });
-                toppingsHtml += '</div>';
-                toppingsSelect = toppingsHtml;
-              } else {
-                let toppingOptions = `<option value="">Tanpa topping</option>`;
-                p.toppings.forEach(t => {
-                  toppingOptions += `<option value="${t.name}">${t.name} (+Rp${t.price.toLocaleString("id-ID")})</option>`;
-                });
-                toppingsSelect = `<select id="toppings-${p.id}" style="margin:5px 0;">${toppingOptions}</select>`;
               }
+              toppingsSelect += '</div></div>';
             }
       // Tambahkan select sauce jika ada
       let sauceSelect = "";
       if (p.sauces && p.sauces.length > 0) {
-        let sauceOptions = `<option value="">Tanpa sauce</option>`;
-        p.sauces.forEach(s => {
-          sauceOptions += `<option value="${s}">${s}</option>`;
+        sauceSelect = '<div id="sauce-' + p.id + '" style="margin:5px 0;">';
+        sauceSelect += '<p style="margin:0 0 5px 0; font-size:10px; text-align:left;">Pilih sauce:</p>';
+        sauceSelect += '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">';
+        p.sauces.forEach((s, idx) => {
+          const checked = (p.id === 8 && idx === 0) ? 'checked' : '';
+        sauceSelect += `<label style="font-size:10px; text-align:left;"><input type="radio" name="sauce-${p.id}" value="${s}" style="margin-right:5px;" ${checked}>${s}</label>`;
         });
-        sauceSelect = `<select id="sauce-${p.id}" style="margin:5px 0;">${sauceOptions}</select>`;
+        sauceSelect += '</div></div>';
       }
       // Tambahkan select method untuk Pangsit Ayam
       let methodSelect = "";
       if (p.id === 2) {
-        methodSelect = `<select id="method-${p.id}" style="margin:5px 0;"><option value="">Pilih metode</option><option value="Direbus">Direbus</option><option value="Digoreng">Digoreng</option></select>`;
+        methodSelect = `
+        <div id="method-${p.id}" style="margin:5px 0;">
+          <p style="margin:0 0 5px 0; font-size:10px; text-align:left;">Pilih metode:</p>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
+            <label style="font-size:10px; text-align:left;"><input type="radio" name="method-${p.id}" value="Direbus" style="margin-right:5px;">Direbus</label>
+            <label style="font-size:10px; text-align:left;"><input type="radio" name="method-${p.id}" value="Digoreng" style="margin-right:5px;">Digoreng</label>
+          </div>
+        </div>
+        `;
       }
       // Tambahkan select kuah untuk Pangsit Ayam, Bakso Mekar, dan Sosis Mekar Pedas
       let kuahSelect = "";
       if (p.id === 2 || p.id === 3 ) {
-        kuahSelect = `<select id="kuah-${p.id}" style="margin:5px 0;"><option value="">Pilih kuah</option><option value="ya">Ya (+Rp1.000)</option><option value="tidak">Tidak</option></select>`;
+        kuahSelect = `
+        <div id="kuah-${p.id}" style="margin:5px 0;">
+          <p style="margin:0 0 5px 0; font-size:10px; text-align:left;">Pilih kuah:</p>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
+            <label style="font-size:10px; text-align:left;"><input type="radio" name="kuah-${p.id}" value="ya" style="margin-right:5px;">Ya (+Rp1.000)</label>
+            <label style="font-size:10px; text-align:left;"><input type="radio" name="kuah-${p.id}" value="tidak" style="margin-right:5px;">Tidak</label>
+          </div>
+        </div>
+        `;
       }
             if (category === "paket") {
               // Paket specific
@@ -618,23 +668,29 @@
               }
               let sauceSelectPaket = "";
               if (p.sauces) {
-                let opts = `<option value="">Tanpa sauce</option>`;
-                p.sauces.forEach(s => opts += `<option value="${s}">${s}</option>`);
-                sauceSelectPaket = `<select id="sauce-${p.id}" style="margin:5px 0;">${opts}</select>`;
+                sauceSelectPaket = '<div id="sauce-' + p.id + '" style="margin:5px 0;">';
+                sauceSelectPaket += '<p style="margin:0 0 5px 0; font-size:10px; text-align:left;">Pilih sauce:</p>';
+                sauceSelectPaket += '<div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">';
+                p.sauces.forEach(s => {
+                sauceSelectPaket += `<label style="font-size:10px; text-align:left;"><input type="radio" name="sauce-${p.id}" value="${s}" style="margin-right:5px;">${s}</label>`;
+                });
+                sauceSelectPaket += '</div></div>';
               }
               let levelSelectPaket = "";
               if (p.isSpicy) {
                 levelSelectPaket = `
-                <select id="level-${p.id}">
-                  <option value="" disabled selected>Pilih level pedas</option>
-                  <option value="0">Tanpa pedas</option>
-                  <option value="1">Level 1</option>
-                  <option value="2">Level 2</option>
-                  <option value="3">Level 3</option>
-                  <option value="4">Level 4 (+Rp1.000)</option>
-                  <option value="5">Level 5 (+Rp1.000)</option>
-                  <option value="6">Pedas dipisah (+Rp500)</option>
-                </select>
+                <div id="level-${p.id}" style="margin:5px 0;">
+                  <p style="margin:0 0 5px 0; font-size:10px; text-align:left;">Pilih level pedas:</p>
+                  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:5px;">
+                    <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="0">Tanpa pedas</label>
+                    <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="1">Level 1</label>
+                    <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="2">Level 2</label>
+                    <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="3">Level 3</label>
+                    <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="4">Level 4 (+Rp1.000)</label>
+                    <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="5">Level 5 (+Rp1.000)</label>
+                    <label style="font-size:10px; text-align:left;"><input type="radio" name="level-${p.id}" value="6">Pedas dipisah (+Rp500)</label>
+                  </div>
+                </div>
                 `;
               }
               div.innerHTML = `
@@ -661,7 +717,7 @@
                   <img src="${p.img}" alt="${p.name}">
                   <h3>${p.name}</h3>
                   <div class="rating">${generateStars(p.rating)}</div>
-                  ${typeof p.price === 'object' ? `<select id="variant-${p.id}">${options}</select>` : ''}
+                  ${variantRadios}
                   ${levelSelect}
                   ${toppingsSelect}
                   ${sauceSelect}
@@ -703,18 +759,26 @@
             }
           }
           if (product.isSpicy) {
-            level = document.getElementById(`level-${id}`).value;
-            if (level === "") {
+            const levelRadio = document.querySelector(`input[name="level-${id}"]:checked`);
+            if (!levelRadio) {
               alert("Pilih level pedas terlebih dahulu!");
               return;
             }
+            level = levelRadio.value;
+            if (level === "4" || level === "5") {
+              price += 1000;
+            }
+            if (level === "6") {
+              price += 500;
+            }
           }
           if (product.sauces) {
-            sauce = document.getElementById(`sauce-${id}`).value;
+            const sauceRadio = document.querySelector(`input[name="sauce-${id}"]:checked`);
+            sauce = sauceRadio ? sauceRadio.value : "";
           }
         } else {
           // Makanan or minuman
-          const variantEl = document.getElementById(`variant-${id}`);
+          const variantEl = document.querySelector(`input[name="variant-${id}"]:checked`);
           variant = variantEl ? variantEl.value : '';
           if (typeof product.price === 'object') {
             price = product.price[variant];
@@ -722,11 +786,12 @@
             price = product.price;
           }
           if (category === "makanan" && product.isSpicy === true) {
-            level = document.getElementById(`level-${id}`).value;
-            if (level === "") {
+            const levelRadio = document.querySelector(`input[name="level-${id}"]:checked`);
+            if (!levelRadio) {
               alert("Pilih level pedas terlebih dahulu!");
               return;
             }
+            level = levelRadio.value;
             if (level === "4" || level === "5") {
               price += 1000;
             }
@@ -736,57 +801,64 @@
           }
           // Ambil toppings jika ada
           if (product.toppings && product.toppings.length > 0) {
-            if (id === 1 || id === 9 || id === 11) {
-              // For Mie Level, Sosis/Bakso Crispy, and Indomie, get toppings from checkboxes and spans
-              product.toppings.forEach((t, idx) => {
-                const checkEl = document.getElementById(`topping-check-${id}-${idx}`);
-                if (checkEl.checked) {
-                  const qtyEl = document.getElementById(`qty-${id}-${idx}`);
-                  const qty = parseInt(qtyEl.textContent) || 0;
-                  if (qty > 0) {
-                    toppings.push({ name: t.name, qty: qty, price: t.price });
-                    price += t.price * qty;
-                  }
+            if (category === "minuman") {
+              // multiple checkboxes for drinks, optional
+              const toppingCheckboxes = document.querySelectorAll(`input[name="toppings-${id}"]:checked`);
+              toppingCheckboxes.forEach(cb => {
+                const topping = product.toppings.find(t => t.name === cb.value);
+                if (topping) {
+                  toppings.push(topping.name);
+                  price += topping.price;
                 }
               });
             } else {
-              const toppingsSelect = document.getElementById(`toppings-${id}`);
-              const selectedOptions = Array.from(toppingsSelect.selectedOptions);
-              selectedOptions.forEach(option => {
-                if (option.value) {
-                  const topping = product.toppings.find(t => t.name === option.value);
+              // for makanan, checkboxes with qty, optional except for id 10
+              const toppingCheckboxes = document.querySelectorAll(`input[name="toppings-${id}"]:checked`);
+              let hasTopping = false;
+              toppingCheckboxes.forEach(cb => {
+                const idx = Array.from(document.querySelectorAll(`input[name="toppings-${id}"]`)).indexOf(cb);
+                const qtyEl = document.getElementById(`qty-${id}-${idx}`);
+                const qty = parseInt(qtyEl.value) || 0;
+                if (qty > 0) {
+                  hasTopping = true;
+                  const topping = product.toppings.find(t => t.name === cb.value);
                   if (topping) {
-                    toppings.push(topping.name);
-                    price += topping.price;
+                    toppings.push({ name: topping.name, qty: qty, price: topping.price * qty });
+                    price += topping.price * qty;
                   }
                 }
               });
+              if (!hasTopping && id === 10) {
+                alert("Pilih topping terlebih dahulu!");
+                return;
+              }
             }
           }
           // Ambil sauce jika ada
           if (product.sauces && product.sauces.length > 0) {
-            sauce = document.getElementById(`sauce-${id}`).value;
+            const sauceRadio = document.querySelector(`input[name="sauce-${id}"]:checked`);
+            sauce = sauceRadio ? sauceRadio.value : "";
           }
           // Ambil kuah untuk Pangsit Ayam, Bakso Mekar, dan Sosis Mekar Pedas
           if (id === 2 || id === 3) {
-            const kuah = document.getElementById(`kuah-${id}`).value;
-            if (kuah === "") {
+            const kuahRadio = document.querySelector(`input[name="kuah-${id}"]:checked`);
+            if (!kuahRadio) {
               alert("Pilih kuah terlebih dahulu!");
               return;
             }
-            choices.kuah = kuah;
-            if (kuah === "ya") {
+            choices.kuah = kuahRadio.value;
+            if (kuahRadio.value === "ya") {
               price += 1000;
             }
           }
           // Ambil metode untuk Pangsit Ayam
           if (id === 2) {
-            const method = document.getElementById(`method-${id}`).value;
-            if (method === "") {
+            const methodRadio = document.querySelector(`input[name="method-${id}"]:checked`);
+            if (!methodRadio) {
               alert("Pilih metode masak terlebih dahulu!");
               return;
             }
-            choices.method = method;
+            choices.method = methodRadio.value;
           }
         }
 
@@ -807,7 +879,7 @@
             // Compare toppings
             if (!item.toppings || item.toppings.length !== toppings.length) return false;
             for (let i = 0; i < toppings.length; i++) {
-              if (id === 1 || id === 9 || id === 11) {
+              if (typeof toppings[i] === 'object') {
                 if (item.toppings[i].name !== toppings[i].name || item.toppings[i].qty !== toppings[i].qty) return false;
               } else {
                 if (item.toppings[i] !== toppings[i]) return false;
@@ -854,7 +926,7 @@
           }
           let toppingsText = "";
           if (item.toppings && item.toppings.length > 0) {
-            if (item.id === 1 || item.id === 9 || item.id === 11) {
+            if (item.id === 1 || item.id === 9 || item.id === 10 || item.id === 11) {
               toppingsText = ` Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
             } else {
               toppingsText = ` Toppings: ${item.toppings.join(", ")}`;
@@ -965,7 +1037,7 @@
           }
           let toppingsText = "";
           if (item.toppings && item.toppings.length > 0) {
-            if (item.id === 1 || item.id === 9 || item.id === 11) {
+            if (item.id === 1 || item.id === 9 || item.id === 10 || item.id === 11) {
               toppingsText = ` Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
             } else {
               toppingsText = ` Toppings: ${item.toppings.join(", ")}`;
@@ -1245,7 +1317,6 @@
           ctx.textAlign = "left";
 
 
-          // Tampilkan catatan jika ada
           if (catatan) {
             ctx.font = "16px Poppins, Arial";
             ctx.textAlign = "center";
@@ -1253,7 +1324,6 @@
             y += 30;
           }
 
-          // Tampilkan alamat pengiriman jika ada
           if (alamat) {
             ctx.font = "16px Poppins, Arial";
             ctx.textAlign = "center";
@@ -1261,7 +1331,6 @@
             y += 30;
           }
 
-          // QRIS di tengah
           if (qrisImg) {
             // Ukuran QRIS 220x220 px, posisi tengah
             const qrisSize = 220;
