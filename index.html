@@ -40,14 +40,26 @@
     <section class="products" id="menu">
       <h2>Menu Kami</h2>
 
-      <h3>Makanan</h3>
-      <div class="grid" id="makanan"></div>
-      <h3>Minuman</h3>
-      <div class="grid" id="minuman"></div>
-      <h3>Paket</h3>
-      <div class="grid" id="paket"></div>
-      <h3>Merchandise</h3>
-      <div class="grid" id="merchandise"></div>
+      <div class="menu-slider">
+        <div class="grids">
+          <div class="category-section">
+            <h3 class="grid-title" id="makanan-title">Makanan</h3>
+            <div class="grid active" id="makanan-grid"></div>
+          </div>
+          <div class="category-section">
+            <h3 class="grid-title" id="minuman-title">Minuman</h3>
+            <div class="grid" id="minuman-grid"></div>
+          </div>
+          <div class="category-section">
+            <h3 class="grid-title" id="paket-title">Paket</h3>
+            <div class="grid" id="paket-grid"></div>
+          </div>
+          <div class="category-section">
+            <h3 class="grid-title" id="merchandise-title">Merchandise</h3>
+            <div class="grid" id="merchandise-grid"></div>
+          </div>
+        </div>
+      </div>
 
       <!-- Keranjang -->
       <div class="cart" id="keranjang">
@@ -63,6 +75,11 @@
         <div style="margin:10px 0; text-align:left; margin-left: 20px;">
           <label for="catatan-pembeli" style="font-weight:bold;">Catatan Pembeli:</label><br>
           <textarea id="catatan-pembeli" placeholder="Masukkan catatan jika ada" style="padding:5px; border-radius:5px; border:1px solid #ccc; width:200px; height:60px; margin-top:5px;"></textarea>
+        </div>
+        <div style="margin:10px 0; text-align:left; margin-left: 20px;">
+          <label style="font-weight:bold;">Metode Pembayaran:</label><br>
+          <label style="font-size:14px;"><input type="radio" name="payment-method" value="tunai" style="margin-right:5px;">Tunai</label><br>
+          <label style="font-size:14px;"><input type="radio" name="payment-method" value="qris" style="margin-right:5px;">Non-Tunai (QRIS)</label>
         </div>
         <div style="margin:10px 0; text-align:left; margin-left: 20px;">
           <input type="checkbox" id="delivery-checkbox" style="margin-right:5px;">
@@ -103,7 +120,7 @@
             img: "img/miejontor.png",
             isSpicy: true,
             rating: 4.5,
-            toppings: [ { name: "Bakso Kecil", price: 1000 },{ name: "Pangsit Ayam", price: 1000 }, { name: "Bakso Besar", price: 5000 },{ name: "Sosis Mekar", price: 5000 }, { name: "Sosis Mekar Pedas", price: 5000 }, { name: "Telor", price: 3000 } ],
+            toppings: [ { name: "Bakso Kecil", price: 1000 },{ name: "Pangsit Ayam", price: 1000 }, { name: "Bakso Besar", price: 5000 },{ name: "Sosis Mekar", price: 5000 }, { name: "Telor", price: 3000 } ],
           },
           {
             id: 2,
@@ -180,6 +197,13 @@
           },
           {
             id: 11,
+            name: "Cireng",
+            price: 10000,
+            img: "img/cireng.png",
+            rating: 4.0,
+          },
+          {
+            id: 12,
             name: "Indomie Goreng / Rebus",
             price: { Small: 5000 },
             img: "img/indomie-rebus.png",
@@ -541,9 +565,20 @@
         }
       }
 
+      function showCategory(category) {
+        // Hide all grids
+        document.querySelectorAll('.grid').forEach(grid => grid.classList.remove('active'));
+        // Remove active from categories
+        document.querySelectorAll('.category').forEach(cat => cat.classList.remove('active'));
+        // Show selected grid
+        document.getElementById(category + '-grid').classList.add('active');
+        // Add active to selected category
+        event.target.classList.add('active');
+      }
+
       function renderProducts() {
         for (let category in products) {
-          const container = document.getElementById(category);
+          const container = document.getElementById(category + '-grid');
           products[category].forEach((p) => {
             const div = document.createElement("div");
             div.className = "product";
@@ -702,6 +737,7 @@
                 ${choicesSelect}
                 ${sauceSelectPaket}
                 ${levelSelectPaket}
+                <textarea id="notes-${p.id}" placeholder="Catatan (opsional)" style="margin:5px 0; width:100%; height:40px; padding:5px; border-radius:5px; border:1px solid #ccc;"></textarea>
                 <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
               `;
             } else {
@@ -723,6 +759,7 @@
                   ${sauceSelect}
                   ${methodSelect}
                   ${kuahSelect}
+                  <textarea id="notes-${p.id}" placeholder="Catatan (opsional)" style="margin:5px 0; width:100%; height:40px; padding:5px; border-radius:5px; border:1px solid #ccc;"></textarea>
                   <button class="btn" onclick="addToCart(${p.id}, '${category}')"><i class="fa fa-shopping-cart"></i> Tambah</button>
                 `;
               }
@@ -742,9 +779,10 @@
         let toppings = [];
         let sauce = "";
         let variant = "";
+        let notes = "";
 
         if (category === "paket") {
-          // For paket, price is fixed, get choices, level, sauce
+          // For paket, price is fixed, get choices, level, sauce, notes
           if (product.choices) {
             for (let key in product.choices) {
               const selectEl = document.getElementById(`${key}-${id}`);
@@ -776,15 +814,22 @@
             const sauceRadio = document.querySelector(`input[name="sauce-${id}"]:checked`);
             sauce = sauceRadio ? sauceRadio.value : "";
           }
+          notes = document.getElementById(`notes-${id}`).value.trim();
         } else {
           // Makanan or minuman
-          const variantEl = document.querySelector(`input[name="variant-${id}"]:checked`);
-          variant = variantEl ? variantEl.value : '';
           if (typeof product.price === 'object') {
+            const variantEl = document.querySelector(`input[name="variant-${id}"]:checked`);
+            if (!variantEl) {
+              alert("Pilih ukuran terlebih dahulu!");
+              return;
+            }
+            variant = variantEl.value;
             price = product.price[variant];
           } else {
             price = product.price;
           }
+          // Ambil notes
+          notes = document.getElementById(`notes-${id}`).value.trim();
           if (category === "makanan" && product.isSpicy === true) {
             const levelRadio = document.querySelector(`input[name="level-${id}"]:checked`);
             if (!levelRadio) {
@@ -891,9 +936,9 @@
         if (existing) {
           existing.qty++;
         } else {
-          const cartItem = { ...product, variant, price, qty: 1, sauce, choices, fixed };
+          const cartItem = { ...product, variant, price, qty: 1, sauce, choices, fixed, notes };
           if (category === "makanan" || category === "paket") cartItem.level = level;
-          if (id === 1 || id === 9 || id === 11) {
+          if (id === 1 || id === 9 || id === 11 || id === 12) {
             cartItem.toppings = toppings; // array of {name, qty, price}
           } else {
             cartItem.toppings = toppings; // array of names
@@ -926,7 +971,7 @@
           }
           let toppingsText = "";
           if (item.toppings && item.toppings.length > 0) {
-            if (item.id === 1 || item.id === 9 || item.id === 10 || item.id === 11) {
+            if (item.id === 1 || item.id === 9 || item.id === 10 || item.id === 11 || item.id === 12) {
               toppingsText = ` Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
             } else {
               toppingsText = ` Toppings: ${item.toppings.join(", ")}`;
@@ -948,9 +993,10 @@
             }
           }
           let fixedText = item.fixed ? ` ${Object.values(item.fixed).join(", ")}` : "";
+          let notesText = item.notes ? ` Catatan: ${item.notes}` : "";
           let li = document.createElement("li");
           li.innerHTML = `
-            <span>${item.name}${levelText}${toppingsText}${sauceText}${variantText}${choicesText}${fixedText} ${item.qty} = Rp${(item.price * item.qty).toLocaleString("id-ID")}</span>
+            <span>${item.name}${levelText}${toppingsText}${sauceText}${variantText}${choicesText}${fixedText}${notesText} ${item.qty} = Rp${(item.price * item.qty).toLocaleString("id-ID")}</span>
             <button onclick="removeFromCart(${idx})" style="background:none;border:none;color:#e53935;font-size:18px;cursor:pointer;float:right;" title="Hapus item">&times;</button>
           `;
           cartList.appendChild(li);
@@ -1024,6 +1070,12 @@
         }
         let nama = document.getElementById("nama-pembeli").value.trim();
         let catatan = document.getElementById("catatan-pembeli").value.trim();
+        let paymentMethod = document.querySelector('input[name="payment-method"]:checked');
+        if (!paymentMethod) {
+          alert("Pilih metode pembayaran terlebih dahulu!");
+          return;
+        }
+        paymentMethod = paymentMethod.value;
         let message = "Halo, saya " + nama + " ingin memesan:%0A";
         let subtotal = 0;
         cart.forEach((item) => {
@@ -1037,7 +1089,7 @@
           }
           let toppingsText = "";
           if (item.toppings && item.toppings.length > 0) {
-            if (item.id === 1 || item.id === 9 || item.id === 10 || item.id === 11) {
+            if (item.id === 1 || item.id === 9 || item.id === 10 || item.id === 11 || item.id === 12) {
               toppingsText = ` Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
             } else {
               toppingsText = ` Toppings: ${item.toppings.join(", ")}`;
@@ -1059,7 +1111,8 @@
             }
           }
           let fixedText = item.fixed ? ` ${Object.values(item.fixed).join(", ")}` : "";
-          message += `- ${item.name}${levelText}${toppingsText}${sauceText}${variantText}${choicesText}${fixedText} (x${
+          let notesText = item.notes ? ` Catatan: ${item.notes}` : "";
+          message += `- ${item.name}${levelText}${toppingsText}${sauceText}${variantText}${choicesText}${fixedText}${notesText} (x${
             item.qty
           }) = Rp${(item.price * item.qty).toLocaleString("id-ID")}%0A`;
           subtotal += item.price * item.qty;
@@ -1076,6 +1129,7 @@
           "id-ID"
         )}%0A`;
         message += `Total: Rp${(subtotal + ongkir - discount).toLocaleString("id-ID")}%0A`;
+        message += `Metode Pembayaran: ${paymentMethod === "tunai" ? "Tunai" : "Non-Tunai (QRIS)"}%0A`;
         if (catatan) {
           message += `Catatan: ${catatan}%0A`;
         }
@@ -1119,6 +1173,7 @@
             else itemLines += Object.keys(item.choices).length;
           }
           if (item.fixed) itemLines += Object.keys(item.fixed).length;
+          if (item.notes) itemLines++;
         });
         let promoLines = (discount > 0 ? 1 : 0) + (shippingPromoApplied ? 1 : 0);
         let catatanLines = catatan ? 1 : 0;
@@ -1219,7 +1274,7 @@
             let additionalLines = [];
             let toppingsText = "";
             if (item.toppings && item.toppings.length > 0) {
-              if (item.id === 1 || item.id === 9 || item.id === 11) {
+              if (item.id === 1 || item.id === 9 || item.id === 11 || item.id === 12) {
                 toppingsText = `Toppings: ${item.toppings.map(t => `${t.name} x${t.qty}`).join(", ")}`;
               } else {
                 toppingsText = `Toppings: ${item.toppings.join(", ")}`;
@@ -1248,6 +1303,9 @@
               for (let [k, v] of Object.entries(item.fixed)) {
                 additionalLines.push(`${k}: ${v}`);
               }
+            }
+            if (item.notes) {
+              additionalLines.push(`Catatan: ${item.notes}`);
             }
             additionalLines.forEach(line => {
               ctx.fillText(line, 50, y);
@@ -1328,6 +1386,16 @@
             ctx.font = "16px Poppins, Arial";
             ctx.textAlign = "center";
             ctx.fillText(`Alamat Penerima: ${alamat}`, width / 2, y + 70);
+            y += 30;
+          }
+
+          // Payment method
+          let paymentMethod = document.querySelector('input[name="payment-method"]:checked');
+          paymentMethod = paymentMethod ? paymentMethod.value : "";
+          if (paymentMethod) {
+            ctx.font = "16px Poppins, Arial";
+            ctx.textAlign = "center";
+            ctx.fillText(`Metode Pembayaran: ${paymentMethod === "tunai" ? "Tunai" : "Non-Tunai (QRIS)"}`, width / 2, y + 70);
             y += 30;
           }
 
