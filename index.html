@@ -171,7 +171,72 @@
                     { id: 'm1', name: "Minipao-pao", img: "img/minipao.png", sizes: { small: 5000, large: 10000 } },
                     { id: 'm2', name: "Churros Bites", img: "img/churros.png", sizes: { small: 5000, large: 10000 }, hasSaus: true }
                 ]
+            },
+            {
+    category: "Paket Hemat 🔥",
+    items: [
+        {
+            id: 'pk1',
+            name: "Paket Hemat Merakyat",
+            img: "img/paket1.png",
+            sizes: { paket: 11000 },
+            isPackage: true,
+            options: {
+                main: ["Mie", "Pangsit Ayam"],
+                drink: ["Original Tea"]
+            },
+            hasLevel: true
+        },
+        {
+            id: 'pk2',
+            name: "Paket Ngaleueut Nyalira",
+            img: "img/paket2.png",
+            sizes: { paket: 11000 },
+            isPackage: true,
+            options: {
+                main: ["Mie", "Pangsit Ayam"],
+                drink: ["Milky Strawberry", "Milky Taro", "Milky Bubble Gum"]
+            },
+            hasLevel: true
+        },
+        {
+            id: 'pk3',
+            name: "Nyalse Tipis-Tipis",
+            img: "img/paket3.png",
+            sizes: { paket: 12000 },
+            isPackage: true,
+            options: {
+                main: ["Churros", "Minipao"],
+                drink: ["Kopi Gula Aren"]
             }
+        },
+        {
+            id: 'pk4',
+            name: "Ngidam Pedes Manis",
+            img: "img/paket4.png",
+            sizes: { paket: 15000 },
+            isPackage: true,
+            options: {
+                main: ["Cimol", "Basreng"],
+                drink: ["Thai Tea"]
+            },
+            hasLevel: true
+        },
+        {
+            id: 'pk5',
+            name: "Bestie Pedes Manis",
+            img: "img/paket5.png",
+            sizes: { paket: 23000 },
+            isPackage: true,
+            options: {
+                main: ["Cimol", "Basreng"],
+                drink1: ["Milky Strawberry", "Milky Taro", "Milky Bubble Gum"],
+                drink2: ["Milky Strawberry", "Milky Taro", "Milky Bubble Gum"]
+            },
+            hasLevel: true
+        }
+    ]
+}
         ];
 
         const TOPPINGS = [
@@ -328,7 +393,26 @@
                     </div>
                 `;
             }
-
+            if (activeItem.isPackage && activeItem.options) {
+    html += `
+        <div class="space-y-3">
+            <p class="text-[10px] font-black uppercase text-gray-400">Pilihan Paket</p>
+            ${Object.keys(activeItem.options).map(key => `
+                <div>
+                    <p class="text-[10px] font-bold capitalize mb-1">${key}</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${activeItem.options[key].map(opt => `
+                            <button onclick="selectPackageOption('${key}','${opt}')"
+                                class="px-3 py-2 rounded-xl border text-xs font-bold">
+                                ${opt}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
             html += `
                 <div class="space-y-2">
                     <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Catatan</p>
@@ -352,7 +436,11 @@
             renderModalUI();
         }
         function selectSaus(s) { activeItem.selectedSaus = s; renderModalUI(); }
-
+        function selectPackageOption(key, value) {
+    if (!activeItem.selectedOptions) activeItem.selectedOptions = {};
+    activeItem.selectedOptions[key] = value;
+    renderModalUI();
+}
         function updateModalPrice() {
             if (!activeItem) return;
             const toppingTotal = activeItem.selectedToppings.reduce((sum, t) => sum + t.price, 0);
@@ -497,6 +585,11 @@
                 if (item.metode) msg += `- Masak: ${item.metode}%0A`;
                 if (item.kuah) msg += `- Pakai Kuah: Ya%0A`;
                 if (item.selectedSaus) msg += `- Saus: ${item.selectedSaus}%0A`;
+                if (item.selectedOptions) {
+    Object.keys(item.selectedOptions).forEach(k => {
+        msg += `- ${k}: ${item.selectedOptions[k]}%0A`;
+    });
+}
                 if (item.note) msg += `- *Catatan:* _${item.note}_%0A`;
                 msg += `- Harga: Rp${item.finalPrice.toLocaleString()}%0A%0A`;
             });
