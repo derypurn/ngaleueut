@@ -81,12 +81,12 @@
                     <h4 class="text-sm font-black text-green-800 uppercase tracking-widest">Pengiriman</h4>
                     <div class="space-y-4">
                         <div class="flex gap-2 p-1.5 bg-white border border-green-100 rounded-2xl">
-                            <button onclick="setOrderType('delivery')" id="btn-delivery" class="flex-1 py-3 rounded-xl font-bold transition-all bg-green-600 text-white shadow-sm">Kirim</button>
+                            <button onclick="setOrderType('delivery')" id="btn-delivery" class="flex-1 py-3 rounded-xl font-bold transition-all bg-green-600 text-white shadow-sm">Antar</button>
                             <button onclick="setOrderType('takeaway')" id="btn-takeaway" class="flex-1 py-3 rounded-xl font-bold transition-all text-green-400">Ambil</button>
                         </div>
                         <input type="text" id="user-name" placeholder="Nama Pemesan" class="w-full p-4 bg-white rounded-2xl border border-gray-200 outline-none text-sm focus:border-green-500 transition-all">
                         <div id="delivery-details-section" class="space-y-4">
-                            <button onclick="getCurrentLocation()" class="w-full py-3 bg-green-600 text-white text-[10px] font-black uppercase tracking-wider rounded-xl shadow-md">📍 Deteksi Lokasi GPS</button>
+                            <button onclick="getCurrentLocation()" class="w-full py-3 bg-green-600 text-white text-[10px] font-black uppercase tracking-wider rounded-xl shadow-md">Temukan Lokasi Anda</button>
                             <div id="map"></div>
                             <textarea id="user-address" placeholder="Alamat lengkap & patokan" rows="2" class="w-full p-4 bg-white rounded-2xl border border-gray-200 outline-none text-sm focus:border-green-500 transition-all"></textarea>
                         </div>
@@ -123,32 +123,32 @@
                 category: "Minuman - Kopi Series",
                 items: [
                     { id: 'k1', name: "Americano", img: "img/black-coffe.png", sizes: { small: 7000, medium: 9000, large: 11000 } },
-                    { id: 'k2', name: "Milky Coffee", img: "https://images.unsplash.com/photo-1544787210-22da3ef59ad3?w=300", sizes: { small: 8000, medium: 10000, large: 12000 } },
-                    { id: 'k3', name: "Kopi Gula Aren", img: "https://images.unsplash.com/photo-1512568448817-79a0d64c00ac?w=300", sizes: { small: 9000, medium: 12000, large: 14000 } }
+                    { id: 'k2', name: "Milky Coffee", img: "img/milky-coffe.png", sizes: { small: 8000, medium: 10000, large: 12000 } },
+                    { id: 'k3', name: "Kopi Gula Aren", img: "img/coffe-gula-aren.png", sizes: { small: 9000, medium: 12000, large: 14000 } }
                 ]
             },
             {
                 category: "Minuman - Choco Series",
                 items: [
-                    { id: 'c1', name: "Choco Malt", img: "https://images.unsplash.com/photo-1544145945-f904253d0c71?w=300", sizes: { small: 8500, medium: 10000, large: 12000 } },
-                    { id: 'c2', name: "Choco Beng-beng", img: "https://images.unsplash.com/photo-1541167760496-1628856ab772?w=300", sizes: { small: 9000, medium: 11500, large: 13500 } },
-                    { id: 'c3', name: "Choco Tiramisu", img: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=300", sizes: { small: 9000, medium: 10000, large: 12000 } }
+                    { id: 'c1', name: "Choco Malt", img: "img/milo-ice.png", sizes: { small: 8500, medium: 10000, large: 12000 } },
+                    { id: 'c2', name: "Choco Beng-beng", img: "img/benbeng.png", sizes: { small: 9000, medium: 11500, large: 13500 } },
+                    { id: 'c3', name: "Choco Tiramisu", img: "img/milo-ice.png", sizes: { small: 9000, medium: 10000, large: 12000 } }
                 ]
             },
             {
                 category: "Minuman - Tea Series",
                 items: [
-                    { id: 't1', name: "Matcha Tjih", img: "https://images.unsplash.com/photo-1582793988951-9aed5509eb97?w=300", sizes: { small: 9000, medium: 12000, large: 13000 } },
-                    { id: 't2', name: "Thai Tea", img: "https://images.unsplash.com/photo-1558383331-f520f2888351?w=300", sizes: { small: 8000, medium: 10000, large: 12000 } },
-                    { id: 't3', name: "Original Tea", img: "https://images.unsplash.com/photo-1567608285749-c6e93236817e?w=300", sizes: { small: 2000, large: 3500 } }
+                    { id: 't1', name: "Matcha Tjih", img: "img/matcha-tjih.png", sizes: { small: 9000, medium: 12000, large: 13000 } },
+                    { id: 't2', name: "Thai Tea", img: "img/Thai-tea.png", sizes: { small: 8000, medium: 10000, large: 12000 } },
+                    { id: 't3', name: "Original Tea", img: "img/tea original.png", sizes: { small: 2000, large: 3500 } }
                 ]
             },
             {
                 category: "Minuman - Milky Series",
                 items: [
-                    { id: 'ms1', name: "Milky Strawberry", img: "https://images.unsplash.com/photo-1543158181-e6f9f670c5b5?w=300", sizes: { small: 7000, medium: 9000, large: 12000 } },
-                    { id: 'ms2', name: "Milky Taro", img: "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=300", sizes: { small: 7000, medium: 9000, large: 12000 } },
-                    { id: 'ms3', name: "Milky Buble Gum", img: "https://images.unsplash.com/photo-1577805947697-89e18249d767?w=300", sizes: { small: 7000, medium: 9000, large: 12000 } }
+                    { id: 'ms1', name: "Milky Strawberry", img: "img/strawberry.png", sizes: { small: 7000, medium: 9000, large: 12000 } },
+                    { id: 'ms2', name: "Milky Taro", img: "img/milky-taro.png", sizes: { small: 7000, medium: 9000, large: 12000 } },
+                    { id: 'ms3', name: "Milky Buble Gum", img: "img/milky-buble-gum.png", sizes: { small: 7000, medium: 9000, large: 12000 } }
                 ]
             },
             {
@@ -332,7 +332,7 @@
             html += `
                 <div class="space-y-2">
                     <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Catatan</p>
-                    <input type="text" oninput="activeItem.note = this.value" placeholder="Contoh: Pisah bumbu, dll" value="${activeItem.note}"
+                    <input type="text" oninput="activeItem.note = this.value" placeholder="Catatan..." value="${activeItem.note}"
                         class="w-full p-4 bg-gray-50 rounded-2xl border border-gray-200 outline-none text-sm focus:border-green-500 transition-all">
                 </div>
             `;
@@ -485,10 +485,10 @@
             const shippingMinutes = Math.ceil(distance * 5);
             const totalEstimasi = orderType === 'delivery' ? (processMinutes + shippingMinutes) : processMinutes;
 
-            let msg = `*ORDER BARU - NGALEUEUT*%0A`;
+            let msg = `*ORDERAN BARU - NGALEUEUT*%0A`;
             msg += `---------------------------%0A`;
-            msg += `*Nama:* ${name}%0A`;
-            msg += `*Metode:* ${orderType.toUpperCase()}%0A%0A`;
+            msg += `*Nama Pembeli:* ${name}%0A`;
+            msg += `*Opsi Pembelian:* ${orderType.toUpperCase()}%0A%0A`;
             
             cart.forEach((item, i) => {
                 msg += `*${i+1}. ${item.name}* (${item.selectedSize})%0A`;
@@ -517,6 +517,7 @@
                 msg += `*Total Sampai: ±${totalEstimasi} menit*%0A%0A`;
                 msg += `*Alamat:* ${document.getElementById('user-address').value || '-'}%0A`;
                 msg += `*Lokasi:* https://www.google.com/maps?q=${userLocation[0]},${userLocation[1]}`;
+                msg += `*Download QRIS untuk pembayaran:* img/qris2.png%0A`;
             } else {
                 msg += `*Siap Diambil: ±${totalEstimasi} menit*%0A`;
             }
