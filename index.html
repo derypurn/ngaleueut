@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Ngaleueut - Menu Terbaru</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="img/icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/icon.png">
+    <link rel="apple-touch-icon" href="img/icon.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
+        @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&display=swap');
+        body { font-family: 'Cabinet Grotesk', sans-serif; background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         #map { height: 200px; width: 100%; border-radius: 16px; z-index: 10; margin-top: 8px; }
         .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
@@ -22,12 +25,15 @@
 <body class="antialiased text-gray-900">
 
     <header class="sticky top-0 z-[60] bg-white/90 backdrop-blur-md border-b border-gray-100 p-4 flex justify-between items-center">
-        <div>
-            <h1 class="text-xl font-extrabold text-green-700 tracking-tight">Ngaleueut</h1>
-            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Siap Melayanani Pesan Antar</p>
+        <div class="flex items-center gap-3">
+            <img src="img/icon.png" alt="logo" class="w-10 h-10 object-contain">
+            <div>
+                <h1 class="text-xl font-extrabold text-green-700 tracking-tight">Ngaleueut</h1>
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Siap Melayani Pesan Antar</p>
+            </div>
         </div>
         <div class="flex items-center gap-2">
-            <span class="text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full uppercase italic border border-green-100">Buka</span>
+            <span id="status-jam" class="text-[10px] font-bold px-2 py-1 rounded-full uppercase italic border"></span>
         </div>
     </header>
 
@@ -36,13 +42,64 @@
             <div class="bg-gradient-to-br from-green-600 to-green-800 rounded-3xl p-6 text-white overflow-hidden relative shadow-lg">
                 <div class="relative z-10">
                     <h2 class="text-xl font-black italic uppercase leading-none">Menu Lengkap Tersedia</h2>
-                    <p class="text-xs mt-1 opacity-90">Sesuaikan rasa dan topping sesukamu!</p>
+                    <p class="text-xs mt-1 opacity-90">Sesuaikan rasa yang cocok dilidahmu!</p>
                 </div>
             </div>
         </div>
 
         <div id="menu-container"></div>
     </main>
+
+    <footer class="bg-white border-t border-gray-100 mt-4 px-4 py-8 text-sm">
+    
+        <div class="max-w-xl ml-1 space-y-6">
+
+            <!-- Brand -->
+            <div>
+                <h2 class="text-lg font-extrabold text-green-700">Ngaleueut</h2>
+                <p class="text-gray-500 text-xs mt-1">
+                    Solusi jajan tanpa datang ketempat, langsung pesan dan kami antar sampai depan rumahmu!
+                </p>
+            </div>
+
+            <!-- Lokasi -->
+            <div>
+                <h3 class="font-bold text-gray-700 mb-1"> Lokasi</h3>
+                <p class="text-gray-500 text-xs">
+                    Desa Pasanggrahan, Kecamatan Maja, Kabupaten Majalengka, Jawa Barat, Indonesia  
+                </p>
+                <a href="https://maps.app.goo.gl/huS4bV6F4Mn3DvZX9" target="_blank"
+                    class="text-green-600 text-xs font-bold underline">
+                    Lihat di Google Maps
+                </a>
+            </div>
+
+            <!-- Sosial Media -->
+            <div>
+                <h3 class="font-bold text-gray-700 mb-1">Sosial Media</h3>
+                <div class="flex gap-4 text-xs">
+                    <a href="https://instagram.com/_ngaleueut" target="_blank" class="text-green-600 font-bold">Instagram</a>
+                    <a href="https://wa.me/6285183317960" target="_blank" class="text-green-600 font-bold">WhatsApp</a>
+                    <a href="#" class="text-green-600 font-bold">TikTok</a>
+                </div>
+            </div>
+
+            <!-- Jam Operasional -->
+            <div>
+                <h3 class="font-bold text-gray-700 mb-1">Jam Operasional</h3>
+                <p class="text-gray-500 text-xs">
+                    Setiap hari: 09.00 - 21.00 WIB
+                </p>
+            </div>
+
+            <!-- Footer bawah -->
+            <div class="text-center text-[10px] text-gray-400 pt-4 border-t border-gray-100">
+                © 2026 Ngaleueut. All rights reserved.
+            </div>
+
+        </div>
+
+    </footer>
 
     <!-- Modal Kustomisasi Pesanan -->
     <div id="item-modal" class="fixed inset-0 z-[100] hidden bg-black/60 backdrop-blur-sm p-4 flex items-end sm:items-center justify-center">
@@ -97,7 +154,7 @@
             <div class="p-6 bg-white border-t border-gray-100 space-y-4 safe-bottom">
                 <div class="space-y-1 text-sm font-bold">
                     <div class="flex justify-between text-gray-500"><span>Produk</span><span id="cart-subtotal">Rp0</span></div>
-                    <div id="shipping-row" class="flex justify-between text-gray-500"><span>Ongkir</span><span id="cart-shipping">Rp0</span></div>
+                    <div id="shipping-row" class="flex justify-between text-gray-500"><span id="label-ongkir">Ongkir</span><span id="cart-shipping">Rp0</span></div>
                     <div class="flex justify-between text-lg font-black text-gray-900 pt-2"><span>Total</span><span id="cart-total" class="text-green-700">Rp0</span></div>
                 </div>
                 <button onclick="sendOrder()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-black shadow-xl active:scale-95 transition-all uppercase tracking-widest">Kirim ke WhatsApp</button>
@@ -115,7 +172,6 @@
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
         const RESTO_COORDS = [-6.8793417,108.2867631];
-        const SHIPPING_RATE = 2000; 
         const ADMIN_WA = "6285183317960"; 
 
         const menuData = [
@@ -178,7 +234,7 @@
         {
             id: 'pk1',
             name: "Paket Hemat Merakyat",
-            img: "img/paket1.png",
+            img: "img/setelan-ceban.png",
             sizes: { paket: 11000 },
             isPackage: true,
             options: {
@@ -190,7 +246,7 @@
         {
             id: 'pk2',
             name: "Paket Ngaleueut Nyalira",
-            img: "img/paket2.png",
+            img: "img/ngaleueut-nyalira.png",
             sizes: { paket: 11000 },
             isPackage: true,
             options: {
@@ -202,7 +258,7 @@
         {
             id: 'pk3',
             name: "Nyalse Tipis-Tipis",
-            img: "img/paket3.png",
+            img: "img/nyalse-tipis-tipis.png",
             sizes: { paket: 12000 },
             isPackage: true,
             options: {
@@ -213,7 +269,7 @@
         {
             id: 'pk4',
             name: "Ngidam Pedes Manis",
-            img: "img/paket4.png",
+            img: "img/ngidam-pedes-manis.png",
             sizes: { paket: 15000 },
             isPackage: true,
             options: {
@@ -225,7 +281,7 @@
         {
             id: 'pk5',
             name: "Bestie Pedes Manis",
-            img: "img/paket5.png",
+            img: "img/bestie-pedes-manis.png",
             sizes: { paket: 23000 },
             isPackage: true,
             options: {
@@ -248,6 +304,12 @@
         ];
 
         const SAUS_OPTIONS = ["Cokelat", "Matcha", "Strawberry"];
+
+        const RASA_EXTRA = [
+            "Pedas Manis",
+            "Asin Gurih",
+            "Jangan Terlalu Asin"
+        ];
 
         let cart = [];
         let orderType = 'delivery';
@@ -279,14 +341,16 @@
                 ...JSON.parse(JSON.stringify(item)),
                 selectedSize: Object.keys(item.sizes)[0],
                 basePrice: Object.values(item.sizes)[0],
-                selectedLevel: item.hasLevel ? 1 : null,
+                selectedLevel: item.hasLevel ? '0' : null,
                 levelExtra: 0,
                 selectedToppings: [],
                 metode: item.hasMetode ? 'Goreng' : null,
                 kuah: false,
                 kuahPrice: 0,
                 selectedSaus: item.hasSaus ? SAUS_OPTIONS[0] : null,
+                selectedRasaExtra: null,
                 note: ""
+
             };
             
             renderModalUI();
@@ -323,16 +387,47 @@
                     <div class="space-y-3">
                         <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Level Pedas</p>
                         <div class="flex flex-wrap gap-2">
-                            ${[1,2,3,4,5].map(lvl => {
-                                let extra = lvl === 4 ? 1000 : (lvl === 5 ? 1500 : 0);
-                                return `<button onclick="selectModalLevel(${lvl}, ${extra})" 
-                                    class="lvl-btn flex-1 px-2 py-3 rounded-xl border-2 font-bold text-[10px] flex flex-col items-center min-w-[60px] transition-all ${activeItem.selectedLevel === lvl ? 'border-green-600 bg-green-50 text-green-700' : 'border-gray-100 text-gray-500'}">
-                                    <span>Lv ${lvl}</span>
-                                    <span class="text-[8px] ${extra > 0 ? 'text-orange-600' : 'opacity-0'}">+${extra}</span>
-                                </button>`;
-                            }).join('')}
+                                ${[0,1,2,3,4,5,'pisah'].map(lvl => {
+                                    let extra = 0;
+                                    let label = '';
+
+                                    if (lvl === 4) extra = 1000;
+                                    else if (lvl === 5) extra = 1500;
+                                    else if (lvl === 'pisah') extra = 500;
+
+                                    if (lvl === 0) label = 'Lv 0';
+                                    else if (lvl === 'pisah') label = 'Pisah';
+                                    else label = `Lv ${lvl}`;
+
+                                    return `<button onclick="selectModalLevel(${typeof lvl === 'string' ? `'${lvl}'` : lvl}, ${extra})" 
+                                        class="lvl-btn flex-1 px-2 py-3 rounded-xl border-2 font-bold text-[10px] flex flex-col items-center min-w-[60px] transition-all 
+                                        ${String(activeItem.selectedLevel) === String(lvl) ? 'border-green-600 bg-green-50 text-green-700' : 'border-gray-100 text-gray-500'}">
+                                        
+                                        <span>${label}</span>
+                                        <span class="text-[8px] ${extra > 0 ? 'text-orange-600' : 'opacity-0'}">+${extra}</span>
+                                    </button>`;
+                                }).join('')}
                         </div>
                     </div>
+                `;
+
+            }
+           if (activeItem.hasLevel) {
+                html += `
+                <div class="space-y-3">
+                    <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Preferensi Rasa</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${RASA_EXTRA.map(r => `
+                            <button onclick="selectRasaExtra('${r}')"
+                                class="px-3 py-2 rounded-xl border text-xs font-bold transition-all
+                                ${activeItem.selectedRasaExtra === r 
+                                    ? 'bg-green-600 text-white border-green-600' 
+                                    : 'border-gray-200 text-gray-500'}">
+                                ${r}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
                 `;
             }
 
@@ -393,6 +488,9 @@
                     </div>
                 `;
             }
+
+            
+
             if (activeItem.isPackage && activeItem.options) {
     html += `
         <div class="space-y-3">
@@ -401,12 +499,17 @@
                 <div>
                     <p class="text-[10px] font-bold capitalize mb-1">${key}</p>
                     <div class="flex flex-wrap gap-2">
-                        ${activeItem.options[key].map(opt => `
-                            <button onclick="selectPackageOption('${key}','${opt}')"
-                                class="px-3 py-2 rounded-xl border text-xs font-bold">
-                                ${opt}
-                            </button>
-                        `).join('')}
+                        ${activeItem.options[key].map(opt => {
+                        const isSelected = activeItem.selectedOptions && activeItem.selectedOptions[key] === opt;
+
+                        return `
+                        <button onclick="selectPackageOption('${key}','${opt}')"
+                            class="px-3 py-2 rounded-xl border text-xs font-bold transition-all
+                            ${isSelected ? 'bg-green-600 text-white border-green-600' : 'border-gray-200 text-gray-500'}">
+                            ${opt}
+                        </button>
+                        `;
+                    }).join('')}
                     </div>
                 </div>
             `).join('')}
@@ -425,8 +528,38 @@
             updateModalPrice();
         }
 
+        function getShippingCost(distance) {
+            const hour = new Date().getHours();
+            const isNight = hour >= 18 || hour < 6;
+
+            let rate = 0;
+
+            if (distance < 2) {
+                rate = isNight ? 1500 : 1000;
+            } 
+            else if (distance >= 2 && distance <= 5) {
+                rate = isNight ? 2000 : 1500;
+            } 
+            else if (distance > 5 && distance <= 10) {
+                rate = isNight ? 3000 : 2000;
+            } 
+            else {
+                rate = isNight ? 5000 : 3000;
+            }
+
+            return Math.round(distance * rate);
+        }
+
         function selectModalSize(s, p) { activeItem.selectedSize = s; activeItem.basePrice = p; renderModalUI(); }
         function selectModalLevel(l, e) { activeItem.selectedLevel = l; activeItem.levelExtra = e; renderModalUI(); }
+        function selectRasaExtra(r) {
+            if (activeItem.selectedRasaExtra === r) {
+                activeItem.selectedRasaExtra = null; // batal pilih
+            } else {
+                activeItem.selectedRasaExtra = r;
+            }
+            renderModalUI();
+        }
         function selectMetode(m) { activeItem.metode = m; if(m === 'Goreng') { activeItem.kuah = false; activeItem.kuahPrice = 0; } renderModalUI(); }
         function toggleKuah() { activeItem.kuah = !activeItem.kuah; activeItem.kuahPrice = activeItem.kuah ? 1000 : 0; renderModalUI(); }
         function toggleTopping(name, price) {
@@ -436,11 +569,13 @@
             renderModalUI();
         }
         function selectSaus(s) { activeItem.selectedSaus = s; renderModalUI(); }
-        function selectPackageOption(key, value) {
-    if (!activeItem.selectedOptions) activeItem.selectedOptions = {};
-    activeItem.selectedOptions[key] = value;
-    renderModalUI();
-}
+
+        function selectPackageOption(key, value) { 
+            if (!activeItem.selectedOptions) activeItem.selectedOptions = {};
+            activeItem.selectedOptions[key] = value;
+            renderModalUI();
+        }
+
         function updateModalPrice() {
             if (!activeItem) return;
             const toppingTotal = activeItem.selectedToppings.reduce((sum, t) => sum + t.price, 0);
@@ -449,19 +584,72 @@
             activeItem.finalPrice = total;
         }
 
+        function isSameItem(a, b) {
+            return JSON.stringify({
+                name: a.name,
+                size: a.selectedSize,
+                level: a.selectedLevel,
+                rasa: a.selectedRasaExtra,
+                topping: a.selectedToppings,
+                metode: a.metode,
+                kuah: a.kuah,
+                saus: a.selectedSaus,
+                options: a.selectedOptions
+            }) === JSON.stringify({
+                name: b.name,
+                size: b.selectedSize,
+                level: b.selectedLevel,
+                rasa: b.selectedRasaExtra,
+                topping: b.selectedToppings,
+                metode: b.metode,
+                kuah: b.kuah,
+                saus: b.selectedSaus,
+                options: b.selectedOptions
+            });
+        }
+
         function addToCartFromModal() {
-            cart.push({...activeItem});
+            const existing = cart.find(item => isSameItem(item, activeItem));
+
+            if (existing) {
+                existing.qty = (existing.qty || 1) + 1;
+            } else {
+                cart.push({
+                    ...activeItem,
+                    qty: 1
+                });
+            }
+
             updateTotals();
+            showToast("Berhasil ditambahkan ke keranjang 🛒");
             closeModal();
-            toggleCart(true);
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement("div");
+            toast.innerText = msg;
+            toast.className = "fixed bottom-24 left-1/2 -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg z-[999]";
+            
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 2000);
         }
 
         function closeModal() { document.getElementById('item-modal').classList.add('hidden'); activeItem = null; }
 
         function updateTotals() {
-            const subtotal = cart.reduce((sum, item) => sum + item.finalPrice, 0);
-            const shipping = orderType === 'delivery' ? Math.round(distance * SHIPPING_RATE) : 0;
+            const subtotal = cart.reduce((sum, item) => sum + (item.finalPrice * (item.qty || 1)), 0);
+            const shipping = orderType === 'delivery' ? getShippingCost(distance) : 0;
             const total = subtotal + shipping;
+
+            const label = document.getElementById('label-ongkir');
+                if (orderType === 'delivery') {
+                    label.innerText = `Ongkir (${distance} km)`;
+                } else {
+                    label.innerText = `Ongkir`;
+            }
 
             document.getElementById('cart-subtotal').innerText = `Rp${subtotal.toLocaleString()}`;
             document.getElementById('cart-shipping').innerText = `Rp${shipping.toLocaleString()}`;
@@ -495,7 +683,7 @@
                 <div class="bg-white p-4 rounded-3xl border border-gray-100 relative shadow-sm space-y-2">
                     <div class="flex gap-4">
                         <div class="flex-1">
-                            <h5 class="font-bold text-xs text-gray-900">${item.name} (${item.selectedSize})</h5>
+                            <h5>${item.name} (${item.selectedSize}) x${item.qty || 1}</h5>
                             <div class="text-[9px] text-gray-500 mt-1">
                                 ${item.selectedLevel ? `Pedas Lvl ${item.selectedLevel}` : ''}
                                 ${item.selectedToppings.length > 0 ? `+ Topping: ${item.selectedToppings.map(t => t.name).join(', ')}` : ''}
@@ -504,6 +692,11 @@
                                 ${item.selectedSaus ? ` • Saus: ${item.selectedSaus}` : ''}
                             </div>
                             <p class="font-black text-xs text-green-700 mt-1">Rp${item.finalPrice.toLocaleString()}</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="changeQty(${idx}, -1)" class="px-2 bg-gray-200 rounded">-</button>
+                                <span class="text-xs font-bold">${item.qty || 1}</span>
+                                <button onclick="changeQty(${idx}, 1)" class="px-2 bg-gray-200 rounded">+</button>
+                            </div>
                         </div>
                         <button onclick="removeFromCart(${idx})" class="text-red-400 text-xl font-bold px-2">×</button>
                     </div>
@@ -511,6 +704,17 @@
                         placeholder="Catatan..." class="w-full text-[10px] bg-gray-50 p-2 rounded-lg italic outline-none border border-transparent focus:border-green-100">
                 </div>
             `).join('');
+        }
+
+        function changeQty(idx, change) {
+            cart[idx].qty = (cart[idx].qty || 1) + change;
+
+            if (cart[idx].qty <= 0) {
+                cart.splice(idx, 1);
+            }
+
+            updateTotals();
+            renderCartList();
         }
 
         function removeFromCart(idx) { cart.splice(idx, 1); updateTotals(); renderCartList(); if (cart.length === 0) toggleCart(false); }
@@ -533,6 +737,31 @@
             userMarker.on('dragend', () => getRoadRoute(userMarker.getLatLng()));
             map.on('click', (e) => { userMarker.setLatLng(e.latlng); getRoadRoute(e.latlng); });
             getRoadRoute(userMarker.getLatLng());
+        }
+
+        function updateJamStatus() {
+            const now = new Date();
+            
+            const jam = now.getHours().toString().padStart(2, '0');
+            const menit = now.getMinutes().toString().padStart(2, '0');
+            const detik = now.getSeconds().toString().padStart(2, '0');
+
+            const currentTime = now.getHours() + now.getMinutes() / 60;
+
+            const buka = 9;   // 09:00
+            const tutup = 21; // 21:00
+
+            const isOpen = currentTime >= buka && currentTime < tutup;
+
+            const el = document.getElementById('status-jam');
+
+            el.innerText = `${jam}:${menit}:${detik} • ${isOpen ? 'BUKA' : 'TUTUP'}`;
+
+            if (isOpen) {
+                el.className = "text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full uppercase italic border border-green-100";
+            } else {
+                el.className = "text-[10px] font-bold text-red-600 bg-red-50 px-2 py-1 rounded-full uppercase italic border border-red-100";
+            }
         }
 
         async function getRoadRoute(latlng) {
@@ -562,9 +791,12 @@
             const name = document.getElementById('user-name').value;
             if (!name) return alert("Mohon isi nama kamu.");
             
-            const subtotal = cart.reduce((sum, item) => sum + item.finalPrice, 0);
-            const shipping = orderType === 'delivery' ? Math.round(distance * SHIPPING_RATE) : 0;
+            const subtotal = cart.reduce((sum, item) => sum + (item.finalPrice * (item.qty || 1)), 0);
+            const shipping = orderType === 'delivery' ? getShippingCost(distance) : 0;
             const total = subtotal + shipping;
+            const now = new Date();
+            const jam = now.getHours().toString().padStart(2, '0');
+            const menit = now.getMinutes().toString().padStart(2, '0');
 
             // Perhitungan Estimasi
             // Asumsi: 5 menit per item untuk pembuatan, minimal 10 menit
@@ -576,22 +808,48 @@
             let msg = `*ORDERAN BARU - NGALEUEUT*%0A`;
             msg += `---------------------------%0A`;
             msg += `*Nama Pembeli:* ${name}%0A`;
-            msg += `*Opsi Pembelian:* ${orderType.toUpperCase()}%0A%0A`;
+            msg += `*Opsi Pembelian:* ${orderType.toUpperCase()}%0A`;
+            msg += `*Waktu Order:* ${jam}:${menit}WIB%0A`;
             
             cart.forEach((item, i) => {
-                msg += `*${i+1}. ${item.name}* (${item.selectedSize})%0A`;
-                if (item.selectedLevel) msg += `- Level: ${item.selectedLevel}%0A`;
+               msg += `*${i+1}. ${item.name}* (${item.selectedSize}) x${item.qty || 1}%0A`;
+                if (item.selectedLevel !== null) {
+                    let levelText = '';
+                    let extra = item.levelExtra || 0;
+
+                    if (item.selectedLevel === 'pisah') {
+                        levelText = 'Sambal Dipisah';
+                    } else {
+                        levelText = `Lv ${item.selectedLevel}`;
+                    }
+
+                    if (extra > 0) {
+                        levelText += ` (+${extra})`;
+                    }
+
+                    msg += `- Level: ${levelText}%0A`;
+                }
                 if (item.selectedToppings.length > 0) msg += `- Topping: ${item.selectedToppings.map(t => t.name).join(', ')}%0A`;
                 if (item.metode) msg += `- Masak: ${item.metode}%0A`;
                 if (item.kuah) msg += `- Pakai Kuah: Ya%0A`;
                 if (item.selectedSaus) msg += `- Saus: ${item.selectedSaus}%0A`;
+                if (item.selectedRasaExtra) {
+                    msg += `- Rasa: ${item.selectedRasaExtra}%0A`;
+                }
                 if (item.selectedOptions) {
-    Object.keys(item.selectedOptions).forEach(k => {
-        msg += `- ${k}: ${item.selectedOptions[k]}%0A`;
-    });
-}
+                    Object.keys(item.selectedOptions).forEach(k => {
+                        msg += `- ${k}: ${item.selectedOptions[k]}%0A`;
+                    });
+                }
                 if (item.note) msg += `- *Catatan:* _${item.note}_%0A`;
-                msg += `- Harga: Rp${item.finalPrice.toLocaleString()}%0A%0A`;
+                const qty = item.qty || 1;
+                const totalItem = item.finalPrice * qty;
+
+                if (qty > 1) {
+                    msg += `- Harga: Rp${item.finalPrice.toLocaleString()} x${qty} = Rp${totalItem.toLocaleString()}%0A%0A`;
+                } else {
+                    msg += `- Harga: Rp${item.finalPrice.toLocaleString()}%0A%0A`;
+                }
             });
             
             msg += `---------------------------%0A`;
@@ -612,6 +870,7 @@
                 msg += `*Lokasi:* https://www.google.com/maps?q=${userLocation[0]},${userLocation[1]}%0A`;
                 msg += `*Download QRIS untuk pembayaran:* https://ngaleueut.website/img/qris.jpg`;
             } else {
+                msg += `*Download QRIS untuk pembayaran:* https://ngaleueut.website/img/qris.jpg`;
                 msg += `*Siap Diambil: ±${totalEstimasi} menit*%0A`;
             }
 
@@ -619,6 +878,22 @@
         }
 
         window.onload = () => { renderMenu(); initMap(); };
+        window.onload = () => { 
+            renderMenu(); 
+            initMap(); 
+            updateJamStatus();
+            setInterval(updateJamStatus, 1000); // update tiap detik
+        };
     </script>
+    <!-- Floating Contact Button -->
+    <a href="https://wa.me/6285183317960?text=Halo admin, menu apa saja yang ready hari ini ?!?" target="_blank"
+    class="fixed bottom-24 right-4 z-[95] bg-green-600 w-14 h-14 rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-all">
+
+        <!-- Icon WA -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20.52 3.48A11.91 11.91 0 0012 .05C5.37.05.05 5.37.05 12c0 2.1.55 4.16 1.6 5.97L.05 24l6.2-1.6A11.94 11.94 0 0012 23.95c6.63 0 11.95-5.32 11.95-11.95 0-3.19-1.24-6.18-3.43-8.52zM12 21.7c-1.83 0-3.63-.49-5.2-1.42l-.37-.22-3.68.95.98-3.59-.24-.37A9.68 9.68 0 012.3 12c0-5.34 4.36-9.7 9.7-9.7 2.59 0 5.03 1.01 6.86 2.84A9.66 9.66 0 0121.7 12c0 5.34-4.36 9.7-9.7 9.7zm5.33-7.26c-.29-.14-1.72-.85-1.99-.95-.27-.1-.47-.14-.67.14-.2.29-.77.95-.95 1.14-.17.2-.34.22-.63.07-.29-.14-1.22-.45-2.33-1.44-.86-.77-1.44-1.72-1.6-2.01-.17-.29-.02-.45.13-.6.14-.14.29-.34.43-.51.14-.17.2-.29.29-.49.1-.2.05-.37-.02-.51-.07-.14-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.51.07-.78.37-.27.29-1.03 1.01-1.03 2.46s1.05 2.85 1.2 3.05c.14.2 2.06 3.15 5 4.42.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.27-.2-.57-.34z"/>
+        </svg>
+
+    </a>
 </body>
 </html>
