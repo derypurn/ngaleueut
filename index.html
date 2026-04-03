@@ -8,7 +8,7 @@
     <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
     <link rel="icon" type="image/png" sizes="32x32" href="img/logo.png">
     <link rel="icon" type="image/png" sizes="16x16" href="img/logo.png">
-    <link rel="apple-touch-icon" href="img/icon.png">
+    <link rel="apple-touch-icon" href="img/logo.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&display=swap');
@@ -27,7 +27,7 @@
 
     <header class="sticky top-0 z-[60] bg-white/90 backdrop-blur-md border-b border-gray-100 p-4 flex justify-between items-center">
         <div class="flex items-center gap-3">
-            <img src="img/icon.png" alt="logo" class="w-10 h-10 object-contain">
+            <img src="img/logo.png" alt="logo" class="w-10 h-10 object-contain">
             <div>
                 <h1 class="text-xl font-extrabold text-green-700 tracking-tight">Ngaleueut</h1>
                 <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Siap Melayani Pesan Antar</p>
@@ -810,7 +810,7 @@
             msg += `---------------------------%0A`;
             msg += `*Nama Pembeli:* ${name}%0A`;
             msg += `*Opsi Pembelian:* ${orderType.toUpperCase()}%0A`;
-            msg += `*Waktu Order:* ${jam}:${menit}WIB%0A`;
+            msg += `*Waktu Order:* ${jam}:${menit}#nbsp;WIB%0A%0A`;
             
             cart.forEach((item, i) => {
                msg += `*${i+1}. ${item.name}* (${item.selectedSize}) x${item.qty || 1}%0A`;
