@@ -26,7 +26,7 @@
 
     <header class="sticky top-0 z-[60] bg-white/90 backdrop-blur-md border-b border-gray-100 p-4 flex justify-between items-center">
         <div class="flex items-center gap-3">
-            <img src="img/logo.png" alt="logo" class="w-10 h-10 object-contain">
+            <img src="img/icon.png" alt="logo" class="w-10 h-10 object-contain">
             <div>
                 <h1 class="text-xl font-extrabold text-green-700 tracking-tight">Ngaleueut</h1>
                 <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Siap Melayani Pesan Antar</p>
@@ -155,6 +155,7 @@
                 <div class="space-y-1 text-sm font-bold">
                     <div class="flex justify-between text-gray-500"><span>Produk</span><span id="cart-subtotal">Rp0</span></div>
                     <div id="shipping-row" class="flex justify-between text-gray-500"><span id="label-ongkir">Ongkir</span><span id="cart-shipping">Rp0</span></div>
+                    <div class="flex justify-between text-gray-500"><span>Totebag</span><span id="tote-row">Rp0</span></div>
                     <div class="flex justify-between text-lg font-black text-gray-900 pt-2"><span>Total</span><span id="cart-total" class="text-green-700">Rp0</span></div>
                 </div>
                 <button onclick="sendOrder()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-black shadow-xl active:scale-95 transition-all uppercase tracking-widest">Kirim ke WhatsApp</button>
@@ -316,6 +317,8 @@
         let userLocation = [...RESTO_COORDS];
         let distance = 0;
         let map, userMarker, routeLayer, activeItem = null;
+        let useTotebag = false;
+        const TOTE_PRICE = 3000;
 
         function renderMenu() {
             const container = document.getElementById('menu-container');
@@ -415,7 +418,7 @@
            if (activeItem.hasLevel) {
                 html += `
                 <div class="space-y-3">
-                    <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Preferensi Rasa</p>
+                    <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Preferensi Rasa (Opsional)</p>
                     <div class="flex flex-wrap gap-2">
                         ${RASA_EXTRA.map(r => `
                             <button onclick="selectRasaExtra('${r}')"
@@ -642,7 +645,8 @@
         function updateTotals() {
             const subtotal = cart.reduce((sum, item) => sum + (item.finalPrice * (item.qty || 1)), 0);
             const shipping = orderType === 'delivery' ? getShippingCost(distance) : 0;
-            const total = subtotal + shipping;
+            const tote = useTotebag ? TOTE_PRICE : 0;
+            const total = subtotal + shipping + tote;
 
             const label = document.getElementById('label-ongkir');
                 if (orderType === 'delivery') {
@@ -653,6 +657,10 @@
 
             document.getElementById('cart-subtotal').innerText = `Rp${subtotal.toLocaleString()}`;
             document.getElementById('cart-shipping').innerText = `Rp${shipping.toLocaleString()}`;
+            const toteRow = document.getElementById('tote-row');
+            if (toteRow) {
+                toteRow.innerText = useTotebag ? `Rp${TOTE_PRICE.toLocaleString()}` : 'Rp0';
+            }
             document.getElementById('cart-total').innerText = `Rp${total.toLocaleString()}`;
 
             const bar = document.getElementById('floating-bar');
@@ -702,6 +710,16 @@
                     </div>
                     <input type="text" value="${item.note || ''}" onchange="cart[${idx}].note = this.value" 
                         placeholder="Catatan..." class="w-full text-[10px] bg-gray-50 p-2 rounded-lg italic outline-none border border-transparent focus:border-green-100">
+                    </div>
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                    <div>
+                        <p class="text-xs font-bold">Tambah Totebag</p>
+                        <p class="text-[9px] text-gray-400 uppercase font-bold">+Rp3.000</p>
+                    </div>
+                    <button onclick="toggleTotebag()" 
+                        class="w-12 h-6 rounded-full transition-all relative ${useTotebag ? 'bg-green-600' : 'bg-gray-300'}">
+                        <div class="absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${useTotebag ? 'left-7' : 'left-1'}"></div>
+                    </button>
                 </div>
             `).join('');
         }
@@ -718,6 +736,12 @@
         }
 
         function removeFromCart(idx) { cart.splice(idx, 1); updateTotals(); renderCartList(); if (cart.length === 0) toggleCart(false); }
+
+        function toggleTotebag() {
+            useTotebag = !useTotebag;
+            updateTotals();
+            renderCartList();
+        }
 
         function setOrderType(type) {
             orderType = type;
@@ -790,10 +814,21 @@
         function sendOrder() {
             const name = document.getElementById('user-name').value;
             if (!name) return alert("Mohon isi nama kamu.");
+            if (orderType === 'delivery') {
+            const isDefaultLocation = 
+                userLocation[0] === RESTO_COORDS[0] && 
+                userLocation[1] === RESTO_COORDS[1];
+
+            if (isDefaultLocation) {
+                alert("Mohon tentukan lokasi pengantaran terlebih dahulu 📍");
+                return;
+            }
+        }
             
             const subtotal = cart.reduce((sum, item) => sum + (item.finalPrice * (item.qty || 1)), 0);
             const shipping = orderType === 'delivery' ? getShippingCost(distance) : 0;
-            const total = subtotal + shipping;
+            const tote = useTotebag ? TOTE_PRICE : 0;
+            const total = subtotal + shipping + tote;
             const now = new Date();
             const jam = now.getHours().toString().padStart(2, '0');
             const menit = now.getMinutes().toString().padStart(2, '0');
@@ -855,6 +890,9 @@
             msg += `---------------------------%0A`;
             msg += `*Rincian Biaya:*%0A`;
             msg += `- Subtotal: Rp${subtotal.toLocaleString()}%0A`;
+            if (useTotebag) {
+                msg += `- Totebag: Rp${TOTE_PRICE.toLocaleString()}%0A`;
+            }
             if (orderType === 'delivery') {
                 msg += `- Ongkos Kirim: Rp${shipping.toLocaleString()}%0A`;
             }
