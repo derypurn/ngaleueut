@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ngaleueut - Menu Terbaru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link rel="icon" type="image/png" sizes="32x32" href="img/logo.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/logo.png">
+    <link rel="apple-touch-icon" href="img/logo.png">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&display=swap');
+        body { font-family: 'Cabinet Grotesk', sans-serif; background-color: #f8fafc; -webkit-tap-highlight-color: transparent; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        #map { height: 200px; width: 100%; border-radius: 16px; z-index: 10; margin-top: 8px; }
+        .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+        .modal-enter { animation: modalFadeIn 0.3s ease-out; }
+        @keyframes modalFadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .cart-overlay { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .cart-open { transform: translateY(0); }
+        .cart-closed { transform: translateY(100%); }
+        @media print {body {width: 58mm;font-family: monospace;}
+}
+    </style>
+</head>
+<body class="antialiased text-gray-900">
+
+    <header class="sticky top-0 z-[60] bg-white/90 backdrop-blur-md border-b border-gray-100 p-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <img src="img/logo.png" alt="logo" class="w-10 h-10 object-contain">
+            <div>
+                <h1 class="text-xl font-extrabold text-green-700 tracking-tight">Ngaleueut</h1>
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Siap Melayani Pesan Antar</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <span id="status-jam" class="text-[10px] font-bold px-2 py-1 rounded-full uppercase italic border"></span>
+        </div>
+    </header>
+
+    <main class="pb-32">
+        <div class="px-4 mt-4">
+            <div class="bg-gradient-to-br from-green-600 to-green-800 rounded-3xl p-6 text-white overflow-hidden relative shadow-lg">
+                <div class="relative z-10">
+                    <h2 class="text-xl font-black italic uppercase leading-none">Menu Lengkap Tersedia</h2>
+                    <p class="text-xs mt-1 opacity-90">Sesuaikan rasa yang cocok dilidahmu!</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="menu-container"></div>
+    </main>
+
+    <footer class="bg-white border-t border-gray-100 mt-4 px-4 py-8 text-sm">
+    
+        <div class="max-w-xl ml-1 space-y-6">
+
+            <!-- Brand -->
+            <div>
+                <h2 class="text-lg font-extrabold text-green-700">Ngaleueut</h2>
+                <p class="text-gray-500 text-xs mt-1">
+                    Solusi jajan tanpa datang ketempat, langsung pesan dan kami antar sampai depan rumahmu!
+                </p>
+            </div>
+
+            <!-- Lokasi -->
+            <div>
+                <h3 class="font-bold text-gray-700 mb-1"> Lokasi</h3>
+                <p class="text-gray-500 text-xs">
+                    Desa Pasanggrahan, Kecamatan Maja, Kabupaten Majalengka, Jawa Barat, Indonesia  
+                </p>
+                <a href="https://maps.app.goo.gl/huS4bV6F4Mn3DvZX9" target="_blank"
+                    class="text-green-600 text-xs font-bold underline">
+                    Lihat di Google Maps
+                </a>
+            </div>
+
+            <!-- Sosial Media -->
+            <div>
+                <h3 class="font-bold text-gray-700 mb-1">Sosial Media</h3>
+                <div class="flex gap-4 text-xs">
+                    <a href="https://instagram.com/_ngaleueut" target="_blank" class="text-green-600 font-bold">Instagram</a>
+                    <a href="https://wa.me/6285183317960" target="_blank" class="text-green-600 font-bold">WhatsApp</a>
+                    <a href="#" class="text-green-600 font-bold">TikTok</a>
+                </div>
+            </div>
+
+            <!-- Jam Operasional -->
+            <div>
+                <h3 class="font-bold text-gray-700 mb-1">Jam Operasional</h3>
+                <p class="text-gray-500 text-xs">
+                    Setiap hari: 09.00 - 21.00 WIB
+                </p>
+            </div>
+
+            <!-- Footer bawah -->
+            <div class="text-center text-[10px] text-gray-400 pt-4 border-t border-gray-100">
+                © 2026 Ngaleueut. All rights reserved.
+            </div>
+
+        </div>
+
+    </footer>
+
+    <!-- Modal Kustomisasi Pesanan -->
+    <div id="item-modal" class="fixed inset-0 z-[100] hidden bg-black/60 backdrop-blur-sm p-4 flex items-end sm:items-center justify-center">
+        <div class="bg-white w-full max-w-md rounded-[32px] overflow-hidden modal-enter flex flex-col shadow-2xl">
+            <div id="modal-content" class="overflow-y-auto p-6 space-y-6 max-h-[75vh]">
+                <!-- Konten dinamis -->
+            </div>
+            <div class="p-6 border-t border-gray-100 bg-gray-50 space-y-3">
+                <div class="flex justify-between items-center px-2">
+                    <span class="text-xs font-bold text-gray-400 uppercase">Subtotal Item</span>
+                    <span id="modal-total-display" class="text-lg font-black text-green-700">Rp0</span>
+                </div>
+                <button onclick="addToCartFromModal()" class="w-full bg-green-600 text-white py-4 rounded-2xl font-black shadow-lg active:scale-95 transition-all uppercase tracking-widest">Tambah ke Keranjang</button>
+                <button onclick="closeModal()" class="w-full py-2 text-xs text-gray-400 font-bold uppercase tracking-widest text-center">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay Keranjang -->
+    <div id="cart-overlay" class="fixed inset-0 z-[110] bg-black/60 backdrop-blur-sm hidden flex items-end justify-center">
+        <div class="bg-white w-full max-w-lg rounded-t-[40px] cart-overlay cart-closed flex flex-col h-[90vh]">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-20 rounded-t-[40px]">
+                <div>
+                    <h3 class="text-xl font-black text-green-800">Keranjang</h3>
+                    <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Tinjau & Checkout</p>
+                </div>
+                <button onclick="toggleCart(false)" class="p-2 bg-gray-100 rounded-full active:scale-90 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                </button>
+            </div>
+            
+            <div class="flex-1 overflow-y-auto">
+                <div id="cart-items-list" class="p-6 space-y-4"></div>
+                
+                <div class="p-6 bg-green-50/50 border-y border-green-100 space-y-6">
+                    <h4 class="text-sm font-black text-green-800 uppercase tracking-widest">Pengiriman</h4>
+                    <div class="space-y-4">
+                        <div class="flex gap-2 p-1.5 bg-white border border-green-100 rounded-2xl">
+
+                            <button onclick="setOrderType('delivery')" id="btn-delivery"
+                                class="flex-1 py-3 rounded-xl font-bold transition-all bg-green-600 text-white shadow-sm">
+                                Delivery
+                            </button>
+
+                            <button onclick="setOrderType('takeaway')" id="btn-takeaway"
+                                class="flex-1 py-3 rounded-xl font-bold transition-all text-green-400">
+                                Take Away
+                            </button>
+
+                            <button onclick="setOrderType('dinein')" id="btn-dinein"
+                                class="flex-1 py-3 rounded-xl font-bold transition-all text-green-400">
+                                Dine In
+                            </button>
+
+                        </div>
+                        <input type="text" id="user-name" placeholder="Nama Pemesan" class="w-full p-4 bg-white rounded-2xl border border-gray-200 outline-none text-sm focus:border-green-500 transition-all">
+                        <div id="payment-section" class="space-y-3 hidden">
+                            <p class="text-[10px] font-black uppercase text-gray-400">Pembayaran</p>
+                            <div class="flex gap-2">
+                                <button onclick="setPayment('qris')" id="btn-qris"
+                                    class="flex-1 py-3 rounded-xl border text-xs font-bold text-gray-500">
+                                    QRIS
+                                </button>
+                                <button onclick="setPayment('cash')" id="btn-cash"
+                                    class="flex-1 py-3 rounded-xl border text-xs font-bold text-gray-500">
+                                    Tunai
+                                </button>
+                            </div>
+                            <!-- INPUT UANG -->
+                            <div id="cash-input" class="hidden">
+                                <input type="number" id="cash-amount" placeholder="Uang dibayar"
+                                    class="w-full p-3 rounded-xl border text-sm">
+                                <div id="cash-change" class="text-xs font-bold text-green-600 mt-1"></div>
+                            </div>
+                        </div>
+                        <div id="delivery-details-section" class="space-y-4">
+                            <button onclick="getCurrentLocation()" class="w-full py-3 bg-green-600 text-white text-[10px] font-black uppercase tracking-wider rounded-xl shadow-md">Temukan Lokasi Anda</button>
+                            <div id="map"></div>
+                            <textarea id="user-address" placeholder="Alamat lengkap & patokan" rows="2" class="w-full p-4 bg-white rounded-2xl border border-gray-200 outline-none text-sm focus:border-green-500 transition-all"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 bg-white border-t border-gray-100 space-y-4 safe-bottom">
+                <div class="space-y-1 text-sm font-bold">
+                    <div class="flex justify-between text-gray-500"><span>Produk</span><span id="cart-subtotal">Rp0</span></div>
+                    <div id="shipping-row" class="flex justify-between text-gray-500"><span id="label-ongkir">Ongkir</span><span id="cart-shipping">Rp0</span></div>
+                    <div class="flex justify-between text-gray-500"><span>Totebag</span><span id="tote-row">Rp0</span></div>
+                    <div class="flex justify-between text-lg font-black text-gray-900 pt-2"><span>Total</span><span id="cart-total" class="text-green-700">Rp0</span></div>
+                </div>
+                <div class="flex gap-3">
+
+                <!-- DOWNLOAD -->
+                <button onclick="downloadNota()" 
+                    class="flex-1 bg-blue-600 text-white py-3 rounded-2xl flex items-center justify-center shadow active:scale-95">
+
+                    <!-- ICON DOWNLOAD -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path d="M12 3v12"></path>
+                        <path d="M7 10l5 5 5-5"></path>
+                        <path d="M5 21h14"></path>
+                    </svg>
+                </button>
+
+                <!-- PRINT -->
+                <button onclick="printNota()" 
+                    class="flex-1 bg-gray-800 text-white py-3 rounded-2xl flex items-center justify-center shadow active:scale-95">
+
+                    <!-- ICON PRINT -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path d="M6 9V2h12v7"></path>
+                        <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path>
+                        <path d="M6 14h12v8H6z"></path>
+                    </svg>
+                </button>
+
+                <button onclick="printRawBT()" 
+                    class="flex-1 bg-purple-600 text-white py-3 rounded-2xl flex items-center justify-center shadow active:scale-95">
+
+                    <!-- ICON -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 2l5 5-3.5 3.5L17 14l-5 5V2z"/>
+                    </svg>
+                </button>
+
+            </div>
+
+            <!-- WHATSAPP -->
+            <button onclick="sendOrder()" 
+                class="w-full bg-green-600 text-white py-4 rounded-2xl flex items-center justify-center gap-2 font-bold shadow-xl active:scale-95">
+
+                <!-- ICON WA -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.52 3.48A11.91 11.91 0 0012 .05C5.37.05.05 5.37.05 12c0 2.1.55 4.16 1.6 5.97L.05 24l6.2-1.6A11.94 11.94 0 0012 23.95c6.63 0 11.95-5.32 11.95-11.95 0-3.19-1.24-6.18-3.43-8.52z"/>
+                </svg>
+
+                Kirim ke WhatsApp
+            </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="floating-bar" class="fixed bottom-0 left-0 right-0 p-4 bg-white/80 backdrop-blur-md border-t border-gray-100 z-[90] safe-bottom hidden">
+        <button onclick="toggleCart(true)" class="w-full bg-green-700 text-white font-black py-4 rounded-2xl flex items-center justify-between px-6 shadow-xl transition-transform active:scale-95">
+            <div class="flex items-center gap-3"><span id="cart-count-badge" class="bg-white text-green-700 w-6 h-6 flex items-center justify-center rounded-full text-xs font-bold shadow-sm">0</span><span class="tracking-widest">LIHAT KERANJANG</span></div>
+            <span id="floating-total">Rp0</span>
+        </button>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        const RESTO_COORDS = [-6.8793417,108.2867631];
+        const ADMIN_WA = "6285183317960"; 
+
+        const menuData = [
+            {
+                category: "Minuman - Kopi Series",
+                items: [
+                    { id: 'k1', name: "Americano", img: "img/black-coffe.png", sizes: { small: 7000, medium: 9000, large: 11000 } },
+                    { id: 'k2', name: "Milky Coffee", img: "img/milky-coffe.png", sizes: { small: 8000, medium: 10000, large: 12000 } },
+                    { id: 'k3', name: "Kopi Gula Aren", img: "img/coffe-gula-aren.png", sizes: { small: 9000, medium: 12000, large: 14000 } }
+                ]
+            },
+            {
+                category: "Minuman - Choco Series",
+                items: [
+                    { id: 'c1', name: "Choco Malt", img: "img/milo-ice.png", sizes: { small: 8500, medium: 10000, large: 12000 } },
+                    { id: 'c2', name: "Choco Beng-beng", img: "img/benbeng.png", sizes: { small: 9000, medium: 11500, large: 13500 } },
+                    { id: 'c3', name: "Choco Tiramisu", img: "img/milo-ice.png", sizes: { small: 9000, medium: 10000, large: 12000 } }
+                ]
+            },
+            {
+                category: "Minuman - Tea Series",
+                items: [
+                    { id: 't1', name: "Matcha Tjih", img: "img/matcha-tjih.png", sizes: { small: 9000, medium: 12000, large: 13000 } },
+                    { id: 't2', name: "Thai Tea", img: "img/Thai-tea.png", sizes: { small: 8000, medium: 10000, large: 12000 } },
+                    { id: 't3', name: "Original Tea", img: "img/tea original.png", sizes: { small: 2000, large: 3500 } }
+                ]
+            },
+            {
+                category: "Minuman - Milky Series",
+                items: [
+                    { id: 'ms1', name: "Milky Strawberry", img: "img/strawberry.png", sizes: { small: 7000, medium: 10000, large: 12000 } },
+                    { id: 'ms2', name: "Milky Taro", img: "img/milky-taro.png", sizes: { small: 7000, medium: 10000, large: 12000 } },
+                    { id: 'ms3', name: "Milky Buble Gum", img: "img/milky-buble-gum.png", sizes: { small: 7000, medium: 10000, large: 12000 } }
+                ]
+            },
+            {
+                category: "Makanan Pedas",
+                items: [
+                    { id: 'p1', name: "Mie Level", img: "img/miejontor.png", sizes: { small: 5000, large: 10000 }, hasLevel: true, hasToppings: true },
+                    { id: 'p2', name: "Pangsit Ayam", img: "img/pangyam.png ", sizes: { small: 5000, large: 10000 }, hasLevel: true, hasMetode: true },
+                    { id: 'p3', name: "Sosis Mekar Pedas", img: "img/sosis.png", sizes: { small: 5000, large: 10000 }, hasLevel: true },
+                    { id: 'p4', name: "Bakso Mekar Pedas", img: "img/bakso-mekar.png", sizes: { small: 5000, large: 10000 }, hasLevel: true, hasKuah: true },
+                    { id: 'p5', name: "Bakso Ikan Kuah Chili Oil", img: "img/baksoikan.png", sizes: { small: 6000, large: 11000 }, hasLevel: true },
+                    { id: 'p6', name: "Cimol Bojot", img: "img/cimol.png", sizes: { small: 5000, large: 10000 }, hasLevel: true },
+                    { id: 'p7', name: "Basreng Bojot", img: "img/basreng.png", sizes: { small: 5000, large: 10000 }, hasLevel: true },
+                    { id: 'p8', name: "Sosis / Bakso Crispy", img: "img/sosis-crispy.png", sizes: { small: 5000, large: 10000, satuan: 1500 } },
+                    { id: 'p9', name: "Indomie Rebus", img: "img/indomie-rebus.png", sizes: { porsi: 5000 }, hasLevel: true, hasToppings: true }
+                ]
+            },
+            {
+                category: "Makanan Manis",
+                items: [
+                    { id: 'm1', name: "Minipao-pao", img: "img/minipao.png", sizes: { small: 5000, large: 10000 } },
+                    { id: 'm2', name: "Churros Bites", img: "img/churros.png", sizes: { small: 5000, large: 10000 }, hasSaus: true }
+                ]
+            },
+            {
+    category: "Paket Hemat 🔥",
+    items: [
+        {
+            id: 'pk1',
+            name: "Paket Hemat Merakyat",
+            img: "img/setelan-ceban.png",
+            sizes: { paket: 11000 },
+            isPackage: true,
+            options: {
+                main: ["Mie", "Pangsit Ayam"],
+                drink: ["Original Tea"]
+            },
+            hasLevel: true
+        },
+        {
+            id: 'pk2',
+            name: "Paket Ngaleueut Nyalira",
+            img: "img/ngaleueut-nyalira.png",
+            sizes: { paket: 11000 },
+            isPackage: true,
+            options: {
+                main: ["Mie", "Pangsit Ayam"],
+                drink: ["Milky Strawberry", "Milky Taro", "Milky Bubble Gum"]
+            },
+            hasLevel: true
+        },
+        {
+            id: 'pk3',
+            name: "Nyalse Tipis-Tipis",
+            img: "img/nyalse-tipis-tipis.png",
+            sizes: { paket: 12000 },
+            isPackage: true,
+            options: {
+                main: ["Churros", "Minipao"],
+                drink: ["Kopi Gula Aren"]
+            }
+        },
+        {
+            id: 'pk4',
+            name: "Ngidam Pedes Manis",
+            img: "img/ngidam-pedes-manis.png",
+            sizes: { paket: 15000 },
+            isPackage: true,
+            options: {
+                main: ["Cimol", "Basreng"],
+                drink: ["Thai Tea"]
+            },
+            hasLevel: true
+        },
+        {
+            id: 'pk5',
+            name: "Bestie Pedes Manis",
+            img: "img/bestie-pedes-manis.png",
+            sizes: { paket: 23000 },
+            isPackage: true,
+            options: {
+                main: ["Cimol", "Basreng"],
+                drink1: ["Milky Strawberry", "Milky Taro", "Milky Bubble Gum"],
+                drink2: ["Milky Strawberry", "Milky Taro", "Milky Bubble Gum"]
+            },
+            hasLevel: true
+        }
+    ]
+}
+        ];
+
+        const TOPPINGS = [
+            { name: "Pangsit Ayam", price: 1000 },
+            { name: "Bakso Kecil", price: 1000 },
+            { name: "Bakso Besar", price: 5000 },
+            { name: "Sosis Mekar", price: 5000 },
+            { name: "Telor Ayam", price: 3000 }
+        ];
+
+        const SAUS_OPTIONS = ["Cokelat", "Matcha", "Strawberry"];
+
+        const RASA_EXTRA = [
+            "Pedas Manis",
+            "Asin Gurih",
+            "Jangan Terlalu Asin"
+        ];
+
+        let cart = [];
+        let orderType = 'delivery';
+        let paymentMethod = null;
+        let cashAmount = 0;
+        let changeAmount = 0;
+        let userLocation = [...RESTO_COORDS];
+        let distance = 0;
+        let map, userMarker, routeLayer, activeItem = null;
+        let useTotebag = false;
+        const TOTE_PRICE = 3500;
+
+        function renderMenu() {
+            const container = document.getElementById('menu-container');
+            container.innerHTML = menuData.map(cat => `
+                <section class="mt-8">
+                    <h3 class="text-[10px] font-black text-gray-400 px-4 mb-4 uppercase tracking-[0.2em]">${cat.category}</h3>
+                    <div class="flex overflow-x-auto gap-4 px-4 pb-4 no-scrollbar">
+                        ${cat.items.map(item => `
+                            <div onclick="openModal('${item.id}')" class="min-w-[160px] bg-white rounded-[28px] p-3 shadow-sm border border-gray-50 active:scale-95 transition-all cursor-pointer">
+                                <img src="${item.img}" class="w-full h-28 object-cover rounded-[20px] mb-2" alt="${item.name}">
+                                <h4 class="font-extrabold text-xs text-gray-800 leading-tight mb-1">${item.name}</h4>
+                                <p class="text-green-600 font-black text-[9px]">Dari Rp${Object.values(item.sizes)[0].toLocaleString()}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                </section>
+            `).join('');
+        }
+
+        function openModal(id) {
+            const item = menuData.flatMap(c => c.items).find(i => i.id === id);
+            activeItem = {
+                ...JSON.parse(JSON.stringify(item)),
+                selectedSize: Object.keys(item.sizes)[0],
+                basePrice: Object.values(item.sizes)[0],
+                selectedLevel: item.hasLevel ? '0' : null,
+                levelExtra: 0,
+                selectedToppings: [],
+                metode: item.hasMetode ? 'Goreng' : null,
+                kuah: false,
+                kuahPrice: 0,
+                selectedSaus: item.hasSaus ? SAUS_OPTIONS[0] : null,
+                selectedRasaExtra: null,
+                note: ""
+
+            };
+            
+            renderModalUI();
+            document.getElementById('item-modal').classList.remove('hidden');
+        }
+
+        function renderModalUI() {
+            const content = document.getElementById('modal-content');
+            let html = `
+                <div class="flex gap-4 items-center">
+                    <img src="${activeItem.img}" class="w-20 h-20 rounded-2xl object-cover shadow-md">
+                    <div>
+                        <h2 class="text-lg font-black leading-tight text-green-800">${activeItem.name}</h2>
+                        <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-1">Konfigurasi</p>
+                    </div>
+                </div>
+                
+                <div class="space-y-3">
+                    <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Ukuran</p>
+                    <div class="grid grid-cols-2 gap-2">
+                        ${Object.keys(activeItem.sizes).map(size => `
+                            <button onclick="selectModalSize('${size}', ${activeItem.sizes[size]})" 
+                                class="size-btn px-4 py-3 rounded-2xl border-2 font-bold text-[11px] flex justify-between items-center transition-all ${activeItem.selectedSize === size ? 'border-green-600 bg-green-50 text-green-700' : 'border-gray-100 text-gray-500'}">
+                                <span class="capitalize">${size}</span>
+                                <span>Rp${activeItem.sizes[size].toLocaleString()}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+
+            if (activeItem.hasLevel) {
+                html += `
+                    <div class="space-y-3">
+                        <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Level Pedas</p>
+                        <div class="flex flex-wrap gap-2">
+                                ${[0,1,2,3,4,5,'pisah'].map(lvl => {
+                                    let extra = 0;
+                                    let label = '';
+
+                                    if (lvl === 4) extra = 1000;
+                                    else if (lvl === 5) extra = 1500;
+                                    else if (lvl === 'pisah') extra = 500;
+
+                                    if (lvl === 0) label = 'Lv 0';
+                                    else if (lvl === 'pisah') label = 'Pisah';
+                                    else label = `Lv ${lvl}`;
+
+                                    return `<button onclick="selectModalLevel(${typeof lvl === 'string' ? `'${lvl}'` : lvl}, ${extra})" 
+                                        class="lvl-btn flex-1 px-2 py-3 rounded-xl border-2 font-bold text-[10px] flex flex-col items-center min-w-[60px] transition-all 
+                                        ${String(activeItem.selectedLevel) === String(lvl) ? 'border-green-600 bg-green-50 text-green-700' : 'border-gray-100 text-gray-500'}">
+                                        
+                                        <span>${label}</span>
+                                        <span class="text-[8px] ${extra > 0 ? 'text-orange-600' : 'opacity-0'}">+${extra}</span>
+                                    </button>`;
+                                }).join('')}
+                        </div>
+                    </div>
+                `;
+
+            }
+           if (activeItem.hasLevel) {
+                html += `
+                <div class="space-y-3">
+                    <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Preferensi Rasa (Opsional)</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${RASA_EXTRA.map(r => `
+                            <button onclick="selectRasaExtra('${r}')"
+                                class="px-3 py-2 rounded-xl border text-xs font-bold transition-all
+                                ${activeItem.selectedRasaExtra === r 
+                                    ? 'bg-green-600 text-white border-green-600' 
+                                    : 'border-gray-200 text-gray-500'}">
+                                ${r}
+                            </button>
+                        `).join('')}
+                    </div>
+                </div>
+                `;
+            }
+
+            if (activeItem.hasToppings) {
+                html += `
+                    <div class="space-y-3">
+                        <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Tambah Topping</p>
+                        <div class="grid grid-cols-1 gap-2">
+                            ${TOPPINGS.map(t => `
+                                <div onclick="toggleTopping('${t.name}', ${t.price})" 
+                                    class="p-3 rounded-2xl border-2 flex justify-between items-center cursor-pointer transition-all ${activeItem.selectedToppings.find(st => st.name === t.name) ? 'border-green-600 bg-green-50' : 'border-gray-100'}">
+                                    <span class="text-[11px] font-bold">${t.name}</span>
+                                    <span class="text-[10px] text-green-700 font-black">+Rp${t.price.toLocaleString()}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            if (activeItem.hasMetode) {
+                html += `
+                    <div class="space-y-3">
+                        <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Metode Masak</p>
+                        <div class="flex gap-2">
+                            ${['Goreng', 'Rebus'].map(m => `
+                                <button onclick="selectMetode('${m}')" 
+                                    class="flex-1 py-3 rounded-xl border-2 font-bold text-xs ${activeItem.metode === m ? 'border-green-600 bg-green-50 text-green-700' : 'border-gray-100 text-gray-500'}">${m}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                if (activeItem.metode === 'Rebus' || activeItem.hasKuah) {
+                    html += `
+                        <div class="flex items-center justify-between p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                            <div>
+                                <p class="text-xs font-bold">Tambah Kuah?</p>
+                                <p class="text-[9px] text-gray-400 uppercase font-bold">+Rp1.000</p>
+                            </div>
+                            <button onclick="toggleKuah()" class="w-12 h-6 rounded-full transition-all relative ${activeItem.kuah ? 'bg-green-600' : 'bg-gray-300'}">
+                                <div class="absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${activeItem.kuah ? 'left-7' : 'left-1'}"></div>
+                            </button>
+                        </div>
+                    `;
+                }
+            }
+
+            if (activeItem.hasSaus) {
+                html += `
+                    <div class="space-y-3">
+                        <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Pilih Saus</p>
+                        <div class="flex flex-wrap gap-2">
+                            ${SAUS_OPTIONS.map(s => `
+                                <button onclick="selectSaus('${s}')" 
+                                    class="flex-1 min-w-[80px] py-3 rounded-xl border-2 font-bold text-xs ${activeItem.selectedSaus === s ? 'border-green-600 bg-green-50 text-green-700' : 'border-gray-100 text-gray-500'}">${s}</button>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            
+
+            if (activeItem.isPackage && activeItem.options) {
+    html += `
+        <div class="space-y-3">
+            <p class="text-[10px] font-black uppercase text-gray-400">Pilihan Paket</p>
+            ${Object.keys(activeItem.options).map(key => `
+                <div>
+                    <p class="text-[10px] font-bold capitalize mb-1">${key}</p>
+                    <div class="flex flex-wrap gap-2">
+                        ${activeItem.options[key].map(opt => {
+                        const isSelected = activeItem.selectedOptions && activeItem.selectedOptions[key] === opt;
+
+                        return `
+                        <button onclick="selectPackageOption('${key}','${opt}')"
+                            class="px-3 py-2 rounded-xl border text-xs font-bold transition-all
+                            ${isSelected ? 'bg-green-600 text-white border-green-600' : 'border-gray-200 text-gray-500'}">
+                            ${opt}
+                        </button>
+                        `;
+                    }).join('')}
+                    </div>
+                </div>
+            `).join('')}
+        </div>
+    `;
+}
+            html += `
+                <div class="space-y-2">
+                    <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Catatan</p>
+                    <input type="text" oninput="activeItem.note = this.value" placeholder="Catatan..." value="${activeItem.note}"
+                        class="w-full p-4 bg-gray-50 rounded-2xl border border-gray-200 outline-none text-sm focus:border-green-500 transition-all">
+                </div>
+            `;
+
+            content.innerHTML = html;
+            updateModalPrice();
+        }
+
+        function setPayment(type) {
+            paymentMethod = type;
+
+            const btnQris = document.getElementById('btn-qris');
+            const btnCash = document.getElementById('btn-cash');
+
+            btnQris.className = "flex-1 py-3 rounded-xl border text-xs font-bold";
+            btnCash.className = "flex-1 py-3 rounded-xl border text-xs font-bold";
+
+            if (type === 'qris') {
+                btnQris.classList.add("bg-green-600", "text-white");
+                document.getElementById("cash-input").classList.add("hidden");
+            } else {
+                btnCash.classList.add("bg-green-600", "text-white");
+                document.getElementById("cash-input").classList.remove("hidden");
+            }
+        }
+
+
+
+        function getShippingCost(distance) {
+            const hour = new Date().getHours();
+            const isNight = hour >= 18 || hour < 6;
+
+            let rate = 0;
+
+            if (distance < 2) {
+                rate = isNight ? 1500 : 1000;
+            } 
+            else if (distance >= 2 && distance <= 5) {
+                rate = isNight ? 2000 : 1500;
+            } 
+            else if (distance > 5 && distance <= 10) {
+                rate = isNight ? 3000 : 2000;
+            } 
+            else {
+                rate = isNight ? 5000 : 3000;
+            }
+
+            return Math.round(distance * rate);
+        }
+
+        function selectModalSize(s, p) { activeItem.selectedSize = s; activeItem.basePrice = p; renderModalUI(); }
+        function selectModalLevel(l, e) { activeItem.selectedLevel = l; activeItem.levelExtra = e; renderModalUI(); }
+        function selectRasaExtra(r) {
+            if (activeItem.selectedRasaExtra === r) {
+                activeItem.selectedRasaExtra = null; // batal pilih
+            } else {
+                activeItem.selectedRasaExtra = r;
+            }
+            renderModalUI();
+        }
+        function selectMetode(m) { activeItem.metode = m; if(m === 'Goreng') { activeItem.kuah = false; activeItem.kuahPrice = 0; } renderModalUI(); }
+        function toggleKuah() { activeItem.kuah = !activeItem.kuah; activeItem.kuahPrice = activeItem.kuah ? 1000 : 0; renderModalUI(); }
+        function toggleTopping(name, price) {
+            const idx = activeItem.selectedToppings.findIndex(t => t.name === name);
+            if(idx > -1) activeItem.selectedToppings.splice(idx, 1);
+            else activeItem.selectedToppings.push({name, price});
+            renderModalUI();
+        }
+        function selectSaus(s) { activeItem.selectedSaus = s; renderModalUI(); }
+
+        function selectPackageOption(key, value) { 
+            if (!activeItem.selectedOptions) activeItem.selectedOptions = {};
+            activeItem.selectedOptions[key] = value;
+            renderModalUI();
+        }
+
+        function updateModalPrice() {
+            if (!activeItem) return;
+            const toppingTotal = activeItem.selectedToppings.reduce((sum, t) => sum + t.price, 0);
+            let total = activeItem.basePrice + (activeItem.levelExtra || 0) + toppingTotal + (activeItem.kuahPrice || 0);
+            document.getElementById('modal-total-display').innerText = `Rp${total.toLocaleString()}`;
+            activeItem.finalPrice = total;
+        }
+
+        function isSameItem(a, b) {
+            return JSON.stringify({
+                name: a.name,
+                size: a.selectedSize,
+                level: a.selectedLevel,
+                rasa: a.selectedRasaExtra,
+                topping: a.selectedToppings,
+                metode: a.metode,
+                kuah: a.kuah,
+                saus: a.selectedSaus,
+                options: a.selectedOptions
+            }) === JSON.stringify({
+                name: b.name,
+                size: b.selectedSize,
+                level: b.selectedLevel,
+                rasa: b.selectedRasaExtra,
+                topping: b.selectedToppings,
+                metode: b.metode,
+                kuah: b.kuah,
+                saus: b.selectedSaus,
+                options: b.selectedOptions
+            });
+        }
+
+        function addToCartFromModal() {
+            const existing = cart.find(item => isSameItem(item, activeItem));
+
+            if (existing) {
+                existing.qty = (existing.qty || 1) + 1;
+            } else {
+                cart.push({
+                    ...activeItem,
+                    qty: 1
+                });
+            }
+
+            updateTotals();
+            showToast("Berhasil ditambahkan ke keranjang 🛒");
+            closeModal();
+        }
+
+        function showToast(msg) {
+            const toast = document.createElement("div");
+            toast.innerText = msg;
+            toast.className = "fixed bottom-24 left-1/2 -translate-x-1/2 bg-green-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg z-[999]";
+            
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 2000);
+        }
+
+        function closeModal() { document.getElementById('item-modal').classList.add('hidden'); activeItem = null; }
+
+        function updateTotals() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.finalPrice * (item.qty || 1)), 0);
+            const shipping = orderType === 'delivery' ? getShippingCost(distance) : 0;
+            const tote = useTotebag ? TOTE_PRICE : 0;
+            const total = subtotal + shipping + tote;
+
+            const label = document.getElementById('label-ongkir');
+                if (orderType === 'delivery') {
+                    label.innerText = `Ongkir (${distance} km)`;
+                } else {
+                    label.innerText = `Ongkir`;
+            }
+
+            document.getElementById('cart-subtotal').innerText = `Rp${subtotal.toLocaleString()}`;
+            document.getElementById('cart-shipping').innerText = `Rp${shipping.toLocaleString()}`;
+            const toteRow = document.getElementById('tote-row');
+            if (toteRow) {
+                toteRow.innerText = useTotebag ? `Rp${TOTE_PRICE.toLocaleString()}` : 'Rp0';
+            }
+            document.getElementById('cart-total').innerText = `Rp${total.toLocaleString()}`;
+
+            const bar = document.getElementById('floating-bar');
+            if (cart.length > 0) {
+                bar.classList.remove('hidden');
+                document.getElementById('cart-count-badge').innerText = cart.length;
+                document.getElementById('floating-total').innerText = `Rp${total.toLocaleString()}`;
+            } else bar.classList.add('hidden');
+        }
+
+        function toggleCart(show) {
+            const overlay = document.getElementById('cart-overlay');
+            const drawer = overlay.querySelector('.cart-overlay');
+            if (show) {
+                renderCartList();
+                overlay.classList.remove('hidden');
+                setTimeout(() => { drawer.classList.replace('cart-closed', 'cart-open'); map.invalidateSize(); }, 10);
+            } else {
+                drawer.classList.replace('cart-open', 'cart-closed');
+                setTimeout(() => overlay.classList.add('hidden'), 400);
+            }
+        }
+
+        function renderCartList() {
+            const list = document.getElementById('cart-items-list');
+            list.innerHTML = cart.length === 0 ? `<div class="py-10 text-center text-gray-400 font-bold text-[10px] uppercase tracking-widest">Keranjang Kosong</div>` :
+                cart.map((item, idx) => `
+                <div class="bg-white p-4 rounded-3xl border border-gray-100 relative shadow-sm space-y-2">
+                    <div class="flex gap-4">
+                        <div class="flex-1">
+                            <h5>${item.name} (${item.selectedSize}) x${item.qty || 1}</h5>
+                            <div class="text-[9px] text-gray-500 mt-1">
+                                ${item.selectedLevel ? `Pedas Lvl ${item.selectedLevel}` : ''}
+                                ${item.selectedToppings.length > 0 ? `+ Topping: ${item.selectedToppings.map(t => t.name).join(', ')}` : ''}
+                                ${item.metode ? ` • ${item.metode}` : ''}
+                                ${item.kuah ? ` • Tambah Kuah` : ''}
+                                ${item.selectedSaus ? ` • Saus: ${item.selectedSaus}` : ''}
+                            </div>
+                            <p class="font-black text-xs text-green-700 mt-1">Rp${item.finalPrice.toLocaleString()}</p>
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="changeQty(${idx}, -1)" class="px-2 bg-gray-200 rounded">-</button>
+                                <span class="text-xs font-bold">${item.qty || 1}</span>
+                                <button onclick="changeQty(${idx}, 1)" class="px-2 bg-gray-200 rounded">+</button>
+                            </div>
+                        </div>
+                        <button onclick="removeFromCart(${idx})" class="text-red-400 text-xl font-bold px-2">×</button>
+                    </div>
+                    <input type="text" value="${item.note || ''}" onchange="cart[${idx}].note = this.value" 
+                        placeholder="Catatan..." class="w-full text-[10px] bg-gray-50 p-2 rounded-lg italic outline-none border border-transparent focus:border-green-100">
+                    </div>
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
+                    <div>
+                        <p class="text-xs font-bold">Gunakan Totebag(Kontribusi menjaga lingkungan)</p>
+                        <p class="text-[9px] text-gray-400 uppercase font-bold">+Rp3.500</p>
+                    </div>
+                    <button onclick="toggleTotebag()" 
+                        class="w-12 h-6 rounded-full transition-all relative ${useTotebag ? 'bg-green-600' : 'bg-gray-300'}">
+                        <div class="absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${useTotebag ? 'left-7' : 'left-1'}"></div>
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function changeQty(idx, change) {
+            cart[idx].qty = (cart[idx].qty || 1) + change;
+
+            if (cart[idx].qty <= 0) {
+                cart.splice(idx, 1);
+            }
+
+            updateTotals();
+            renderCartList();
+        }
+
+        function removeFromCart(idx) { cart.splice(idx, 1); updateTotals(); renderCartList(); if (cart.length === 0) toggleCart(false); }
+
+        function toggleTotebag() {
+            useTotebag = !useTotebag;
+            updateTotals();
+            renderCartList();
+        }
+
+        function setOrderType(type) {
+            orderType = type;
+
+            const btnDelivery = document.getElementById('btn-delivery');
+            const btnTakeaway = document.getElementById('btn-takeaway');
+            const btnDinein = document.getElementById('btn-dinein');
+
+            // reset semua
+            [btnDelivery, btnTakeaway, btnDinein].forEach(btn => {
+                btn.className = "flex-1 py-3 rounded-xl font-bold transition-all text-green-400";
+            });
+
+            // aktifkan yang dipilih
+            if (type === 'delivery') {
+                btnDelivery.className = "flex-1 py-3 rounded-xl font-bold bg-green-600 text-white shadow-sm";
+            } else if (type === 'takeaway') {
+                btnTakeaway.className = "flex-1 py-3 rounded-xl font-bold bg-green-600 text-white shadow-sm";
+            } else if (type === 'dinein') {
+                btnDinein.className = "flex-1 py-3 rounded-xl font-bold bg-green-600 text-white shadow-sm";
+            }
+
+            // tampilkan map hanya untuk delivery
+            document.getElementById('delivery-details-section')
+                .classList.toggle('hidden', type !== 'delivery');
+
+            document.getElementById('shipping-row')
+                .classList.toggle('hidden', type !== 'delivery');
+
+            document.getElementById('payment-section')
+                .classList.toggle('hidden', type === 'delivery');
+
+            updateTotals();
+        }
+
+        function initMap() {
+            map = L.map('map', { zoomControl: false }).setView(RESTO_COORDS, 14);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+            L.circleMarker(RESTO_COORDS, { color: '#059669', radius: 6, fillOpacity: 1 }).addTo(map);
+            userMarker = L.marker(RESTO_COORDS, { draggable: true }).addTo(map);
+            routeLayer = L.layerGroup().addTo(map);
+            userMarker.on('dragend', () => getRoadRoute(userMarker.getLatLng()));
+            map.on('click', (e) => { userMarker.setLatLng(e.latlng); getRoadRoute(e.latlng); });
+            getRoadRoute(userMarker.getLatLng());
+        }
+
+        function updateJamStatus() {
+            const now = new Date();
+            
+            const jam = now.getHours().toString().padStart(2, '0');
+            const menit = now.getMinutes().toString().padStart(2, '0');
+            const detik = now.getSeconds().toString().padStart(2, '0');
+
+            const currentTime = now.getHours() + now.getMinutes() / 60;
+
+            const buka = 9;   // 09:00
+            const tutup = 21; // 21:00
+
+            const isOpen = currentTime >= buka && currentTime < tutup;
+
+            const el = document.getElementById('status-jam');
+
+            el.innerText = `${jam}:${menit}:${detik} • ${isOpen ? 'BUKA' : 'TUTUP'}`;
+
+            if (isOpen) {
+                el.className = "text-[10px] font-bold text-green-600 bg-green-50 px-2 py-1 rounded-full uppercase italic border border-green-100";
+            } else {
+                el.className = "text-[10px] font-bold text-red-600 bg-red-50 px-2 py-1 rounded-full uppercase italic border border-red-100";
+            }
+        }
+
+        async function getRoadRoute(latlng) {
+            userLocation = [latlng.lat, latlng.lng];
+            const url = `https://router.project-osrm.org/route/v1/driving/${RESTO_COORDS[1]},${RESTO_COORDS[0]};${latlng.lng},${latlng.lat}?overview=full&geometries=geojson`;
+            try {
+                const res = await fetch(url); const data = await res.json();
+                if (data.code === 'Ok') {
+                    routeLayer.clearLayers();
+                    distance = Math.ceil((data.routes[0].distance / 1000) * 10) / 10;
+                    L.geoJSON(data.routes[0].geometry, { style: { color: '#059669', weight: 4 } }).addTo(routeLayer);
+                    updateTotals();
+                }
+            } catch (e) { distance = (map.distance(RESTO_COORDS, userLocation)/1000).toFixed(1); updateTotals(); }
+        }
+
+        function getCurrentLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    const ll = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+                    userMarker.setLatLng(ll); map.flyTo(ll, 16); getRoadRoute(ll);
+                });
+            }
+        }
+
+        function sendOrder() {
+            const name = document.getElementById('user-name').value;
+            if (!name) return alert("Mohon isi nama kamu.");
+            if (orderType !== 'delivery' && !paymentMethod) {
+                return alert("Pilih metode pembayaran");
+            }
+
+            if (paymentMethod === 'cash' && cashAmount <= 0) {
+                return alert("Masukkan uang pembayaran");
+            }
+            if (orderType === 'delivery') {
+            const isDefaultLocation = 
+                userLocation[0] === RESTO_COORDS[0] && 
+                userLocation[1] === RESTO_COORDS[1];
+
+            if (isDefaultLocation) {
+                alert("Mohon tentukan lokasi pengantaran terlebih dahulu 📍");
+                return;
+            }
+        }
+
+            
+            const subtotal = cart.reduce((sum, item) => sum + (item.finalPrice * (item.qty || 1)), 0);
+            const shipping = orderType === 'delivery' ? getShippingCost(distance) : 0;
+            const tote = useTotebag ? TOTE_PRICE : 0;
+            const total = subtotal + shipping + tote;
+            const now = new Date();
+            const jam = now.getHours().toString().padStart(2, '0');
+            const menit = now.getMinutes().toString().padStart(2, '0');
+
+            // Perhitungan Estimasi
+            // Asumsi: 5 menit per item untuk pembuatan, minimal 10 menit
+            const processMinutes = Math.max(10, cart.length * 5);
+            // Asumsi: 1km = 5 menit pengiriman
+            const shippingMinutes = Math.ceil(distance * 5);
+            const totalEstimasi = orderType === 'delivery' ? (processMinutes + shippingMinutes) : processMinutes;
+
+            let msg = `*ORDERAN BARU - NGALEUEUT*%0A`;
+            msg += `---------------------------%0A`;
+            msg += `*Nama Pembeli:* ${name}%0A`;
+            const tipeText = 
+                orderType === 'delivery' ? 'Delivery' :
+                orderType === 'takeaway' ? 'Ambil di Tempat' :
+                'Makan di Tempat';
+
+            msg += `*Opsi Pembelian:* ${tipeText}%0A`;
+            msg += `*Waktu Order:* ${jam}:${menit}WIB%0A`;
+            
+            cart.forEach((item, i) => {
+               msg += `*${i+1}. ${item.name}* (${item.selectedSize}) x${item.qty || 1}%0A`;
+                if (item.selectedLevel !== null) {
+                    let levelText = '';
+                    let extra = item.levelExtra || 0;
+
+                    if (item.selectedLevel === 'pisah') {
+                        levelText = 'Sambal Dipisah';
+                    } else {
+                        levelText = `Lv ${item.selectedLevel}`;
+                    }
+
+                    if (extra > 0) {
+                        levelText += ` (+${extra})`;
+                    }
+
+                    msg += `- Level: ${levelText}%0A`;
+                }
+                if (item.selectedToppings.length > 0) msg += `- Topping: ${item.selectedToppings.map(t => t.name).join(', ')}%0A`;
+                if (item.metode) msg += `- Masak: ${item.metode}%0A`;
+                if (item.kuah) msg += `- Pakai Kuah: Ya%0A`;
+                if (item.selectedSaus) msg += `- Saus: ${item.selectedSaus}%0A`;
+                if (item.selectedRasaExtra) {
+                    msg += `- Rasa: ${item.selectedRasaExtra}%0A`;
+                }
+                if (item.selectedOptions) {
+                    Object.keys(item.selectedOptions).forEach(k => {
+                        msg += `- ${k}: ${item.selectedOptions[k]}%0A`;
+                    });
+                }
+                if (item.note) msg += `- *Catatan:* _${item.note}_%0A`;
+                const qty = item.qty || 1;
+                const totalItem = item.finalPrice * qty;
+
+                if (qty > 1) {
+                    msg += `- Harga: Rp${item.finalPrice.toLocaleString()} x${qty} = Rp${totalItem.toLocaleString()}%0A%0A`;
+                } else {
+                    msg += `- Harga: Rp${item.finalPrice.toLocaleString()}%0A%0A`;
+                }
+            });
+            
+            msg += `---------------------------%0A`;
+            msg += `*Rincian Biaya:*%0A`;
+            msg += `- Subtotal: Rp${subtotal.toLocaleString()}%0A`;
+            if (orderType !== 'delivery' && !paymentMethod) {
+                return alert("Pilih metode pembayaran");
+            }
+
+            if (paymentMethod === 'cash' && cashAmount <= 0) {
+                return alert("Masukkan uang pembayaran");
+            }
+            if (useTotebag) {
+                msg += `- Totebag: Rp${TOTE_PRICE.toLocaleString()}%0A`;
+            }
+            if (orderType === 'delivery') {
+                msg += `- Ongkos Kirim: Rp${shipping.toLocaleString()}%0A`;
+            }
+            msg += `---------------------------%0A`;
+            msg += `*Pembayaran:* ${paymentMethod.toUpperCase()}%0A`;
+
+            if (paymentMethod === 'cash') {
+                msg += `- Bayar: Rp${cashAmount.toLocaleString()}%0A`;
+                msg += `- Kembalian: Rp${changeAmount.toLocaleString()}%0A`;
+            }
+            msg += `*TOTAL BAYAR: Rp${total.toLocaleString()}*%0A%0A`;
+
+            msg += `---------------------------%0A`;
+            msg += `*Estimasi Waktu:*%0A`;
+            msg += `- Pembuatan: ±${processMinutes} menit%0A`;
+            if (orderType === 'delivery') {
+                msg += `- Pengiriman: ±${shippingMinutes} menit%0A`;
+                msg += `*Total Sampai: ±${totalEstimasi} menit*%0A%0A`;
+                msg += `*Alamat:* ${document.getElementById('user-address').value || '-'}%0A`;
+                msg += `*Lokasi:* https://www.google.com/maps?q=${userLocation[0]},${userLocation[1]}%0A`;
+                msg += `*Download QRIS untuk pembayaran:* https://ngaleueut.website/img/qris.jpg`;
+            } else {
+                msg += `*Download QRIS untuk pembayaran:* https://ngaleueut.website/img/qris.jpg`;
+                msg += `*Siap Diambil: ±${totalEstimasi} menit*%0A`;
+            }
+
+            window.open(`https://wa.me/${ADMIN_WA}?text=${msg}`, '_blank');
+        }
+
+        function printNota() {
+
+        const name = document.getElementById('user-name').value;
+        if (!name) return alert("Nama wajib diisi");
+
+        if (orderType === 'delivery') {
+            const isDefaultLocation =
+                userLocation[0] === RESTO_COORDS[0] &&
+                userLocation[1] === RESTO_COORDS[1];
+
+            if (isDefaultLocation) {
+                return alert("Lokasi belum dipilih");
+            }
+        }
+
+        if (cart.length === 0) return alert("Keranjang kosong");
+
+        // ✅ ini saja (jangan overwrite lagi)
+        generateNotaContent();
+
+        // ❌ hilangkan estimasi di print
+        document.getElementById("print-estimasi").innerHTML = "";
+
+        const printContents = document.getElementById("printArea").innerHTML;
+
+        const win = window.open('', '', 'width=300,height=600');
+        win.document.write(`
+            <html>
+            <body style="width:58mm;font-family:monospace;" onload="window.print();window.close()">
+            ${printContents}
+            </body>
+            </html>
+        `);
+        win.document.close();
+    }
+
+        function generateNotaContent() {
+            const name = document.getElementById('user-name').value || '-';
+
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ":" +
+                        now.getMinutes().toString().padStart(2, '0') + " WIB";
+
+            document.getElementById("print-header").innerHTML = `
+                Nama Pembeli: ${name}<br>
+                Waktu Order: ${time}<br>
+                Opsi Pembelian: ${orderType.toUpperCase()}
+                <hr>
+            `;
+
+            let htmlItems = "";
+            let subtotal = 0;
+
+            cart.forEach((item, i) => {
+                const qty = item.qty || 1;
+                const total = item.finalPrice * qty;
+                subtotal += total;
+
+                let detail = "";
+
+                if (item.hasLevel && item.selectedLevel !== null) {
+                    detail += `Level: Lv ${item.selectedLevel}<br>`;
+                }
+
+                if (item.selectedToppings?.length > 0) {
+                    detail += `Topping: ${item.selectedToppings.map(t => t.name).join(', ')}<br>`;
+                }
+
+                if (item.metode) detail += `Masak: ${item.metode}<br>`;
+                if (item.kuah) detail += `+ Kuah<br>`;
+                if (item.selectedSaus) detail += `Saus: ${item.selectedSaus}<br>`;
+                if (item.selectedRasaExtra) detail += `Rasa: ${item.selectedRasaExtra}<br>`;
+
+                if (item.selectedOptions) {
+                    Object.keys(item.selectedOptions).forEach(k => {
+                        detail += `${k}: ${item.selectedOptions[k]}<br>`;
+                    });
+                }
+
+                if (item.note) {
+                    detail += `Catatan: ${item.note}<br>`;
+                }
+
+                htmlItems += `
+                    <div style="margin-bottom:4px;">
+                        <div style="font-weight:bold;">
+                            ${i+1}. ${item.name} (${item.selectedSize}) x${qty}
+                        </div>
+
+                        <div style="margin-left:6px;">
+                            ${detail}
+                            Harga: Rp ${total.toLocaleString()}
+                        </div>
+                    </div>
+                `;
+            });
+
+            document.getElementById("print-items").innerHTML = htmlItems;
+
+            const shipping = orderType === 'delivery' ? getShippingCost(distance) : 0;
+            const tote = useTotebag ? TOTE_PRICE : 0;
+            const total = subtotal + shipping + tote;
+
+            let totalHTML = `
+                Subtotal: Rp ${subtotal.toLocaleString()}<br>
+            `;
+
+            if (useTotebag) {
+                totalHTML += `Totebag: Rp ${TOTE_PRICE.toLocaleString()}<br>`;
+            }
+
+            totalHTML += `
+                Ongkos Kirim: Rp ${shipping.toLocaleString()}<br>
+                <b>TOTAL BAYAR: Rp ${total.toLocaleString()}</b>
+            `;
+
+            let paymentHTML = `<br><b>Pembayaran:</b> ${paymentMethod || '-' }<br>`;
+
+            if (paymentMethod === 'cash') {
+                paymentHTML += `
+                    Bayar: Rp ${cashAmount.toLocaleString()}<br>
+                    Kembalian: Rp ${changeAmount.toLocaleString()}<br>
+                `;
+            }
+
+            document.getElementById("print-total").innerHTML = totalHTML + paymentHTML;
+
+            const processMinutes = Math.max(10, cart.length * 5);
+            const shippingMinutes = Math.ceil(distance * 5);
+
+            document.getElementById("print-estimasi").innerHTML = `
+                Pembuatan: ±${processMinutes} menit<br>
+                Pengiriman: ±${orderType === 'delivery' ? shippingMinutes : 0} menit<br>
+                <b>Total Sampai: ±${processMinutes + shippingMinutes} menit</b>
+            `;
+
+            // ✅ QR WA (PALING BAWAH)
+            const waLink = "https://wa.me/6285183317960";
+
+            document.getElementById("qr-wa").src =
+                `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(waLink)}`;
+        }
+
+        function downloadNota() {
+            const name = document.getElementById('user-name').value;
+            if (!name) return alert("Nama wajib diisi");
+
+            if (orderType === 'delivery') {
+                const isDefaultLocation =
+                    userLocation[0] === RESTO_COORDS[0] &&
+                    userLocation[1] === RESTO_COORDS[1];
+
+                if (isDefaultLocation) {
+                    return alert("Lokasi belum dipilih");
+                }
+            }
+
+            if (cart.length === 0) return alert("Keranjang kosong");
+
+            // 👉 PANGGIL ulang isi nota (WAJIB)
+            generateNotaContent();
+
+            // ⏳ kasih waktu render DOM
+            setTimeout(() => {
+                const element = document.getElementById("captureArea");
+
+                html2canvas(element, {
+                    scale: 3,
+                    useCORS: true
+                }).then(canvas => {
+                    const link = document.createElement("a");
+                    link.download = "nota-ngaleueut.jpg";
+                    link.href = canvas.toDataURL("image/jpeg", 1.0);
+                    link.click();
+                });
+            }, 800); // ⬅️ tambahin jadi 800ms untuk pastiin semua gambar (termasuk QR) ke-render dengan baik sebelum di-capture     
+        }
+
+        function printRawBT() {
+
+            const name = document.getElementById('user-name').value;
+            if (!name) return alert("Nama wajib diisi");
+            if (cart.length === 0) return alert("Keranjang kosong");
+
+            const now = new Date();
+            const time = now.getHours().toString().padStart(2, '0') + ":" +
+                        now.getMinutes().toString().padStart(2, '0') + " WIB";
+
+            const ESC = '\x1B';
+            const GS = '\x1D';
+
+            let text = "";
+
+            // ================= HEADER =================
+            text += ESC + "@"; // init
+
+            text += ESC + "a\x01"; // center
+            text += GS + "!\x11"; // double size
+            text += ESC + "E\x01"; // bold ON
+            text += "NGALEUEUT\n";
+
+            text += ESC + "E\x00";
+            text += GS + "!\x00";
+            text += "Blok Sukamaju, Desa Pasanggrahan\n";
+            text += "Kec. Maja, Majalengka\n";
+
+            text += "------------------------------\n";
+
+            text += ESC + "a\x00"; // left
+
+            // ================= INFO =================
+            text += `Nama: ${name}\n`;
+            text += `Waktu: ${time}\n`;
+            text += `Tipe: ${orderType.toUpperCase()}\n`;
+
+            text += "------------------------------\n";
+
+            // ================= FORMAT =================
+            function formatLine(left, right) {
+                const width = 32;
+                const space = width - left.length - right.length;
+                return left + " ".repeat(space > 0 ? space : 1) + right;
+            }
+
+            // ================= ITEMS =================
+            let subtotal = 0;
+
+            cart.forEach((item, i) => {
+                const qty = item.qty || 1;
+                const price = item.finalPrice;
+                const total = price * qty;
+                subtotal += total;
+
+                text += ESC + "E\x01"; // bold
+                text += `${i+1}. ${item.name}\n`;
+                text += ESC + "E\x00";
+
+                text += `   ${item.selectedSize} x${qty} @Rp ${price.toLocaleString()}\n`;
+
+                if (item.selectedLevel !== null) text += `   Lv ${item.selectedLevel}\n`;
+                if (item.selectedToppings?.length > 0)
+                    text += `   + ${item.selectedToppings.map(t => t.name).join(', ')}\n`;
+                if (item.note) text += `   (${item.note})\n`;
+
+                text += formatLine("", "Rp " + total.toLocaleString()) + "\n";
+            });
+
+            // ================= TOTAL =================
+            const shipping = orderType === 'delivery' ? getShippingCost(distance) : 0;
+            const tote = useTotebag ? TOTE_PRICE : 0;
+            const total = subtotal + shipping + tote;
+
+            text += "------------------------------\n";
+
+            text += formatLine("Subtotal", "Rp " + subtotal.toLocaleString()) + "\n";
+
+            if (useTotebag) {
+                text += formatLine("Totebag", "Rp " + TOTE_PRICE.toLocaleString()) + "\n";
+            }
+
+            if (orderType === 'delivery') {
+                text += formatLine("Ongkir", "Rp " + shipping.toLocaleString()) + "\n";
+            }
+
+            text += "------------------------------\n";
+
+            text += ESC + "E\x01";   // bold
+            text += GS + "!\x01";    // height saja (tidak terlalu besar)
+            text += formatLine("TOTAL", "Rp " + total.toLocaleString()) + "\n";
+            text += ESC + "E\x00";
+            text += GS + "!\x00";
+
+            text += "------------------------------\n";
+            text += "PEMBAYARAN\n";
+
+            text += `Metode : ${paymentMethod || '-'}\n`;
+
+            if (paymentMethod === 'cash') {
+                text += `Bayar  : Rp ${cashAmount.toLocaleString()}\n`;
+                text += `Kembali: Rp ${changeAmount.toLocaleString()}\n`;
+            }
+
+            // ================= FOOTER =================
+            text += "------------------------------\n";
+
+            text += ESC + "a\x01"; // center
+            text += ESC + "E\x01";
+            text += GS + "!\x11";
+            text += "TERIMA KASIH\n";
+            text += ESC + "E\x00";
+            text += GS + "!\x00";
+
+            // WIFI (hanya dine-in / takeaway)
+            if (orderType !== 'delivery') {
+                text += "\nWiFi: Ngaleueut \nPass: ngaleueut2026\n";
+            }
+
+            text += "\n";
+
+            // INFO KONTAK (pakai emoji sebagai pengganti logo)
+            text += "WA : 0851-8331-7960\n";
+            text += "IG : @_ngaleueut\n";
+            text += "WEB : ngaleueut.website\n";
+
+            text += "\n\n\n";
+
+            // ================= CUT PAPER =================
+            text += GS + "V\x00";
+
+            // ================= KIRIM RAWBT =================
+            const url = "intent:" + encodeURIComponent(text) +
+                "#Intent;scheme=rawbt;package=ru.a402d.rawbtprinter;end;";
+
+            window.location.href = url;
+        }
+
+        document.addEventListener("input", function(e) {
+        if (e.target.id === "cash-amount") {
+
+            const val = parseInt(e.target.value) || 0;
+            cashAmount = val;
+
+            // hitung total
+            const subtotal = cart.reduce((sum, item) => 
+                sum + (item.finalPrice * (item.qty || 1)), 0);
+
+            const shipping = orderType === 'delivery' ? getShippingCost(distance) : 0;
+            const tote = useTotebag ? TOTE_PRICE : 0;
+            const total = subtotal + shipping + tote;
+
+            changeAmount = val - total;
+
+            const el = document.getElementById("cash-change");
+
+            if (val === 0) {
+                el.innerText = "";
+                return;
+            }
+
+            if (changeAmount >= 0) {
+                el.innerText = "Kembalian: Rp " + changeAmount.toLocaleString();
+                el.style.color = "green";
+            } else {
+                el.innerText = "Kurang: Rp " + Math.abs(changeAmount).toLocaleString();
+                el.style.color = "red";
+            }
+        }
+    });
+
+        window.onload = () => { renderMenu(); initMap(); };
+        window.onload = () => { 
+            renderMenu(); 
+            initMap(); 
+            updateJamStatus();
+            setInterval(updateJamStatus, 1000); // update tiap detik
+        };
+    </script>
+    <!-- Floating Contact Button -->
+    <a href="https://wa.me/6285183317960?text=Halo admin, menu apa saja yang ready hari ini ?!?" target="_blank"
+    class="fixed bottom-24 right-4 z-[95] bg-green-600 w-14 h-14 rounded-full flex items-center justify-center shadow-lg active:scale-95 transition-all">
+
+        <!-- Icon WA -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M20.52 3.48A11.91 11.91 0 0012 .05C5.37.05.05 5.37.05 12c0 2.1.55 4.16 1.6 5.97L.05 24l6.2-1.6A11.94 11.94 0 0012 23.95c6.63 0 11.95-5.32 11.95-11.95 0-3.19-1.24-6.18-3.43-8.52zM12 21.7c-1.83 0-3.63-.49-5.2-1.42l-.37-.22-3.68.95.98-3.59-.24-.37A9.68 9.68 0 012.3 12c0-5.34 4.36-9.7 9.7-9.7 2.59 0 5.03 1.01 6.86 2.84A9.66 9.66 0 0121.7 12c0 5.34-4.36 9.7-9.7 9.7zm5.33-7.26c-.29-.14-1.72-.85-1.99-.95-.27-.1-.47-.14-.67.14-.2.29-.77.95-.95 1.14-.17.2-.34.22-.63.07-.29-.14-1.22-.45-2.33-1.44-.86-.77-1.44-1.72-1.6-2.01-.17-.29-.02-.45.13-.6.14-.14.29-.34.43-.51.14-.17.2-.29.29-.49.1-.2.05-.37-.02-.51-.07-.14-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.5h-.57c-.2 0-.51.07-.78.37-.27.29-1.03 1.01-1.03 2.46s1.05 2.85 1.2 3.05c.14.2 2.06 3.15 5 4.42.7.3 1.25.48 1.68.62.71.22 1.35.19 1.86.12.57-.08 1.72-.7 1.96-1.38.24-.68.24-1.26.17-1.38-.07-.12-.27-.2-.57-.34z"/>
+        </svg>
+
+    </a>
+    <div id="captureArea" style="padding:20px;background:white;display:inline-block;position:fixed;left:-9999px;top:0;">
+        <div id="printArea" style="width:58mm; margin:auto; font-family: monospace; font-size:12px;">
+
+            <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+                <img src="img/logo.png" style="width:28px; height:28px; object-fit:contain;">
+                <div>
+                    <div style="font-size:14px; font-weight:bold;">NGALEUEUT</div>
+                    <div style="font-size:10px; font-weight:bold;">NOTA PESANAN</div>
+                </div>
+            </div>
+
+            <hr style="border:none; border-top:2px solid black; margin:6px 0;">
+
+            <div id="print-header"></div>
+            <hr style="border:none; border-top:2px solid black; margin:6px 0;">
+            <div style="text-align:center;">--- PESANAN ---</div>
+            <div id="print-items"></div>
+
+            <hr style="border:none; border-top:2px solid black; margin:6px 0;">
+
+            <div style="text-align:center;">--- RINGKASAN BIAYA ---</div>
+            <div id="print-total"></div>
+
+            <hr style="border:none; border-top:2px solid black; margin:6px 0;">
+
+            <div style="text-align:center;">--- ESTIMASI WAKTU ---</div>
+            <div id="print-estimasi"></div>
+
+           <hr style="border:none; border-top:2px solid black; margin:6px 0;">
+
+            <div style="text-align:center; font-weight:bold;">
+                TERIMA KASIH ATAS<br>PESANANNYA!
+            </div>
+
+            <div style="margin-top:8px; text-align:center;">
+                <img id="qr-wa" crossorigin="anonymous" 
+                    style="display:block; margin:0 auto; width:80px; height:80px;" />
+                <div style="font-size:9px; margin-top:2px;">
+                    Scan untuk order lagi
+                </div>
+                <!-- WA -->
+                <div style="display:flex; align-items:center; justify-content:center; gap:4px; margin-top:4px; font-size:8px;">
+                    <img src="https://img.icons8.com/material-rounded/24/000000/whatsapp.png" 
+                        crossorigin="anonymous"
+                        style="width:10px; height:10px;">
+                    <span>0851-8331-7960</span>
+                </div>
+                <!-- IG -->
+                <div style="display:flex; align-items:center; justify-content:center; gap:4px; font-size:8px;">
+                    <img src="https://img.icons8.com/material-rounded/24/000000/instagram-new.png" 
+                        crossorigin="anonymous"
+                        style="width:10px; height:10px;">
+                    <span>@_ngaleueut</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
