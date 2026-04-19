@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Ngaleueut - Menu Terbaru</title>
+    <title>DASHBOARD ADMIN - NGALEUEUT</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <link rel="icon" type="image/png" sizes="32x32" href="img/icon.png">
@@ -655,6 +655,12 @@
 
 
         function getShippingCost(distance) {
+
+            // ✅ GRATIS ONGKIR ≤ 700 meter (0.7 km)
+            if (distance <= 0.7) {
+                return 0;
+            }
+
             const hour = new Date().getHours();
             const isNight = hour >= 18 || hour < 6;
 
@@ -1250,7 +1256,7 @@
             }
 
             totalHTML += `
-                Ongkos Kirim: Rp ${shipping.toLocaleString()}<br>
+                Ongkos Kirim: shipping === 0 ? "GRATIS" : "Rp " + shipping.toLocaleString()<br>
                 <b>TOTAL BAYAR: Rp ${total.toLocaleString()}</b>
             `;
 
