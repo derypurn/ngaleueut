@@ -557,6 +557,12 @@
         }
 
         function getShippingCost(distance) {
+
+            // ✅ GRATIS ONGKIR ≤ 700 meter (0.7 km)
+            if (distance <= 0.7) {
+                return 0;
+            }
+
             const hour = new Date().getHours();
             const isNight = hour >= 18 || hour < 6;
 
@@ -690,7 +696,8 @@
             }
 
             document.getElementById('cart-subtotal').innerText = `Rp${subtotal.toLocaleString()}`;
-            document.getElementById('cart-shipping').innerText = `Rp${shipping.toLocaleString()}`;
+            document.getElementById("cart-shipping").innerText =
+                shipping === 0 ? "GRATIS" : "Rp " + shipping.toLocaleString();
             const toteRow = document.getElementById('tote-row');
             if (toteRow) {
                 toteRow.innerText = useTotebag ? `Rp${TOTE_PRICE.toLocaleString()}` : 'Rp0';
