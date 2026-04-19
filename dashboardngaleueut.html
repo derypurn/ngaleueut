@@ -6,9 +6,9 @@
     <title>Ngaleueut - Menu Terbaru</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <link rel="icon" type="image/png" sizes="32x32" href="img/logo.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="img/logo.png">
-    <link rel="apple-touch-icon" href="img/logo.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="img/icon.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="img/icon.png">
+    <link rel="apple-touch-icon" href="img/icon.png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         @import url('https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@400,500,700,800&display=swap');
@@ -21,8 +21,7 @@
         .cart-overlay { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .cart-open { transform: translateY(0); }
         .cart-closed { transform: translateY(100%); }
-        @media print {body {width: 58mm;font-family: monospace;}
-}
+        @media print {body {width: 58mm; font-family: 'Cabinet Grotesk', sans-serif;margin: 0;padding: 0;line-height: 1.2;}* {margin: 0;padding: 0;}hr {margin: 4px 0;}div {line-height: 1.2;}}
     </style>
 </head>
 <body class="antialiased text-gray-900">
@@ -209,25 +208,16 @@
                     </svg>
                 </button>
 
-                <!-- PRINT -->
-                <button onclick="printNota()" 
-                    class="flex-1 bg-gray-800 text-white py-3 rounded-2xl flex items-center justify-center shadow active:scale-95">
-
-                    <!-- ICON PRINT -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
-                        viewBox="0 0 24 24">
-                        <path d="M6 9V2h12v7"></path>
-                        <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path>
-                        <path d="M6 14h12v8H6z"></path>
-                    </svg>
-                </button>
 
                 <button onclick="printRawBT()" 
                     class="flex-1 bg-purple-600 text-white py-3 rounded-2xl flex items-center justify-center shadow active:scale-95">
 
                     <!-- ICON -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 2l5 5-3.5 3.5L17 14l-5 5V2z"/>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path d="M6 9V2h12v7"></path>
+                        <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path>
+                        <path d="M6 14h12v8H6z"></path>
                     </svg>
                 </button>
 
@@ -304,7 +294,7 @@
                     { id: 'p6', name: "Cimol Bojot", img: "img/cimol.png", sizes: { small: 5000, large: 10000 }, hasLevel: true },
                     { id: 'p7', name: "Basreng Bojot", img: "img/basreng.png", sizes: { small: 5000, large: 10000 }, hasLevel: true },
                     { id: 'p8', name: "Sosis / Bakso Crispy", img: "img/sosis-crispy.png", sizes: { small: 5000, large: 10000, satuan: 1500 } },
-                    { id: 'p9', name: "Indomie Rebus", img: "img/indomie-rebus.png", sizes: { porsi: 5000 }, hasLevel: true, hasToppings: true }
+                    { id: 'p9', name: "Indomie Rebus", img: "img/indomie-rebus.png", sizes: { porsi: 6000 }, hasLevel: true, hasToppings: true }
                 ]
             },
             {
@@ -527,13 +517,38 @@
                     <div class="space-y-3">
                         <p class="text-[10px] font-black uppercase text-gray-400 tracking-wider">Tambah Topping</p>
                         <div class="grid grid-cols-1 gap-2">
-                            ${TOPPINGS.map(t => `
-                                <div onclick="toggleTopping('${t.name}', ${t.price})" 
-                                    class="p-3 rounded-2xl border-2 flex justify-between items-center cursor-pointer transition-all ${activeItem.selectedToppings.find(st => st.name === t.name) ? 'border-green-600 bg-green-50' : 'border-gray-100'}">
-                                    <span class="text-[11px] font-bold">${t.name}</span>
-                                    <span class="text-[10px] text-green-700 font-black">+Rp${t.price.toLocaleString()}</span>
+                            ${TOPPINGS.map(t => {
+                                const selected = activeItem.selectedToppings.find(st => st.name === t.name);
+                                const qty = selected ? selected.qty : 0;
+
+                                return `
+                                <div class="p-3 rounded-2xl border-2 flex justify-between items-center transition-all
+                                    ${qty > 0 ? 'border-green-600 bg-green-50' : 'border-gray-100'}">
+
+                                    <div>
+                                        <div class="text-[11px] font-bold">${t.name}</div>
+                                        <div class="text-[10px] text-green-700 font-black">
+                                            +Rp${t.price.toLocaleString()}
+                                        </div>
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                        <button onclick="changeToppingQty('${t.name}', ${t.price}, -1)"
+                                            class="w-7 h-7 bg-gray-200 rounded-lg text-xs font-bold ${qty === 0 ? 'opacity-30 pointer-events-none' : ''}">
+                                            -
+                                        </button>
+
+                                        <span class="text-sm font-black w-4 text-center">${qty}</span>
+
+                                        <button onclick="changeToppingQty('${t.name}', ${t.price}, 1)"
+                                            class="w-7 h-7 bg-green-600 text-white rounded-lg text-xs font-bold">
+                                            +
+                                        </button>
+                                    </div>
+
                                 </div>
-                            `).join('')}
+                                `;
+                            }).join('')}
                         </div>
                     </div>
                 `;
@@ -673,10 +688,19 @@
         }
         function selectMetode(m) { activeItem.metode = m; if(m === 'Goreng') { activeItem.kuah = false; activeItem.kuahPrice = 0; } renderModalUI(); }
         function toggleKuah() { activeItem.kuah = !activeItem.kuah; activeItem.kuahPrice = activeItem.kuah ? 1000 : 0; renderModalUI(); }
-        function toggleTopping(name, price) {
-            const idx = activeItem.selectedToppings.findIndex(t => t.name === name);
-            if(idx > -1) activeItem.selectedToppings.splice(idx, 1);
-            else activeItem.selectedToppings.push({name, price});
+        function changeToppingQty(name, price, change) {
+            let topping = activeItem.selectedToppings.find(t => t.name === name);
+
+            if (!topping && change > 0) {
+                activeItem.selectedToppings.push({ name, price, qty: 1 });
+            } else if (topping) {
+                topping.qty += change;
+
+                if (topping.qty <= 0) {
+                    activeItem.selectedToppings = activeItem.selectedToppings.filter(t => t.name !== name);
+                }
+            }
+
             renderModalUI();
         }
         function selectSaus(s) { activeItem.selectedSaus = s; renderModalUI(); }
@@ -689,7 +713,7 @@
 
         function updateModalPrice() {
             if (!activeItem) return;
-            const toppingTotal = activeItem.selectedToppings.reduce((sum, t) => sum + t.price, 0);
+            const toppingTotal = activeItem.selectedToppings.reduce((sum, t) => sum + (t.price * t.qty), 0);
             let total = activeItem.basePrice + (activeItem.levelExtra || 0) + toppingTotal + (activeItem.kuahPrice || 0);
             document.getElementById('modal-total-display').innerText = `Rp${total.toLocaleString()}`;
             activeItem.finalPrice = total;
@@ -794,42 +818,77 @@
 
         function renderCartList() {
             const list = document.getElementById('cart-items-list');
-            list.innerHTML = cart.length === 0 ? `<div class="py-10 text-center text-gray-400 font-bold text-[10px] uppercase tracking-widest">Keranjang Kosong</div>` :
-                cart.map((item, idx) => `
+
+            if (cart.length === 0) {
+                list.innerHTML = `
+                    <div class="py-10 text-center text-gray-400 font-bold text-[10px] uppercase tracking-widest">
+                        Keranjang Kosong
+                    </div>
+                `;
+                return;
+            }
+
+            // ================= ITEMS =================
+            const itemsHTML = cart.map((item, idx) => `
                 <div class="bg-white p-4 rounded-3xl border border-gray-100 relative shadow-sm space-y-2">
+                    
                     <div class="flex gap-4">
                         <div class="flex-1">
                             <h5>${item.name} (${item.selectedSize}) x${item.qty || 1}</h5>
+
                             <div class="text-[9px] text-gray-500 mt-1">
                                 ${item.selectedLevel ? `Pedas Lvl ${item.selectedLevel}` : ''}
-                                ${item.selectedToppings.length > 0 ? `+ Topping: ${item.selectedToppings.map(t => t.name).join(', ')}` : ''}
+                                ${item.selectedToppings.length > 0 ? ` + Topping: ${item.selectedToppings.map(t => `${t.name} x${t.qty}`).join(', ')}` : ''}
                                 ${item.metode ? ` • ${item.metode}` : ''}
                                 ${item.kuah ? ` • Tambah Kuah` : ''}
                                 ${item.selectedSaus ? ` • Saus: ${item.selectedSaus}` : ''}
                             </div>
-                            <p class="font-black text-xs text-green-700 mt-1">Rp${item.finalPrice.toLocaleString()}</p>
+
+                            <p class="font-black text-xs text-green-700 mt-1">
+                                Rp${item.finalPrice.toLocaleString()}
+                            </p>
+
                             <div class="flex items-center gap-2 mt-2">
                                 <button onclick="changeQty(${idx}, -1)" class="px-2 bg-gray-200 rounded">-</button>
                                 <span class="text-xs font-bold">${item.qty || 1}</span>
                                 <button onclick="changeQty(${idx}, 1)" class="px-2 bg-gray-200 rounded">+</button>
                             </div>
                         </div>
-                        <button onclick="removeFromCart(${idx})" class="text-red-400 text-xl font-bold px-2">×</button>
+
+                        <button onclick="removeFromCart(${idx})" 
+                            class="text-red-400 text-xl font-bold px-2">×</button>
                     </div>
-                    <input type="text" value="${item.note || ''}" onchange="cart[${idx}].note = this.value" 
-                        placeholder="Catatan..." class="w-full text-[10px] bg-gray-50 p-2 rounded-lg italic outline-none border border-transparent focus:border-green-100">
-                    </div>
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100">
-                    <div>
-                        <p class="text-xs font-bold">Gunakan Totebag(Kontribusi menjaga lingkungan)</p>
-                        <p class="text-[9px] text-gray-400 uppercase font-bold">+Rp3.500</p>
-                    </div>
-                    <button onclick="toggleTotebag()" 
-                        class="w-12 h-6 rounded-full transition-all relative ${useTotebag ? 'bg-green-600' : 'bg-gray-300'}">
-                        <div class="absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${useTotebag ? 'left-7' : 'left-1'}"></div>
-                    </button>
+
+                    <input type="text" value="${item.note || ''}" 
+                        onchange="cart[${idx}].note = this.value"
+                        placeholder="Catatan..." 
+                        class="w-full text-[10px] bg-gray-50 p-2 rounded-lg italic outline-none border border-transparent focus:border-green-100">
                 </div>
             `).join('');
+
+            // ================= TOTE BAG (DI LUAR MAP) =================
+            const toteHTML = `
+                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-xl border border-gray-100 mt-2">
+                    <div>
+                        <p class="text-xs font-bold">
+                            Gunakan Totebag (Kontribusi menjaga lingkungan)
+                        </p>
+                        <p class="text-[9px] text-gray-400 uppercase font-bold">
+                            +Rp3.500
+                        </p>
+                    </div>
+
+                    <button onclick="toggleTotebag()" 
+                        class="w-12 h-6 rounded-full transition-all relative ${useTotebag ? 'bg-green-600' : 'bg-gray-300'}">
+
+                        <div class="absolute top-1 w-4 h-4 bg-white rounded-full transition-all 
+                            ${useTotebag ? 'left-7' : 'left-1'}"></div>
+                    </button>
+                </div>
+            `;
+
+            // ================= FINAL RENDER =================
+            list.innerHTML = itemsHTML + toteHTML;
         }
 
         function changeQty(idx, change) {
@@ -898,7 +957,14 @@
 
         function updateJamStatus() {
             const now = new Date();
-            
+
+            const hari = now.toLocaleDateString('id-ID', {
+                weekday: 'long',
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+
             const jam = now.getHours().toString().padStart(2, '0');
             const menit = now.getMinutes().toString().padStart(2, '0');
             const detik = now.getSeconds().toString().padStart(2, '0');
@@ -919,6 +985,10 @@
             } else {
                 el.className = "text-[10px] font-bold text-red-600 bg-red-50 px-2 py-1 rounded-full uppercase italic border border-red-100";
             }
+        }
+
+        function addMinutes(date, minutes) {
+            return new Date(date.getTime() + minutes * 60000);
         }
 
         async function getRoadRoute(latlng) {
@@ -945,8 +1015,18 @@
         }
 
         function sendOrder() {
+
             const name = document.getElementById('user-name').value;
-            if (!name) return alert("Mohon isi nama kamu.");
+
+            if (cart.length === 0) {
+                return alert("Keranjang masih kosong 🛒");
+            }
+
+            if (!name) {
+                return alert("Mohon isi nama kamu.");
+            }
+
+            // VALIDASI PEMBAYARAN
             if (orderType !== 'delivery' && !paymentMethod) {
                 return alert("Pilih metode pembayaran");
             }
@@ -954,173 +1034,156 @@
             if (paymentMethod === 'cash' && cashAmount <= 0) {
                 return alert("Masukkan uang pembayaran");
             }
+
+            // VALIDASI LOKASI DELIVERY
             if (orderType === 'delivery') {
-            const isDefaultLocation = 
-                userLocation[0] === RESTO_COORDS[0] && 
-                userLocation[1] === RESTO_COORDS[1];
+                const isDefaultLocation =
+                    userLocation[0] === RESTO_COORDS[0] &&
+                    userLocation[1] === RESTO_COORDS[1];
 
-            if (isDefaultLocation) {
-                alert("Mohon tentukan lokasi pengantaran terlebih dahulu 📍");
-                return;
+                if (isDefaultLocation) {
+                    return alert("Mohon tentukan lokasi pengantaran terlebih dahulu 📍");
+                }
             }
-        }
 
-            
-            const subtotal = cart.reduce((sum, item) => sum + (item.finalPrice * (item.qty || 1)), 0);
+            // ================= HITUNG =================
+            const subtotal = cart.reduce((sum, item) => 
+                sum + (item.finalPrice * (item.qty || 1)), 0);
+
             const shipping = orderType === 'delivery' ? getShippingCost(distance) : 0;
             const tote = useTotebag ? TOTE_PRICE : 0;
             const total = subtotal + shipping + tote;
+
+            // ================= WAKTU =================
             const now = new Date();
-            const jam = now.getHours().toString().padStart(2, '0');
-            const menit = now.getMinutes().toString().padStart(2, '0');
+            const hariNama = now.toLocaleDateString('id-ID', { weekday: 'long' });
+            const tanggal = now.toLocaleDateString('id-ID');
+            const waktu = now.toLocaleTimeString('id-ID');
 
-            // Perhitungan Estimasi
-            // Asumsi: 5 menit per item untuk pembuatan, minimal 10 menit
+            // ================= ESTIMASI =================
             const processMinutes = Math.max(10, cart.length * 5);
-            // Asumsi: 1km = 5 menit pengiriman
             const shippingMinutes = Math.ceil(distance * 5);
-            const totalEstimasi = orderType === 'delivery' ? (processMinutes + shippingMinutes) : processMinutes;
 
+            const addMinutes = (date, minutes) =>
+                new Date(date.getTime() + minutes * 60000);
+
+            const selesaiProses = addMinutes(now, processMinutes);
+            const selesaiKirim = addMinutes(now, processMinutes + shippingMinutes);
+
+            const formatTime = (d) =>
+                d.getHours().toString().padStart(2, '0') + ":" +
+                d.getMinutes().toString().padStart(2, '0');
+
+            // ================= HEADER =================
             let msg = `*ORDERAN BARU - NGALEUEUT*%0A`;
             msg += `---------------------------%0A`;
             msg += `*Nama Pembeli:* ${name}%0A`;
-            const tipeText = 
+
+            const tipeText =
                 orderType === 'delivery' ? 'Delivery' :
                 orderType === 'takeaway' ? 'Ambil di Tempat' :
                 'Makan di Tempat';
 
             msg += `*Opsi Pembelian:* ${tipeText}%0A`;
-            msg += `*Waktu Order:* ${jam}:${menit}WIB%0A`;
-            
+            msg += `*Waktu Order:* ${hariNama}, ${tanggal} | ${waktu}%0A`;
+
+            // ================= ITEM =================
             cart.forEach((item, i) => {
-               msg += `*${i+1}. ${item.name}* (${item.selectedSize}) x${item.qty || 1}%0A`;
+                msg += `*${i+1}. ${item.name}* (${item.selectedSize}) x${item.qty || 1}%0A`;
+
                 if (item.selectedLevel !== null) {
-                    let levelText = '';
-                    let extra = item.levelExtra || 0;
+                    let levelText = item.selectedLevel === 'pisah'
+                        ? 'Sambal Dipisah'
+                        : `Lv ${item.selectedLevel}`;
 
-                    if (item.selectedLevel === 'pisah') {
-                        levelText = 'Sambal Dipisah';
-                    } else {
-                        levelText = `Lv ${item.selectedLevel}`;
-                    }
-
-                    if (extra > 0) {
-                        levelText += ` (+${extra})`;
+                    if (item.levelExtra > 0) {
+                        levelText += ` (+${item.levelExtra})`;
                     }
 
                     msg += `- Level: ${levelText}%0A`;
                 }
-                if (item.selectedToppings.length > 0) msg += `- Topping: ${item.selectedToppings.map(t => t.name).join(', ')}%0A`;
+
+                if (item.selectedToppings.length > 0) {
+                    msg += `- Topping: ${item.selectedToppings.map(t => `${t.name} x${t.qty}`).join(', ')}%0A`;
+                }
+
                 if (item.metode) msg += `- Masak: ${item.metode}%0A`;
                 if (item.kuah) msg += `- Pakai Kuah: Ya%0A`;
                 if (item.selectedSaus) msg += `- Saus: ${item.selectedSaus}%0A`;
-                if (item.selectedRasaExtra) {
-                    msg += `- Rasa: ${item.selectedRasaExtra}%0A`;
-                }
+                if (item.selectedRasaExtra) msg += `- Rasa: ${item.selectedRasaExtra}%0A`;
+
                 if (item.selectedOptions) {
                     Object.keys(item.selectedOptions).forEach(k => {
                         msg += `- ${k}: ${item.selectedOptions[k]}%0A`;
                     });
                 }
-                if (item.note) msg += `- *Catatan:* _${item.note}_%0A`;
+
+                if (item.note) {
+                    msg += `- *Catatan:* _${item.note}_%0A`;
+                }
+
                 const qty = item.qty || 1;
                 const totalItem = item.finalPrice * qty;
 
-                if (qty > 1) {
-                    msg += `- Harga: Rp${item.finalPrice.toLocaleString()} x${qty} = Rp${totalItem.toLocaleString()}%0A%0A`;
-                } else {
-                    msg += `- Harga: Rp${item.finalPrice.toLocaleString()}%0A%0A`;
-                }
+                msg += qty > 1
+                    ? `- Harga: Rp${item.finalPrice.toLocaleString()} x${qty} = Rp${totalItem.toLocaleString()}%0A%0A`
+                    : `- Harga: Rp${item.finalPrice.toLocaleString()}%0A%0A`;
             });
-            
+
+            // ================= TOTAL =================
             msg += `---------------------------%0A`;
             msg += `*Rincian Biaya:*%0A`;
             msg += `- Subtotal: Rp${subtotal.toLocaleString()}%0A`;
-            if (orderType !== 'delivery' && !paymentMethod) {
-                return alert("Pilih metode pembayaran");
-            }
 
-            if (paymentMethod === 'cash' && cashAmount <= 0) {
-                return alert("Masukkan uang pembayaran");
-            }
             if (useTotebag) {
                 msg += `- Totebag: Rp${TOTE_PRICE.toLocaleString()}%0A`;
             }
+
             if (orderType === 'delivery') {
-                msg += `- Ongkos Kirim: Rp${shipping.toLocaleString()}%0A`;
+                msg += `- Ongkir: Rp${shipping.toLocaleString()}%0A`;
             }
+
             msg += `---------------------------%0A`;
-            msg += `*Pembayaran:* ${paymentMethod.toUpperCase()}%0A`;
+            msg += `*Pembayaran:* ${paymentMethod?.toUpperCase() || '-'}%0A`;
 
             if (paymentMethod === 'cash') {
                 msg += `- Bayar: Rp${cashAmount.toLocaleString()}%0A`;
                 msg += `- Kembalian: Rp${changeAmount.toLocaleString()}%0A`;
             }
+
             msg += `*TOTAL BAYAR: Rp${total.toLocaleString()}*%0A%0A`;
 
+            // ================= ESTIMASI =================
             msg += `---------------------------%0A`;
-            msg += `*Estimasi Waktu:*%0A`;
-            msg += `- Pembuatan: ±${processMinutes} menit%0A`;
+            msg += `*Estimasi:*%0A`;
+            msg += `- Proses selesai: ${formatTime(selesaiProses)} WIB%0A`;
+
             if (orderType === 'delivery') {
-                msg += `- Pengiriman: ±${shippingMinutes} menit%0A`;
-                msg += `*Total Sampai: ±${totalEstimasi} menit*%0A%0A`;
+                msg += `- Sampai tujuan: ${formatTime(selesaiKirim)} WIB%0A`;
                 msg += `*Alamat:* ${document.getElementById('user-address').value || '-'}%0A`;
                 msg += `*Lokasi:* https://www.google.com/maps?q=${userLocation[0]},${userLocation[1]}%0A`;
-                msg += `*Download QRIS untuk pembayaran:* https://ngaleueut.website/img/qris.jpg`;
             } else {
-                msg += `*Download QRIS untuk pembayaran:* https://ngaleueut.website/img/qris.jpg`;
-                msg += `*Siap Diambil: ±${totalEstimasi} menit*%0A`;
+                msg += `- Siap diambil: ${formatTime(selesaiProses)} WIB%0A`;
             }
 
+            msg += `*QRIS:* https://ngaleueut.website/img/qris.jpg`;
+
+            // ================= KIRIM =================
             window.open(`https://wa.me/${ADMIN_WA}?text=${msg}`, '_blank');
         }
-
-        function printNota() {
-
-        const name = document.getElementById('user-name').value;
-        if (!name) return alert("Nama wajib diisi");
-
-        if (orderType === 'delivery') {
-            const isDefaultLocation =
-                userLocation[0] === RESTO_COORDS[0] &&
-                userLocation[1] === RESTO_COORDS[1];
-
-            if (isDefaultLocation) {
-                return alert("Lokasi belum dipilih");
-            }
-        }
-
-        if (cart.length === 0) return alert("Keranjang kosong");
-
-        // ✅ ini saja (jangan overwrite lagi)
-        generateNotaContent();
-
-        // ❌ hilangkan estimasi di print
-        document.getElementById("print-estimasi").innerHTML = "";
-
-        const printContents = document.getElementById("printArea").innerHTML;
-
-        const win = window.open('', '', 'width=300,height=600');
-        win.document.write(`
-            <html>
-            <body style="width:58mm;font-family:monospace;" onload="window.print();window.close()">
-            ${printContents}
-            </body>
-            </html>
-        `);
-        win.document.close();
-    }
 
         function generateNotaContent() {
             const name = document.getElementById('user-name').value || '-';
 
             const now = new Date();
-            const time = now.getHours().toString().padStart(2, '0') + ":" +
-                        now.getMinutes().toString().padStart(2, '0') + " WIB";
+            const tanggal = now.toLocaleDateString('id-ID');
+            const waktu = now.toLocaleTimeString('id-ID');
+
+            const waktuFull = `${tanggal} ${waktu}`;
 
             document.getElementById("print-header").innerHTML = `
                 Nama Pembeli: ${name}<br>
-                Waktu Order: ${time}<br>
+                Waktu Order: ${waktuFull}<br>
                 Opsi Pembelian: ${orderType.toUpperCase()}
                 <hr>
             `;
@@ -1140,7 +1203,7 @@
                 }
 
                 if (item.selectedToppings?.length > 0) {
-                    detail += `Topping: ${item.selectedToppings.map(t => t.name).join(', ')}<br>`;
+                    detail += `Topping: ${item.selectedToppings.map(t => `${t.name} x${t.qty}`).join(', ')}<br>`;
                 }
 
                 if (item.metode) detail += `Masak: ${item.metode}<br>`;
@@ -1159,7 +1222,7 @@
                 }
 
                 htmlItems += `
-                    <div style="margin-bottom:4px;">
+                    <div style="margin-bottom:2px;">
                         <div style="font-weight:bold;">
                             ${i+1}. ${item.name} (${item.selectedSize}) x${qty}
                         </div>
@@ -1205,11 +1268,24 @@
             const processMinutes = Math.max(10, cart.length * 5);
             const shippingMinutes = Math.ceil(distance * 5);
 
-            document.getElementById("print-estimasi").innerHTML = `
-                Pembuatan: ±${processMinutes} menit<br>
-                Pengiriman: ±${orderType === 'delivery' ? shippingMinutes : 0} menit<br>
-                <b>Total Sampai: ±${processMinutes + shippingMinutes} menit</b>
+            const selesaiProses = new Date(now.getTime() + processMinutes * 60000);
+            const selesaiKirim = new Date(now.getTime() + (processMinutes + shippingMinutes) * 60000);
+
+            const formatJam = (d) =>
+                d.getHours().toString().padStart(2, '0') + ":" +
+                d.getMinutes().toString().padStart(2, '0');
+
+            let estimasiHTML = `
+                Proses selesai: ${formatJam(selesaiProses)} WIB<br>
             `;
+
+            if (orderType === 'delivery') {
+                estimasiHTML += `Sampai tujuan: ${formatJam(selesaiKirim)} WIB<br>`;
+            } else {
+                estimasiHTML += `Siap diambil: ${formatJam(selesaiProses)} WIB<br>`;
+            }
+
+            document.getElementById("print-estimasi").innerHTML = estimasiHTML;
 
             // ✅ QR WA (PALING BAWAH)
             const waLink = "https://wa.me/6285183317960";
@@ -1260,8 +1336,10 @@
             if (cart.length === 0) return alert("Keranjang kosong");
 
             const now = new Date();
-            const time = now.getHours().toString().padStart(2, '0') + ":" +
-                        now.getMinutes().toString().padStart(2, '0') + " WIB";
+            const tanggal = now.toLocaleDateString('id-ID');
+            const waktu = now.toLocaleTimeString('id-ID');
+
+            const waktuFull = `${tanggal} ${waktu}`;
 
             const ESC = '\x1B';
             const GS = '\x1D';
@@ -1281,13 +1359,12 @@
             text += "Blok Sukamaju, Desa Pasanggrahan\n";
             text += "Kec. Maja, Majalengka\n";
 
-            text += "------------------------------\n";
 
             text += ESC + "a\x00"; // left
 
             // ================= INFO =================
             text += `Nama: ${name}\n`;
-            text += `Waktu: ${time}\n`;
+            text += `Waktu: ${waktuFull}\n`;
             text += `Tipe: ${orderType.toUpperCase()}\n`;
 
             text += "------------------------------\n";
@@ -1302,24 +1379,110 @@
             // ================= ITEMS =================
             let subtotal = 0;
 
+            function wrapText(text, maxWidth) {
+                const words = text.split(" ");
+                let lines = [];
+                let current = "";
+
+                words.forEach(word => {
+                    if ((current + word).length <= maxWidth) {
+                        current += (current ? " " : "") + word;
+                    } else {
+                        lines.push(current);
+                        current = word;
+                    }
+                });
+
+                if (current) lines.push(current);
+
+                return lines;
+            }
+
+            function padRight(left, right, width = 32) {
+                const space = width - left.length - right.length;
+                return left + " ".repeat(space > 0 ? space : 1) + right;
+            }
+
             cart.forEach((item, i) => {
                 const qty = item.qty || 1;
                 const price = item.finalPrice;
                 const total = price * qty;
                 subtotal += total;
 
-                text += ESC + "E\x01"; // bold
-                text += `${i+1}. ${item.name}\n`;
-                text += ESC + "E\x00";
+                let name = `${i+1}. ${item.name}`;
 
-                text += `   ${item.selectedSize} x${qty} @Rp ${price.toLocaleString()}\n`;
+                // tambahkan level ke nama (khusus makanan pedas)
+                if (item.hasLevel && item.selectedLevel !== null && item.selectedLevel !== undefined) {
+                    let levelText = `Lv ${item.selectedLevel}`;
 
-                if (item.selectedLevel !== null) text += `   Lv ${item.selectedLevel}\n`;
-                if (item.selectedToppings?.length > 0)
-                    text += `   + ${item.selectedToppings.map(t => t.name).join(', ')}\n`;
-                if (item.note) text += `   (${item.note})\n`;
+                    if (item.levelExtra > 0) {
+                        levelText += `+${item.levelExtra}`;
+                    }
 
-                text += formatLine("", "Rp " + total.toLocaleString()) + "\n";
+                    name += ` (${levelText})`;
+                }
+                const size = item.selectedSize || "";
+
+                // === WRAP NAMA (SISA RUANG SETELAH SIZE)
+                const maxNameWidth = 32 - size.length - 1;
+                const nameLines = wrapText(name, maxNameWidth);
+
+                // === BARIS PERTAMA (NAMA + SIZE)
+                text += padRight(nameLines[0], size) + "\n";
+
+                // === BARIS LANJUTAN (INDENT)
+                for (let j = 1; j < nameLines.length; j++) {
+                    text += "   " + nameLines[j] + "\n";
+                }
+
+                // === OPSI LAIN
+                if (item.metode) {
+                    text += "   " + item.metode + "\n";
+                }
+
+                if (item.kuah) {
+                    text += "   + Kuah\n";
+                }
+
+                if (item.selectedSaus) {
+                    text += "   Saus: " + item.selectedSaus + "\n";
+                }
+
+                if (item.selectedRasaExtra) {
+                    text += "   Rasa: " + item.selectedRasaExtra + "\n";
+                }
+
+                if (item.selectedOptions) {
+                    Object.keys(item.selectedOptions).forEach(k => {
+                        text += "   " + k + ": " + item.selectedOptions[k] + "\n";
+                    });
+                }
+
+                // === BARIS HARGA
+                const qtyText = `${qty} x`;
+                const priceText = price.toLocaleString();
+                const totalText = total.toLocaleString();
+
+                let left = `   ${qtyText.padEnd(4)} ${priceText}`;
+                text += padRight(left, totalText) + "\n";
+
+                // === TOPPING (WRAP JUGA)
+                if (item.selectedToppings?.length > 0) {
+                    const toppingText = "+ " + item.selectedToppings.map(t => `${t.name}x${t.qty}`).join(", ");
+                    const toppingLines = wrapText(toppingText, 29);
+
+                    toppingLines.forEach(line => {
+                        text += "   " + line + "\n";
+                    });
+                }
+
+                // === CATATAN
+                if (item.note) {
+                    const noteLines = wrapText("(" + item.note + ")", 29);
+                    noteLines.forEach(line => {
+                        text += "   " + line + "\n";
+                    });
+                }
             });
 
             // ================= TOTAL =================
@@ -1329,17 +1492,24 @@
 
             text += "------------------------------\n";
 
-            text += formatLine("Subtotal", "Rp " + subtotal.toLocaleString()) + "\n";
+            
+            // ✅ hanya delivery
+            if (orderType === 'delivery') {
+                text += formatLine("Subtotal", "Rp " + subtotal.toLocaleString()) + "\n";
+            }
 
+            // tetap tampil semua
             if (useTotebag) {
                 text += formatLine("Totebag", "Rp " + TOTE_PRICE.toLocaleString()) + "\n";
             }
 
             if (orderType === 'delivery') {
                 text += formatLine("Ongkir", "Rp " + shipping.toLocaleString()) + "\n";
+                 text += "------------------------------\n";
             }
 
-            text += "------------------------------\n";
+           
+
 
             text += ESC + "E\x01";   // bold
             text += GS + "!\x01";    // height saja (tidak terlalu besar)
@@ -1347,29 +1517,29 @@
             text += ESC + "E\x00";
             text += GS + "!\x00";
 
-            text += "------------------------------\n";
-            text += "PEMBAYARAN\n";
+            if (orderType !== 'delivery') {
+                text += "------------------------------\n";
+                text += "PEMBAYARAN\n";
 
-            text += `Metode : ${paymentMethod || '-'}\n`;
+                text += `Metode : ${paymentMethod || '-'}\n`;
 
-            if (paymentMethod === 'cash') {
-                text += `Bayar  : Rp ${cashAmount.toLocaleString()}\n`;
-                text += `Kembali: Rp ${changeAmount.toLocaleString()}\n`;
+                if (paymentMethod === 'cash') {
+                    text += `Bayar  : Rp ${cashAmount.toLocaleString()}\n`;
+                    text += `Kembali: Rp ${changeAmount.toLocaleString()}\n`;
+                }
             }
 
             // ================= FOOTER =================
             text += "------------------------------\n";
 
-            text += ESC + "a\x01"; // center
+            text += ESC + "a\x01";
             text += ESC + "E\x01";
-            text += GS + "!\x11";
-            text += "TERIMA KASIH\n";
+            text += "----- TERIMA KASIH -----\n";
             text += ESC + "E\x00";
-            text += GS + "!\x00";
 
             // WIFI (hanya dine-in / takeaway)
             if (orderType !== 'delivery') {
-                text += "\nWiFi: Ngaleueut \nPass: ngaleueut2026\n";
+                text += "\nSandi Wifi: ngaleueut2026\n";
             }
 
             text += "\n";
@@ -1379,7 +1549,7 @@
             text += "IG : @_ngaleueut\n";
             text += "WEB : ngaleueut.website\n";
 
-            text += "\n\n\n";
+           text += "\n";
 
             // ================= CUT PAPER =================
             text += GS + "V\x00";
@@ -1423,8 +1593,9 @@
             }
         }
     });
-
-        window.onload = () => { renderMenu(); initMap(); };
+        window.onerror = function(msg, url, line) {
+            alert("Error: " + msg + " di line " + line);
+        };
         window.onload = () => { 
             renderMenu(); 
             initMap(); 
