@@ -191,6 +191,7 @@
                     <div class="flex justify-between text-gray-500"><span>Produk</span><span id="cart-subtotal">Rp0</span></div>
                     <div id="shipping-row" class="flex justify-between text-gray-500"><span id="label-ongkir">Ongkir</span><span id="cart-shipping">Rp0</span></div>
                     <div class="flex justify-between text-gray-500"><span>Totebag</span><span id="tote-row">Rp0</span></div>
+                    <div id="discount-row" class="flex justify-between text-orange-500 hidden"><span>Diskon</span><span id="cart-discount">-Rp0</span></div>
                     <div class="flex justify-between text-lg font-black text-gray-900 pt-2"><span>Total</span><span id="cart-total" class="text-green-700">Rp0</span></div>
                 </div>
                 <div class="flex gap-3">
@@ -396,6 +397,10 @@
         let distance = 0;
         let map, userMarker, routeLayer, activeItem = null;
         let useTotebag = false;
+        let useDiscount = false;
+        const DISCOUNT_PERCENT = 10;
+        const DISCOUNT_MAX = 10000;
+        const DISCOUNT_MINIMUM = 20000;
         const TOTE_PRICE = 3500;
 
         function renderMenu() {
@@ -784,13 +789,32 @@
             const subtotal = cart.reduce((sum, item) => sum + (item.finalPrice * (item.qty || 1)), 0);
             const shipping = orderType === 'delivery' ? getShippingCost(distance) : 0;
             const tote = useTotebag ? TOTE_PRICE : 0;
-            const total = subtotal + shipping + tote;
+            let discount = 0;
+
+            if (useDiscount && subtotal >= DISCOUNT_MINIMUM) {
+                discount = Math.floor(subtotal * (DISCOUNT_PERCENT / 100));
+
+                if (discount > DISCOUNT_MAX) {
+                    discount = DISCOUNT_MAX;
+                }
+            }
+
+            const total = subtotal + shipping + tote - discount;
 
             const label = document.getElementById('label-ongkir');
                 if (orderType === 'delivery') {
                     label.innerText = `Ongkir (${distance} km)`;
                 } else {
                     label.innerText = `Ongkir`;
+            }
+            const discountRow = document.getElementById('discount-row');
+
+            if (discount > 0) {
+                discountRow.classList.remove('hidden');
+                document.getElementById('cart-discount').innerText =
+                    `-Rp${discount.toLocaleString()}`;
+            } else {
+                discountRow.classList.add('hidden');
             }
 
             document.getElementById('cart-subtotal').innerText = `Rp${subtotal.toLocaleString()}`;
@@ -893,8 +917,31 @@
                 </div>
             `;
 
-            // ================= FINAL RENDER =================
-            list.innerHTML = itemsHTML + toteHTML;
+                const subtotal = cart.reduce((sum, item) => 
+                    sum + (item.finalPrice * (item.qty || 1)), 0);
+
+                const discountHTML = `
+                    <div class="flex items-center justify-between p-3 bg-orange-50 rounded-xl border border-orange-100 mt-3">
+                        <div>
+                            <p class="text-xs font-bold">
+                                Gunakan Promo Diskon 10%
+                            </p>
+                            <p class="text-[9px] text-orange-500 uppercase font-bold">
+                                Min. belanja Rp20.000 • Maks diskon Rp10.000
+                            </p>
+                        </div>
+
+                        <input 
+                            type="checkbox"
+                            ${subtotal >= DISCOUNT_MINIMUM ? '' : 'disabled'}
+                            ${useDiscount ? 'checked' : ''}
+                            onchange="toggleDiscount(this.checked)"
+                            class="w-5 h-5 accent-green-600"
+                        >
+                    </div>
+                `;
+
+                list.innerHTML = itemsHTML + toteHTML + discountHTML;
         }
 
         function changeQty(idx, change) {
@@ -947,6 +994,11 @@
             document.getElementById('payment-section')
                 .classList.toggle('hidden', type === 'delivery');
 
+            updateTotals();
+        }
+
+        function toggleDiscount(state) {
+            useDiscount = state;
             updateTotals();
         }
 
@@ -1494,26 +1546,38 @@
             // ================= TOTAL =================
             const shipping = orderType === 'delivery' ? getShippingCost(distance) : 0;
             const tote = useTotebag ? TOTE_PRICE : 0;
-            const total = subtotal + shipping + tote;
+            let discount = 0;
+
+            if (useDiscount && subtotal >= DISCOUNT_MINIMUM) {
+                discount = Math.floor(subtotal * (DISCOUNT_PERCENT / 100));
+
+                if (discount > DISCOUNT_MAX) {
+                    discount = DISCOUNT_MAX;
+                }
+            }
+
+            const total = subtotal + shipping + tote - discount;
 
             text += "------------------------------\n";
 
             
-            // ✅ hanya delivery
-            if (orderType === 'delivery') {
-                text += formatLine("Subtotal", "Rp " + subtotal.toLocaleString()) + "\n";
-            }
+           // ✅ subtotal selalu tampil
+            text += formatLine("Subtotal", "Rp " + subtotal.toLocaleString()) + "\n";
 
             // tetap tampil semua
             if (useTotebag) {
                 text += formatLine("Totebag", "Rp " + TOTE_PRICE.toLocaleString()) + "\n";
             }
 
-            if (orderType === 'delivery') {
+          if (orderType === 'delivery') {
                 text += formatLine("Ongkir", "Rp " + shipping.toLocaleString()) + "\n";
-                 text += "------------------------------\n";
             }
 
+            if (discount > 0) {
+                text += formatLine("Diskon", "-Rp " + discount.toLocaleString()) + "\n";
+            }
+
+            text += "------------------------------\n";
            
 
 
